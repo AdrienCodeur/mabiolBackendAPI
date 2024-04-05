@@ -1,0 +1,2645 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My First API",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/v1/abonnee": {
+            "get": {
+                "tags": [
+                    "Abonnee"
+                ],
+                "summary": "Liste des abonnees",
+                "operationId": "04c7ab2c5de1c091d628bcbfa60ab112",
+                "responses": {
+                    "200": {
+                        "description": "Liste des abonnees récupérée avec succès"
+                    }
+                }
+            }
+        },
+        "/api/abonnee/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Abonnee"
+                ],
+                "summary": "Update a contrat",
+                "operationId": "93d1c2c1c305dd5be10d0e7824c25667",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the contrat",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "statut",
+                                    "slug",
+                                    "utilisateur_id",
+                                    "typeabonnement_id"
+                                ],
+                                "properties": {
+                                    "statut": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    },
+                                    "slug": {
+                                        "type": "string",
+                                        "example": "slug"
+                                    },
+                                    "utilisateur_id": {
+                                        "type": "string",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "abonnee updated"
+                    },
+                    "404": {
+                        "description": "abonnee not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/abonnee/create": {
+            "post": {
+                "tags": [
+                    "Abonnee"
+                ],
+                "summary": "Create a new user",
+                "operationId": "6ec003cce64bdb57fc00fe1dac085810",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "statut",
+                                    "slug",
+                                    "utilisateur_id",
+                                    "typeabonnement_id"
+                                ],
+                                "properties": {
+                                    "statut": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    },
+                                    "slug": {
+                                        "type": "string",
+                                        "example": "slug"
+                                    },
+                                    "utilisateur_id": {
+                                        "type": "string",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Abonnee created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/abonnee/show/{id}": {
+            "get": {
+                "tags": [
+                    "Abonnee"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "cc3617c9e76de7aef8897d3e9764d42e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": " id de abonnee",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/abonnee/{id}": {
+            "delete": {
+                "tags": [
+                    "Abonnee"
+                ],
+                "summary": "Delete a user",
+                "operationId": "248ba213011e2746015c686414952e65",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/contrat": {
+            "get": {
+                "tags": [
+                    "Contrat"
+                ],
+                "summary": "Liste des contrats",
+                "operationId": "78ded283e949d27e9f096a5bcc608a96",
+                "responses": {
+                    "200": {
+                        "description": "Liste des abonnees récupérée avec succès"
+                    }
+                }
+            }
+        },
+        "/api/v1/contrat/create": {
+            "post": {
+                "tags": [
+                    "Contrat"
+                ],
+                "summary": "Create a new contrat",
+                "operationId": "ab9caa53e67c721c5ff889a58e05c2c7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "duree",
+                                    "slug",
+                                    "utilisateur_id",
+                                    "locataire_id"
+                                ],
+                                "properties": {
+                                    "statut": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    },
+                                    "slug": {
+                                        "type": "string"
+                                    },
+                                    "duree": {
+                                        "type": "string"
+                                    },
+                                    "charge": {
+                                        "type": "string"
+                                    },
+                                    "description_bail": {
+                                        "type": "string"
+                                    },
+                                    "indice_reference": {
+                                        "type": "string"
+                                    },
+                                    "close_revision_loyer": {
+                                        "type": "string"
+                                    },
+                                    "montantLoyer": {
+                                        "type": "string"
+                                    },
+                                    "closeparticuliere": {
+                                        "type": "string"
+                                    },
+                                    "aut_paiement": {
+                                        "type": "string"
+                                    },
+                                    "aut_avis_echeance": {
+                                        "type": "string"
+                                    },
+                                    "aut_quittance": {
+                                        "type": "string"
+                                    },
+                                    "type_echange_id": {
+                                        "type": "string"
+                                    },
+                                    "type_contrat_id": {
+                                        "type": "string"
+                                    },
+                                    "utilisateur_id": {
+                                        "type": "string",
+                                        "example": "2"
+                                    },
+                                    "locataire_id": {
+                                        "type": "string",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Contrat created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/contrat/show/{id}": {
+            "get": {
+                "tags": [
+                    "Contrat"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "ab8012ce35572e5a2e6ccfb405039345",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": " id de Contrat",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/contrat/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Contrat"
+                ],
+                "summary": "Update a contrat",
+                "operationId": "b8ec136cbfe3eef6b45c50aeac2308b0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the contrat",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "duree",
+                                    "slug",
+                                    "utilisateur_id",
+                                    "locataire_id"
+                                ],
+                                "properties": {
+                                    "statut": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    },
+                                    "slug": {
+                                        "type": "string"
+                                    },
+                                    "duree": {
+                                        "type": "string"
+                                    },
+                                    "charge": {
+                                        "type": "string"
+                                    },
+                                    "description_bail": {
+                                        "type": "string"
+                                    },
+                                    "indice_reference": {
+                                        "type": "string"
+                                    },
+                                    "close_revision_loyer": {
+                                        "type": "string"
+                                    },
+                                    "montantLoyer": {
+                                        "type": "string"
+                                    },
+                                    "closeparticuliere": {
+                                        "type": "string"
+                                    },
+                                    "aut_paiement": {
+                                        "type": "string"
+                                    },
+                                    "aut_avis_echeance": {
+                                        "type": "string"
+                                    },
+                                    "aut_quittance": {
+                                        "type": "string"
+                                    },
+                                    "type_echange_id": {
+                                        "type": "string"
+                                    },
+                                    "type_contrat_id": {
+                                        "type": "string"
+                                    },
+                                    "utilisateur_id": {
+                                        "type": "string",
+                                        "example": "2"
+                                    },
+                                    "locataire_id": {
+                                        "type": "string",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/contrat/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Contrat"
+                ],
+                "summary": "Delete a contrat",
+                "operationId": "fff3c473ad24c415bfd0c86077e11aee",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/finance": {
+            "get": {
+                "tags": [
+                    "Finances"
+                ],
+                "summary": "Liste des finances",
+                "operationId": "c4c9b3ce90a42e34da02fe7dea8cb020",
+                "responses": {
+                    "200": {
+                        "description": "Liste des utilisateurs récupérée avec succès"
+                    }
+                }
+            }
+        },
+        "/api/v1/finance/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Finances"
+                ],
+                "summary": "Update a Finance",
+                "operationId": "66a555796b2ddf1d6330b9fb38a4d3c3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Finance",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "montant",
+                                    "slug",
+                                    "statut",
+                                    "proprietaire_id"
+                                ],
+                                "properties": {
+                                    "statut": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    },
+                                    "slug": {
+                                        "type": "string"
+                                    },
+                                    "type_Finance_id": {
+                                        "type": "string"
+                                    },
+                                    "frequence": {
+                                        "type": "string"
+                                    },
+                                    "commentaire": {
+                                        "type": "string"
+                                    },
+                                    "periode": {
+                                        "type": "string"
+                                    },
+                                    "montant": {
+                                        "type": "string"
+                                    },
+                                    "datepaiement": {
+                                        "type": "string"
+                                    },
+                                    "autre_typepaiement": {
+                                        "type": "string"
+                                    },
+                                    "typePaiement_id": {
+                                        "type": "string"
+                                    },
+                                    "bien_id": {
+                                        "type": "string",
+                                        "example": "2"
+                                    },
+                                    "proprietaire_id": {
+                                        "type": "string",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/finance/create": {
+            "post": {
+                "tags": [
+                    "Finances"
+                ],
+                "summary": "Create a new user",
+                "operationId": "ca42a883e3a4b4aeaa75be34ae7327ef",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "statut",
+                                    "slug",
+                                    "bien_id",
+                                    "proprietaire_id"
+                                ],
+                                "properties": {
+                                    "statut": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    },
+                                    "slug": {
+                                        "type": "string"
+                                    },
+                                    "type_Finance_id": {
+                                        "type": "string"
+                                    },
+                                    "frequence": {
+                                        "type": "string"
+                                    },
+                                    "commentaire": {
+                                        "type": "string"
+                                    },
+                                    "periode": {
+                                        "type": "string"
+                                    },
+                                    "montant": {
+                                        "type": "string"
+                                    },
+                                    "datepaiement": {
+                                        "type": "string"
+                                    },
+                                    "autre_typepaiement": {
+                                        "type": "string"
+                                    },
+                                    "typePaiement_id": {
+                                        "type": "string"
+                                    },
+                                    "bien_id": {
+                                        "type": "string",
+                                        "example": "2"
+                                    },
+                                    "proprietaire_id": {
+                                        "type": "string",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Finance created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/finance/show/{id}": {
+            "get": {
+                "tags": [
+                    "Finances"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "c14d7838a2153fccd335d5110fe0784a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": " id de Finance",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/finance/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Finances"
+                ],
+                "summary": "Delete a Finance",
+                "operationId": "a8989b90cc0c8eb9ef213549c11009fe",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/location": {
+            "get": {
+                "tags": [
+                    "Locations"
+                ],
+                "summary": "Liste des Locations",
+                "operationId": "67d946ebbcc62b3a6349390a1f21b70b",
+                "responses": {
+                    "200": {
+                        "description": "Liste des utilisateurs récupérée avec succès"
+                    }
+                }
+            }
+        },
+        "/api/v1/location/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Locations"
+                ],
+                "summary": "Update a Location",
+                "operationId": "4037f49d88612f28bc2f5eba89b2e72b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Location",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "contrat_id",
+                                    "slug",
+                                    "locataire_id",
+                                    "proprietaire_id"
+                                ],
+                                "properties": {
+                                    "proprietaire_id": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    },
+                                    "slug": {
+                                        "type": "string"
+                                    },
+                                    "locataire_id": {
+                                        "type": "string"
+                                    },
+                                    "contrat_id": {
+                                        "type": "string",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/location/create": {
+            "post": {
+                "tags": [
+                    "Locations"
+                ],
+                "summary": "Create a new location",
+                "operationId": "4c8a8024f3b9d839939f598f2b7450bb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "contrat_id",
+                                    "slug",
+                                    "locataire_id",
+                                    "proprietaire_id"
+                                ],
+                                "properties": {
+                                    "proprietaire_id": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    },
+                                    "slug": {
+                                        "type": "string"
+                                    },
+                                    "locataire_id": {
+                                        "type": "string"
+                                    },
+                                    "contrat_id": {
+                                        "type": "string",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Location created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/location/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Locations"
+                ],
+                "summary": "Delete a Location",
+                "operationId": "5b2d45f71679a09dc000e1971abb5823",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/location/show/{id}": {
+            "get": {
+                "tags": [
+                    "Locations"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "a9334b4eda09527dbddd140f5ecfd91a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": " id de Location",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/pays": {
+            "get": {
+                "tags": [
+                    "Pays"
+                ],
+                "summary": "Liste des pays",
+                "operationId": "98e36c2696011a030e87fe1d6ea2b1a9",
+                "responses": {
+                    "200": {
+                        "description": "Liste des utilisateurs récupérée avec succès"
+                    }
+                }
+            }
+        },
+        "/api/v1/pays/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Pays"
+                ],
+                "summary": "Update a Pays",
+                "operationId": "b15036b94e7fb110573dd486afc44760",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Pays",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nom"
+                                ],
+                                "properties": {
+                                    "nom": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/pays/create": {
+            "post": {
+                "tags": [
+                    "Pays"
+                ],
+                "summary": "Create a new pays",
+                "operationId": "d6d40e5da260720834f00389d8a44ef0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nom"
+                                ],
+                                "properties": {
+                                    "nom": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Pays created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/pays/show/{id}": {
+            "get": {
+                "tags": [
+                    "Pays"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "7282a4f36a8c8edd4a968068ffa81563",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": " id de pays",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/pays/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Pays"
+                ],
+                "summary": "Delete a Pays",
+                "operationId": "b52afd030678bb6438b70202a311bcc3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/bien": {
+            "get": {
+                "tags": [
+                    "Bien"
+                ],
+                "summary": "Liste des Bien",
+                "operationId": "a79267033b2636b945536081a1ae30c0",
+                "responses": {
+                    "200": {
+                        "description": "Liste des utilisateurs récupérée avec succès"
+                    }
+                }
+            }
+        },
+        "/api/v1/bien/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Bien"
+                ],
+                "summary": "Update a bien",
+                "operationId": "322d7e440239d01584835e4d0c5c4a33",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the bien",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nom"
+                                ],
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "surface": {
+                                        "type": "string"
+                                    },
+                                    "addresse": {
+                                        "type": "string"
+                                    },
+                                    "code_postal": {
+                                        "type": "string"
+                                    },
+                                    "nbrbatiment": {
+                                        "type": "string"
+                                    },
+                                    "nbrescalier": {
+                                        "type": "string"
+                                    },
+                                    "nbrchambre": {
+                                        "type": "string"
+                                    },
+                                    "numeroporte": {
+                                        "type": "string"
+                                    },
+                                    "zoneStationnement": {
+                                        "type": "string"
+                                    },
+                                    "typemouvement": {
+                                        "type": "string"
+                                    },
+                                    "ungarage": {
+                                        "type": "string"
+                                    },
+                                    "img": {
+                                        "type": "string"
+                                    },
+                                    "unecave": {
+                                        "type": "string"
+                                    },
+                                    "internet": {
+                                        "type": "string"
+                                    },
+                                    "dep_tvecranplat": {
+                                        "type": "string"
+                                    },
+                                    "proprietaire_id": {
+                                        "type": "string"
+                                    },
+                                    "typeBien_id": {
+                                        "type": "string"
+                                    },
+                                    "exist_proxi_restaurant": {
+                                        "type": "string"
+                                    },
+                                    "anneeconstruction": {
+                                        "type": "string"
+                                    },
+                                    "pc_vide_ordure": {
+                                        "type": "string"
+                                    },
+                                    "pc_espace_vert": {
+                                        "type": "string"
+                                    },
+                                    "pc_interphone": {
+                                        "type": "string"
+                                    },
+                                    "nbr_salle_bain": {
+                                        "type": "string"
+                                    },
+                                    "exist_sous_sol": {
+                                        "type": "string"
+                                    },
+                                    "dep_lingemaison": {
+                                        "type": "string"
+                                    },
+                                    "exist_proxi_education": {
+                                        "type": "string"
+                                    },
+                                    "exist_salle_manger": {
+                                        "type": "string"
+                                    },
+                                    "exist_cheminee": {
+                                        "type": "string"
+                                    },
+                                    "pc_antennetv_collective": {
+                                        "type": "string"
+                                    },
+                                    "exist_balcon": {
+                                        "type": "string"
+                                    },
+                                    "exist_proxi_centre_sante": {
+                                        "type": "string"
+                                    },
+                                    "pc_ascenseur": {
+                                        "type": "string"
+                                    },
+                                    "dep_lavevaiselle": {
+                                        "type": "string"
+                                    },
+                                    "statut": {
+                                        "type": "string"
+                                    },
+                                    "slug": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/bien/create": {
+            "post": {
+                "tags": [
+                    "Bien"
+                ],
+                "summary": "Create a new Bien",
+                "operationId": "63a8cc950482d0fcf581dc4829535632",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nom"
+                                ],
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "surface": {
+                                        "type": "string"
+                                    },
+                                    "addresse": {
+                                        "type": "string"
+                                    },
+                                    "code_postal": {
+                                        "type": "string"
+                                    },
+                                    "nbrbatiment": {
+                                        "type": "string"
+                                    },
+                                    "nbrescalier": {
+                                        "type": "string"
+                                    },
+                                    "nbrchambre": {
+                                        "type": "string"
+                                    },
+                                    "numeroporte": {
+                                        "type": "string"
+                                    },
+                                    "zoneStationnement": {
+                                        "type": "string"
+                                    },
+                                    "typemouvement": {
+                                        "type": "string"
+                                    },
+                                    "ungarage": {
+                                        "type": "string"
+                                    },
+                                    "img": {
+                                        "type": "string"
+                                    },
+                                    "unecave": {
+                                        "type": "string"
+                                    },
+                                    "internet": {
+                                        "type": "string"
+                                    },
+                                    "dep_tvecranplat": {
+                                        "type": "string"
+                                    },
+                                    "proprietaire_id": {
+                                        "type": "string"
+                                    },
+                                    "typeBien_id": {
+                                        "type": "string"
+                                    },
+                                    "exist_proxi_restaurant": {
+                                        "type": "string"
+                                    },
+                                    "anneeconstruction": {
+                                        "type": "string"
+                                    },
+                                    "pc_vide_ordure": {
+                                        "type": "string"
+                                    },
+                                    "pc_espace_vert": {
+                                        "type": "string"
+                                    },
+                                    "pc_interphone": {
+                                        "type": "string"
+                                    },
+                                    "nbr_salle_bain": {
+                                        "type": "string"
+                                    },
+                                    "exist_sous_sol": {
+                                        "type": "string"
+                                    },
+                                    "dep_lingemaison": {
+                                        "type": "string"
+                                    },
+                                    "exist_proxi_education": {
+                                        "type": "string"
+                                    },
+                                    "exist_salle_manger": {
+                                        "type": "string"
+                                    },
+                                    "exist_cheminee": {
+                                        "type": "string"
+                                    },
+                                    "pc_antennetv_collective": {
+                                        "type": "string"
+                                    },
+                                    "exist_balcon": {
+                                        "type": "string"
+                                    },
+                                    "exist_proxi_centre_sante": {
+                                        "type": "string"
+                                    },
+                                    "pc_ascenseur": {
+                                        "type": "string"
+                                    },
+                                    "dep_lavevaiselle": {
+                                        "type": "string"
+                                    },
+                                    "statut": {
+                                        "type": "string"
+                                    },
+                                    "slug": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Bien created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/bien/show/{id}": {
+            "get": {
+                "tags": [
+                    "Bien"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "716800d1539fc3e3e7731af9fc8d6a67",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": " id de Bien",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/bien/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Bien"
+                ],
+                "summary": "Delete a Bien",
+                "operationId": "fdb4a0e70f85b81b9046089bfb5a27bf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/region": {
+            "get": {
+                "tags": [
+                    "Region"
+                ],
+                "summary": "Liste des  Regions",
+                "operationId": "91ae478be9490ff1bf2ce48a21c2bb31",
+                "responses": {
+                    "200": {
+                        "description": "Liste des Regions  récupérée avec succès"
+                    }
+                }
+            }
+        },
+        "/api/v1/region/create": {
+            "post": {
+                "tags": [
+                    "Region"
+                ],
+                "summary": "Create a new  Region",
+                "operationId": "97382a073a909a9e25673157e4c6805a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "pay_id",
+                                    "nom"
+                                ],
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "pay_id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Region created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/region/show/{id}": {
+            "get": {
+                "tags": [
+                    "Region"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "c7ea3059b3c633f2e9bd1d8dac76d11e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": " id de Region",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/region/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Region"
+                ],
+                "summary": "Update a Region",
+                "operationId": "2bb9fa8d21a8ab5fffb716b0ea63d7eb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Region",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nom",
+                                    "pay_id"
+                                ],
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "pay_id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/typeAb": {
+            "get": {
+                "tags": [
+                    "TypeAb"
+                ],
+                "summary": "Liste des typeabonnement",
+                "operationId": "c9f33c4d18b2f9882384a438efd86b73",
+                "responses": {
+                    "200": {
+                        "description": "Liste des utilisateurs récupérée avec succès"
+                    }
+                }
+            }
+        },
+        "/api/v1/typeAb/edit/{id}": {
+            "put": {
+                "tags": [
+                    "TypeAb"
+                ],
+                "summary": "Update a TypeAb",
+                "operationId": "2e5edfd52cb3e1028e11744cf85203a9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the TypeAb",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nom"
+                                ],
+                                "properties": {
+                                    "nom": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    },
+                                    "montant": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    },
+                                    "duree": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    },
+                                    "slug": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/typeAb/create": {
+            "post": {
+                "tags": [
+                    "TypeAb"
+                ],
+                "summary": "Create a new TypeAb",
+                "operationId": "c2a34a91124f8cba0d72bceec3fea538",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nom"
+                                ],
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "montant": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "duree": {
+                                        "type": "string"
+                                    },
+                                    "slug": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "TypeAb created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/typeAb/show/{id}": {
+            "get": {
+                "tags": [
+                    "TypeAb"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "81ff0cf746dbca4d8eddd7fc36dbc6d9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": " id de TypeAb",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/typeAb/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "typeAb"
+                ],
+                "summary": "Delete a typeAb",
+                "operationId": "3955074a58684a96749b21282695ce0d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/typeBien": {
+            "get": {
+                "tags": [
+                    "TypeBien"
+                ],
+                "summary": "Liste des Types de  Bien",
+                "operationId": "4efc21476fb3b7844f3824c8c0852a58",
+                "responses": {
+                    "200": {
+                        "description": "Liste des  types biens  récupérée avec succès"
+                    }
+                }
+            }
+        },
+        "/api/v1/typeBien/edit/{id}": {
+            "put": {
+                "tags": [
+                    "TypeBien"
+                ],
+                "summary": "Update a TypeAb",
+                "operationId": "042a27e988fda3ef8de2ad05e8ddad18",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the TypeAb",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "libelle"
+                                ],
+                                "properties": {
+                                    "libelle": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/typeBien/create": {
+            "post": {
+                "tags": [
+                    "TypeBien"
+                ],
+                "summary": "Create a new TypeBien",
+                "operationId": "075e78cf4fd894be31922b286f929ef1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "libelle"
+                                ],
+                                "properties": {
+                                    "libelle": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "TypeAb created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/typeBien/show/{id}": {
+            "get": {
+                "tags": [
+                    "TypeBien"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "d1ff344d4658c954f04e7d4021b66510",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": " id de TypeBien",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/typeBien/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "TypeBien"
+                ],
+                "summary": "Delete a typeAb",
+                "operationId": "230af302c261a3b695f47b02d532a4a3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/typeUser": {
+            "get": {
+                "tags": [
+                    "TypeUser"
+                ],
+                "summary": "Liste des Types de  Bien",
+                "operationId": "5b5f5bd363e93137b0125e9c81786e25",
+                "responses": {
+                    "200": {
+                        "description": "Liste des  types biens  récupérée avec succès"
+                    }
+                }
+            }
+        },
+        "/api/v1/typeUser/edit/{id}": {
+            "put": {
+                "tags": [
+                    "TypeUser"
+                ],
+                "summary": "Update a TypeUser",
+                "operationId": "bd81ff66e3aaee7ea3a63cc3bfb9f742",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the TypeUser",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "libelle"
+                                ],
+                                "properties": {
+                                    "libelle": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/typeUser/create": {
+            "post": {
+                "tags": [
+                    "TypeUser"
+                ],
+                "summary": "Create a new TypeUser",
+                "operationId": "d3e03eaf4abd148c559a070ec0b742c1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "libelle"
+                                ],
+                                "properties": {
+                                    "libelle": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "TypeUser created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/typeUser/show/{id}": {
+            "get": {
+                "tags": [
+                    "TypeUser"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "5fd573967ab5aa03a3768c68b236eb7e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": " id de TypeUser",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/typeUser/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "TypeUser"
+                ],
+                "summary": "Delete a TypeUser",
+                "operationId": "95ec04e13b5e29a45241d0efc34f6eb4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/login": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "login  user",
+                "operationId": "aa5a24c82fbab40f4dd012210c908c66",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "TypeUser created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/register": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create a new  user",
+                "operationId": "05157c5ed20591067b5d5e3e0a3affbb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "TypeUser created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/locataire": {
+            "get": {
+                "tags": [
+                    "Locataires"
+                ],
+                "summary": "Liste des  locataires",
+                "operationId": "6c0c6225b5ac30f38afaf4c47ec8238b",
+                "responses": {
+                    "200": {
+                        "description": "Liste des   utilisateurs  récupérée avec succès"
+                    }
+                }
+            }
+        },
+        "/api/v1/locataire/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Locataires"
+                ],
+                "summary": "Update a utilisateurs",
+                "operationId": "49d41f059ceaf23bda2091e53c902751",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the utilisateurs",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "telephone": {
+                                        "type": "string"
+                                    },
+                                    "type_user_id": {
+                                        "type": "string"
+                                    },
+                                    "slug": {
+                                        "type": "string"
+                                    },
+                                    "addresse": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "statut": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/locataire/create": {
+            "post": {
+                "tags": [
+                    "Locataires"
+                ],
+                "summary": "Create a new  locataire",
+                "operationId": "79f49b6f8a9ae14c0aee1e99b4297ffc",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "nom",
+                                    "telephone",
+                                    "addresse"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "sexe": {
+                                        "type": "string"
+                                    },
+                                    "login": {
+                                        "type": "string"
+                                    },
+                                    "slug": {
+                                        "type": "string"
+                                    },
+                                    "statut": {
+                                        "type": "string"
+                                    },
+                                    "type_user_id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "utilisateurs created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/locataire/show/{id}": {
+            "get": {
+                "tags": [
+                    "Locataires"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "e874812f2db4b8ec16ac41921e34e594",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": " id de utilisateurs",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/locataire/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Locataires"
+                ],
+                "summary": "Delete a locataire",
+                "operationId": "f0eed3437bcaadbfaadd222c9497be81",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/utilisateurs": {
+            "get": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Liste des  utilisateurs",
+                "operationId": "abb6f2846204279e35995f694f8492a1",
+                "responses": {
+                    "200": {
+                        "description": "Liste des   utilisateurs  récupérée avec succès"
+                    }
+                }
+            }
+        },
+        "/api/v1/utilisateurs/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Update a utilisateurs",
+                "operationId": "d007f2f8cd8a83d43be54e6d5ea7806f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the utilisateurs",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "telephone": {
+                                        "type": "string"
+                                    },
+                                    "type_user_id": {
+                                        "type": "string"
+                                    },
+                                    "slug": {
+                                        "type": "string"
+                                    },
+                                    "addresse": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "statut": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/utilisateurs/create": {
+            "post": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Create a new  utilisateurs",
+                "operationId": "f564fba646ba85755652c23c3b717624",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "nom",
+                                    "telephone",
+                                    "addresse"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "sexe": {
+                                        "type": "string"
+                                    },
+                                    "login": {
+                                        "type": "string"
+                                    },
+                                    "slug": {
+                                        "type": "string"
+                                    },
+                                    "statut": {
+                                        "type": "string"
+                                    },
+                                    "type_user_id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "utilisateurs created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/utilisateurs/show/{id}": {
+            "get": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "c092670f311fe799fd525ac4865f55e2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": " id de utilisateurs",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/utilisateurs/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Delete a Utilisateurs",
+                "operationId": "c398e7ba81ba325dc803e49ff0c62f0b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/ville": {
+            "get": {
+                "tags": [
+                    "Ville"
+                ],
+                "summary": "Liste des  villes",
+                "operationId": "0357c64b573389a3259530a5fb9232fd",
+                "responses": {
+                    "200": {
+                        "description": "Liste des villes  récupérée avec succès"
+                    }
+                }
+            }
+        },
+        "/api/v1/ville/create": {
+            "post": {
+                "tags": [
+                    "Ville"
+                ],
+                "summary": "Create a new  Ville",
+                "operationId": "ed680b5007e6d17c4890a907484fe37a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "region_id",
+                                    "pay_id",
+                                    "nom"
+                                ],
+                                "properties": {
+                                    "region_id": {
+                                        "type": "string"
+                                    },
+                                    "pay_id": {
+                                        "type": "string"
+                                    },
+                                    "nom": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ville created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/ville/show/{id}": {
+            "get": {
+                "tags": [
+                    "Ville"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "b9052405c93a76e78de36d0019c9b304",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": " id de Ville",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/ville/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Ville"
+                ],
+                "summary": "Update a ville",
+                "operationId": "cf543cd80f58702975db330eff7f10ae",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the ville",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nom",
+                                    "pay_id",
+                                    "region_id"
+                                ],
+                                "properties": {
+                                    "nom": {
+                                        "type": "string",
+                                        "example": "En cours"
+                                    },
+                                    "pay_id": {
+                                        "type": "string"
+                                    },
+                                    "region_id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/ville/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Ville"
+                ],
+                "summary": "Delete a Ville",
+                "operationId": "282fea3e7cbfcbf67b27990027082051",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        }
+    }
+}
