@@ -21,11 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Auth::extend('utilisateur_token', function ($app, $name, array $config) {
-            return new UtilisateurTokenGuard(
-                Auth::createUserProvider($config['provider']),
-                $app['request']
-            );
-        });
+       
     }
 }
