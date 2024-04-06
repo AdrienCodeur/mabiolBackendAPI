@@ -277,7 +277,7 @@ class UtilisateurController extends Controller
  */
 public function deleteUtilisateur(string $id)
 {
-    $utilisateurs =Utilisateur::find($id) ;
+    $utilisateurs =Utilisateur::find($id);
     if($utilisateurs){
         $utilisateurs->deleted_at = Carbon::now() ;
         return response()->json([
