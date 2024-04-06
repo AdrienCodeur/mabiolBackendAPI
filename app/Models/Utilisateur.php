@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Utilisateur extends Model implements Authenticatable
+class Utilisateur extends Model 
 {
     use HasFactory ,HasApiTokens;
 
