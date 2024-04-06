@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MessageRequest;
+use App\Listeners\SendMailUser;
 use App\Models\Message;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class MyMessageController extends Controller
 {
@@ -46,12 +48,32 @@ class MyMessageController extends Controller
         }
     }
 
-    public function registerMessage(MessageRequest $request)
+    public function registerMessage(Request $request)
     {
+        $validator =   Validator::make($request->all() ,[
+            'email' => 'required|string|email|unique:utilisateurs,email',
+            'password' => 'required|min:5',
+            // 'type_user_id' => 'required|exists:type_users,id'
+        ])  ;
+         
+        if($validator->fails()){
+            return response()->json([
+                'statusCode' => 203,
+                'message' => ' probleme de validation de donnee',
+                'error' => $validator->errors()
+            ]);
+
+        }
         try {
+
             $validated = $request->validate();
             $message = Message::create($validated);
             if ($message) {
+                event(new SendMailUser($message));
+  return response()->json([
+      "message"=>"message send"  ,
+      "data"=>$request->message
+  ]) ;
                 return response()->json([
                     'statusCode' => 200,
                     'message' => "message create  avec success",

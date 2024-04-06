@@ -14,7 +14,7 @@ class Utilisateur extends Model
 {
     use HasFactory ,HasApiTokens;
 
-     public $fillable =['email' ,'password' ,'sexe' ,'login' ,'telephone' ,'typeUser' , 'adresse' ,'slug' ,'nom'] ;
+     public $fillable =['email' ,'password' ,'sexe' ,'login' ,'telephone' ,'typeUser' , 'addresse' ,'slug' ,'nom'] ;
     public function typeUser()
     {
         return $this->belongsTo(TypeUser::class,'type_user' ,'id');
