@@ -42,7 +42,7 @@ class LocataireController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'statusCode' => 500,
-                'message' => 'un probleme est survenu ',
+                'message'=> 'un probleme est survenu ',
                 'error' => $e->getMessage()
             ]);
         }
