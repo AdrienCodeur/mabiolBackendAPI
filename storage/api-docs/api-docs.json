@@ -2251,7 +2251,7 @@
                     "Locataires"
                 ],
                 "summary": "Delete a locataire",
-                "operationId": "f0eed3437bcaadbfaadd222c9497be81",
+                "operationId": "dc9347657ec0a6fc26a627278ea31a94",
                 "parameters": [
                     {
                         "name": "id",
@@ -2292,7 +2292,7 @@
                 "tags": [
                     "Utilisateurs"
                 ],
-                "summary": "Update a utilisateurs",
+                "summary": "Update a proprietaire",
                 "operationId": "d007f2f8cd8a83d43be54e6d5ea7806f",
                 "parameters": [
                     {
@@ -2394,9 +2394,6 @@
                                     },
                                     "statut": {
                                         "type": "string"
-                                    },
-                                    "type_user_id": {
-                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -2448,7 +2445,7 @@
                     "Utilisateurs"
                 ],
                 "summary": "Delete a Utilisateurs",
-                "operationId": "c398e7ba81ba325dc803e49ff0c62f0b",
+                "operationId": "c9a53c08e2879692d35eaf91f39e09b5",
                 "parameters": [
                     {
                         "name": "id",

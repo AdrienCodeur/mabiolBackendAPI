@@ -149,7 +149,6 @@ class UtilisateurController extends Controller
         *             @OA\Property(property="login", type="string") ,
         *             @OA\Property(property="slug", type="string") ,
         *             @OA\Property(property="statut", type="string") ,
-        *             @OA\Property(property="type_user_id", type="string") ,
         *         )
         *     ),
         *     @OA\Response(response="201", description="utilisateurs created"),
