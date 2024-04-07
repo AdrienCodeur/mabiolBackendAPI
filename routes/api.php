@@ -126,7 +126,6 @@ Route::prefix('v1')->group(
             Route::get('get/',  'getAllMessages');
             Route::get('/show/{message}',  'showMessage');
             // route post put pour le model TyperUser
-
             Route::post('/create',  'registerMessage');
             Route::put('/edit/{message}',  'updateMessage');
         });
@@ -167,3 +166,4 @@ Route::prefix('v1/utilisateur')->group(function () {
     Route::post('/login', [UserController::class, 'dologin']);
     Route::post("/register", [UserController::class, 'store']);
 });
+

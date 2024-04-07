@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             // cle etrangere 
-            $table->foreignId('emetteur_id')->constrained(table:'users');
-            $table->foreignId('recepteur_id')->constrained(table:'users');
+            $table->foreignId('emetteur_id')->constrained(table:'utilisateurs');
+            $table->foreignId('recepteur_id')->constrained(table:'utilisateurs');
             // a modifier
             $table->dateTime('delete_id')->nullable() ;
             $table->string('contenue') ;
-            $table->string('statut') ;
+            $table->enum('statut' ,['read' ,'unread']) ;
             $table->string('slug') ;
             $table->timestamps();
         });

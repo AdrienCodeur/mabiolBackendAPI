@@ -148,7 +148,8 @@ class UtilisateurController extends Controller
         *             @OA\Property(property="sexe", type="string") ,
         *             @OA\Property(property="login", type="string") ,
         *             @OA\Property(property="slug", type="string") ,
-        *             @OA\Property(property="statut", type="string") ,
+        *             @OA\Property(property="addresse", type="string") ,
+        *             @OA\Property(property="telephone", type="string") ,
         *         )
         *     ),
         *     @OA\Response(response="201", description="utilisateurs created"),
@@ -165,7 +166,6 @@ class UtilisateurController extends Controller
             'addresse' => 'required|string',
             'sexe' => 'required|string',
             'login' => 'required|string',
-            'statut' => 'required|string',
             'slug' => 'required|string',
             // 'type_user_id' => 'required|exists:type_users,id'
         ])  ;
@@ -184,18 +184,21 @@ class UtilisateurController extends Controller
             $newUtilisateur->email =$request->email ;
             $newUtilisateur->nom =$request->nom ;
             $newUtilisateur->telephone =$request->telephone ;
-            $newUtilisateur->adresse =$request->adresse ;
+            $newUtilisateur->addresse =$request->addresse ;
             $newUtilisateur->slug =$request->slug ;
-            $newUtilisateur->type_user_id = $typeUser->id;
+            $newUtilisateur->type_user = $typeUser->id;
             $newUtilisateur->login = $request->login ;
             $newUtilisateur->sexe = $request->sexe ;
             $newUtilisateur->slug = $request->slug ;
-            $newUtilisateur->statut = $request->statut ;
+            $newUtilisateur->statut = 'actif' ;
             $newUtilisateur->deleted_at =  new Carbon();
             $newUtilisateur->password = Hash::make($request->password) ;
             
             $newUtilisateur->save() ;
             if ($newUtilisateur) {
+
+                // $data =  $newUtilisateur->with('typeUser')->first();
+                // return $data ;
                 return response()->json([
                     'statusCode' => 200,
                     'message' => "utilisateur creer avec success",

@@ -853,6 +853,150 @@
                 }
             }
         },
+        "/api/v1/message": {
+            "get": {
+                "tags": [
+                    "Message"
+                ],
+                "summary": "Liste des messages",
+                "operationId": "0d10c398e38721e8f91d8de8bc028616",
+                "responses": {
+                    "200": {
+                        "description": "Liste des messages récupérée avec succès"
+                    }
+                }
+            }
+        },
+        "/api/v1/message/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Message"
+                ],
+                "summary": "Update a Message",
+                "operationId": "9186e2d5e64fdca7a73533da06a1aefd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Message",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nom"
+                                ],
+                                "properties": {
+                                    "emetteur_id": {
+                                        "type": "string",
+                                        "example": "3"
+                                    },
+                                    "recepteur_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "contenue": {
+                                        "type": "string",
+                                        "example": "bonsoir le groupe"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/message/create": {
+            "post": {
+                "tags": [
+                    "Message"
+                ],
+                "summary": "Create a new message",
+                "operationId": "4def30a1f97e48ce4854519a546e6e87",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "contenue"
+                                ],
+                                "properties": {
+                                    "recepteur_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "emetteur_id": {
+                                        "type": "string",
+                                        "example": "3"
+                                    },
+                                    "contenue": {
+                                        "type": "string",
+                                        "example": "hello world"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "message created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/message/show/{id}": {
+            "get": {
+                "tags": [
+                    "Message"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "a43d985dd035a19b1e5023287c4a7af8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": " id de message",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
         "/api/v1/pays": {
             "get": {
                 "tags": [
@@ -2392,7 +2536,10 @@
                                     "slug": {
                                         "type": "string"
                                     },
-                                    "statut": {
+                                    "addresse": {
+                                        "type": "string"
+                                    },
+                                    "telephone": {
                                         "type": "string"
                                     }
                                 },
