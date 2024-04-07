@@ -2464,9 +2464,6 @@
                                     "telephone": {
                                         "type": "string"
                                     },
-                                    "type_user_id": {
-                                        "type": "string"
-                                    },
                                     "slug": {
                                         "type": "string"
                                     },
@@ -2476,7 +2473,13 @@
                                     "password": {
                                         "type": "string"
                                     },
-                                    "statut": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "login": {
+                                        "type": "string"
+                                    },
+                                    "sexe": {
                                         "type": "string"
                                     }
                                 },

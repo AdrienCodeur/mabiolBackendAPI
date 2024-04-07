@@ -67,11 +67,12 @@ class UtilisateurController extends Controller
  *             required={"email"},
  *             @OA\Property(property="email", type="string"),
  *             @OA\Property(property="telephone", type="string"),
- *             @OA\Property(property="type_user_id", type="string"),
  *             @OA\Property(property="slug", type="string"),
  *             @OA\Property(property="addresse", type="string"),
  *             @OA\Property(property="password", type="string"),
- *             @OA\Property(property="statut", type="string"),
+ *             @OA\Property(property="nom", type="string"),
+ *             @OA\Property(property="login", type="string"),
+ *             @OA\Property(property="sexe", type="string"),
  *         )
  *     ),
  *     @OA\Response(response="200", description="User updated"),
@@ -92,7 +93,6 @@ class UtilisateurController extends Controller
                 'addresse' => 'required|string',
                 'sexe' => 'required|string',
                 'login' => 'required|string',
-                'statut' => 'required|string',
                 'slug' => 'required|string',
                 // 'type_user_id' => 'required|exists:type_users,id'
             ])  ;
@@ -111,7 +111,7 @@ class UtilisateurController extends Controller
                 return response()->json([
                     'statusCode' => 200,
                     'message' => "utilisateurs mis a jour  success",
-                    'data' => $utilisateurUpdate
+                    'data' => $utilisateurId
                 ]);
               }else{
                 return response()->json([
@@ -191,9 +191,7 @@ class UtilisateurController extends Controller
             $newUtilisateur->sexe = $request->sexe ;
             $newUtilisateur->slug = $request->slug ;
             $newUtilisateur->statut = 'actif' ;
-            $newUtilisateur->deleted_at =  new Carbon();
             $newUtilisateur->password = Hash::make($request->password) ;
-            
             $newUtilisateur->save() ;
             if ($newUtilisateur) {
 
