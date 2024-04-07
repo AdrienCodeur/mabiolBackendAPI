@@ -94,9 +94,8 @@ class UtilisateurController extends Controller
                 'sexe' => 'required|string',
                 'login' => 'required|string',
                 'slug' => 'required|string',
-                // 'type_user_id' => 'required|exists:type_users,id'
             ])  ;
-             
+        
             if($validator->fails()){
                 return response()->json([
                     'statusCode' => 203,
