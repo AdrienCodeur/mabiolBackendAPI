@@ -2562,6 +2562,12 @@
                                     },
                                     "sexe": {
                                         "type": "string"
+                                    },
+                                    "telephone": {
+                                        "type": "string"
+                                    },
+                                    "addresse": {
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"

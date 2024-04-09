@@ -141,6 +141,8 @@ class UtilisateurController extends Controller
         *             @OA\Property(property="password", type="string") ,
         *             @OA\Property(property="nom", type="string") ,
         *             @OA\Property(property="sexe", type="string") ,
+        *             @OA\Property(property="telephone", type="string") ,
+        *             @OA\Property(property="addresse", type="string") ,
         *         )
         *     ),
         *     @OA\Response(response="201", description="utilisateurs created"),
