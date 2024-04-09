@@ -139,7 +139,7 @@ Route::prefix('v1/utilisateurs')->group(function () {
     // route post et put pour le model utitlisateur 
     Route::put('/edit/{id}', [UtilisateurController::class, 'editUtilisateur']);
     Route::post('/create', [UtilisateurController::class, 'createUtilisateur']);
-    Route::delete('/delete', [UtilisateurController::class, 'deleteUtilisateur']);
+    Route::delete('/delete/{id}', [UtilisateurController::class, 'deleteUtilisateur']);
 });
 Route::prefix('v1/locataire')->group(function () {
     // routes en post put p
@@ -166,4 +166,3 @@ Route::prefix('v1/utilisateur')->group(function () {
     Route::post('/login', [UserController::class, 'dologin']);
     Route::post("/register", [UserController::class, 'store']);
 });
-
