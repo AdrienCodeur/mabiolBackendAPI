@@ -9,12 +9,9 @@ class TypeUser extends Model
 {
     use HasFactory;
 
-    public $fillable = ['libelle']  ;
+    public $fillable = ['libelle'];
     public function users()
     {
         return $this->hasMany(User::class);
     }
-
-
-    
 }

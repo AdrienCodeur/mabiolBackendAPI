@@ -208,6 +208,75 @@ class UtilisateurController extends Controller
         }
     }
 
+    // to create the user and login it directly
+    public function createAndLoginUser(Request $request)
+    {
+        $validator =   Validator::make($request->all(), [
+            'email' => 'required|string|email|unique:utilisateurs,email',
+            'password' => 'required|min:5',
+            'nom' => 'required|string',
+            'telephone' => 'required|string',
+            'addresse' => 'required|string',
+            'sexe' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'statusCode' => 422,
+                'message' => ' probleme de validation de donnee',
+                'error' => $validator->errors()
+            ], 422);
+        }
+        try {
+            $typeUser = TypeUser::where("libelle", "Proprietaire")->first();
+            $newUtilisateur =   new Utilisateur();
+            $newUtilisateur->email = $request->email;
+            $newUtilisateur->nom = $request->nom;
+            $newUtilisateur->telephone = $request->telephone;
+            $newUtilisateur->addresse = $request->addresse;
+            $newUtilisateur->type_user = $typeUser->id;
+            $newUtilisateur->login = $request->email;
+            $newUtilisateur->sexe = $request->sexe;
+            $newUtilisateur->slug = $request->nom;
+            $newUtilisateur->statut = "actif";
+            $newUtilisateur->password = Hash::make($request->password);
+            $newUtilisateur->save();
+
+
+            if ($newUtilisateur) {
+                // Authentifier l'utilisateur et générer un token
+                $token = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
+                if ($token) {
+                    // Retourner la réponse avec le token
+                    return response()->json([
+                        'statusCode' => 200,
+                        'message' => "Utilisateur créé avec succès et connecté",
+                        'token' => $token,
+                        'data' => $newUtilisateur
+                    ], 200);
+                }
+
+                return response()->json([
+                    'statusCode' => 200,
+                    'message' => "utilisateur creer avec success",
+                    'data' => $newUtilisateur
+                ], 200);
+            } else {
+                return response()->json([
+                    'statusCode' => 203,
+                    'message' => "utilisateur n'a pas ete creer",
+                    // 'data'=>$userUtilisateur   
+                ], 203);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'statusCode' => 500,
+                'message' => 'un probleme est survenu ',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * @OA\Get(
      *     path="/api/v1/utilisateurs/show/{id}",

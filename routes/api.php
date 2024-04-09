@@ -141,6 +141,9 @@ Route::prefix('v1/utilisateurs')->group(function () {
     Route::put('/edit/{id}', [UtilisateurController::class, 'editUtilisateur']);
     Route::post('/create', [UtilisateurController::class, 'createUtilisateur']);
     Route::delete('/delete/{id}', [UtilisateurController::class, 'deleteUtilisateur']);
+
+    // 
+    Route::post("/create_and_login", [UtilisateurController::class, 'createAndLoginUser']);
 });
 Route::prefix('v1/locataire')->group(function () {
     // routes en post put p
@@ -159,6 +162,7 @@ Route::prefix('v1/users')->group(function () {
     // Route::get("/check-auth", [UserController::class, 'checkAuth']);
 });
 
+// ??
 Route::post("v1/utilisateurs/login", [UserController::class, 'loginUtilisateur']);
 
 Route::get("/login", function () {
