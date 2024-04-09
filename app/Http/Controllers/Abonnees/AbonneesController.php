@@ -69,7 +69,6 @@ class AbonneesController extends Controller
 
         $validator =   Validator::make($request->all() ,[
             'statut' => 'required|string',
-            'slug' => 'required|string',
             'utilisateur_id' => 'required|exists:utilisateurs,id' ,
             'typeabonnement_id' => 'required|exists:type_abonnements,id'
         ])  ;

@@ -63,10 +63,10 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'statusCode' => 400,
+                'statusCode' => 422,
                 'message' => 'probleme de validation de donnee',
                 'error' => $validator->errors()
-            ], 400);
+            ], 422);
         }
 
         try {
@@ -78,7 +78,7 @@ class UserController extends Controller
                     'message' => "utilisateur connecter",
                     "data" => $user,
                     'token' => $token
-                ]);
+                ] ,203);
             }
 
             return   response()->json([
@@ -216,7 +216,7 @@ public function loginUtilisateur(Request $request)
             return   response()->json([
                 'message' => "utilisateur  connecter",
                 'token' => $token
-            ]);
+            ],200);
         }else{
             return   response()->json([
                 'message' => "Identifiant de connection inconnue",

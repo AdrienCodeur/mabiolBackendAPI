@@ -148,12 +148,13 @@ Route::prefix('v1/locataire')->group(function () {
     Route::get('/show/{id}', [LocataireController::class, 'showLocataire']);
     // route post et put pour le model utitlisateur 
     Route::put('/edit/{id}', [LocataireController::class, 'editLocataire']);
-    Route::post('/create', [LocataireController::class, 'creatLocataire']);
-    Route::delete('/delet/{id}', [LocataireController::class, 'deleteLocataire']);
+    Route::post('/create', [LocataireController::class, 'createLocataire']);
+    Route::delete('/delete/{id}', [LocataireController::class, 'deleteLocataire']);
 });
 Route::prefix('v1/users')->group(function () {
     // route  get pour le authentifications
     Route::post('/login', [UserController::class, 'dologin']);
+    Route::get('/checkAuth', [UserController::class, 'checkAuth']);
     Route::post("/register", [UserController::class, 'store']);
     // Route::get("/check-auth", [UserController::class, 'checkAuth']);
 });

@@ -31,7 +31,6 @@ class UtilisateurController extends Controller
  */
     public function index() { 
         try {
-            //code...
             $proprietaire =  Utilisateur::with('typeUser')->whereHas('typeUser', function ($query) {
                 $query->where('libelle', 'Proprietaire') ;
             })->get();
@@ -45,7 +44,7 @@ class UtilisateurController extends Controller
                 'statusCode' => 500,
                 'message' => 'un probleme est survenu ',
                 'error' => $e->getMessage()
-            ]);
+            ],500);
         }
     }
  /**
@@ -67,13 +66,11 @@ class UtilisateurController extends Controller
  *         @OA\JsonContent(
  *             required={"email"},
  *             @OA\Property(property="email", type="string"),
+ *             @OA\Property(property="nom", type="string" ,example="djeudje tenkeu"),
  *             @OA\Property(property="telephone", type="string"),
- *             @OA\Property(property="slug", type="string"),
  *             @OA\Property(property="addresse", type="string"),
  *             @OA\Property(property="password", type="string"),
- *             @OA\Property(property="nom", type="string"),
- *             @OA\Property(property="login", type="string"),
- *             @OA\Property(property="sexe", type="string"),
+ *             @OA\Property(property="statut", type="string"),
  *         )
  *     ),
  *     @OA\Response(response="200", description="User updated"),
@@ -94,7 +91,9 @@ class UtilisateurController extends Controller
                 'addresse' => 'required|string',
                 'sexe' => 'required|string',
                 'login' => 'required|string',
+                'statut' => 'required|string',
                 'slug' => 'required|string',
+                // 'type_user_id' => 'required|exists:type_users,id'
             ])  ;
         
             if($validator->fails()){
@@ -111,26 +110,26 @@ class UtilisateurController extends Controller
                 return response()->json([
                     'statusCode' => 200,
                     'message' => "utilisateurs mis a jour  success",
-                    'data' => $utilisateurId
+                    'data' => $utilisateurUpdate
                 ]);
               }else{
                 return response()->json([
                     'statusCode' => 204,
                     'message' => "utilisateurs na pas ete  mis a jour"
-                ]);
+                ] ,204);
               }
            }catch (Exception $e) {
             return response()->json([
                 'statusCode' => 500,
                 'message' => 'un probleme est survenu ',
                 'error' => $e->getMessage()
-            ]);
+            ] ,500);
         }
         }else{
             return response()->json([
                 'statusCode' => 404,
                 'message' => 'nous n\'avons pas trouver utilisateur avec cette id',
-            ]);
+            ] ,404);
         }
     }
           /** 
@@ -147,8 +146,8 @@ class UtilisateurController extends Controller
         *             @OA\Property(property="nom", type="string") ,
         *             @OA\Property(property="sexe", type="string") ,
         *             @OA\Property(property="login", type="string") ,
-        *             @OA\Property(property="addresse", type="string") ,
-        *             @OA\Property(property="telephone", type="string") ,
+        *             @OA\Property(property="slug", type="string") ,
+        *             @OA\Property(property="statut", type="string") ,
         *         )
         *     ),
         *     @OA\Response(response="201", description="utilisateurs created"),
@@ -165,15 +164,17 @@ class UtilisateurController extends Controller
             'addresse' => 'required|string',
             'sexe' => 'required|string',
             'login' => 'required|string',
+            'statut' => 'required|string',
+            'slug' => 'required|string',
             // 'type_user_id' => 'required|exists:type_users,id'
         ])  ;
          
         if($validator->fails()){
             return response()->json([
-                'statusCode' => 203,
+                'statusCode' => 422,
                 'message' => ' probleme de validation de donnee',
                 'error' => $validator->errors()
-            ]);
+            ],422);
 
         }
         try {
@@ -182,13 +183,14 @@ class UtilisateurController extends Controller
             $newUtilisateur->email =$request->email ;
             $newUtilisateur->nom =$request->nom ;
             $newUtilisateur->telephone =$request->telephone ;
-            $newUtilisateur->addresse =$request->addresse ;
+            $newUtilisateur->adresse =$request->adresse ;
             $newUtilisateur->slug =$request->slug ;
-            $newUtilisateur->type_user = $typeUser->id;
+            $newUtilisateur->type_user_id = $typeUser->id;
             $newUtilisateur->login = $request->login ;
             $newUtilisateur->sexe = $request->sexe ;
-            $newUtilisateur->slug = $request->nom ;
-            $newUtilisateur->statut = 'actif' ;
+            $newUtilisateur->slug = $request->slug ;
+            $newUtilisateur->statut = $request->statut ;
+            $newUtilisateur->deleted_at =  new Carbon();
             $newUtilisateur->password = Hash::make($request->password) ;
             $newUtilisateur->save() ;
             if ($newUtilisateur) {
@@ -199,7 +201,7 @@ class UtilisateurController extends Controller
                     'statusCode' => 200,
                     'message' => "utilisateur creer avec success",
                     'data' => $newUtilisateur
-                ]);
+                ] ,200);
             } else {
                 return response()->json([
                     'statusCode' => 203,
@@ -241,19 +243,19 @@ class UtilisateurController extends Controller
                 'statusCode'=>203,
                     'message'=>" proprietaire  recuperer en particulier  avec success", 
                     'data'=>$utilisateurId
-            ]) ;
+            ],203) ;
         }else{
             return   response()->json( [
-                'statusCode'=>203,
+                'statusCode'=>404,
                     'message'=>"nous n'avons pas trouver de proprietaire  avec l'identifiant unique passer", 
-            ]) ;
+            ] ,404) ;
         }
         } catch (Exception $e) {
             return response()->json([
                 'statusCode' => 500,
                 'message' => 'un probleme est survenu ',
                 'error' => $e->getMessage()
-            ]);
+            ] ,500);
         }
 
     }
@@ -283,12 +285,12 @@ public function deleteUtilisateur(string $id)
         return response()->json([
             'message'=>"utilisateurs suprimer avec succcess",
             "statusCode"=>203
-        ]) ;
+        ],203) ;
     }
     return response()->json([
         'message'=>"nous n'avons pas trouver de utilisateurs avec cette id" ,
         "statusCode"=>404
-    ]) ;
+    ] ,404) ;
 }
 
 
