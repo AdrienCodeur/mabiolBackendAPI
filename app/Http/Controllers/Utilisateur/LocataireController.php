@@ -110,7 +110,7 @@ class LocataireController extends Controller
                 ]);
               }else{
                 return response()->json([
-                    'statusCode' => 422,
+                    'statusCode' => 422 ,
                     'message' => "utilisateurs na pas ete  mis a jour"
                 ],422);
               }

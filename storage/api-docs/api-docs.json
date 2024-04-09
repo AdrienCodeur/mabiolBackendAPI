@@ -2502,32 +2502,15 @@
                                     "telephone": {
                                         "type": "string"
                                     },
-<<<<<<< HEAD
-                                    "slug": {
-                                        "type": "string"
-                                    },
-=======
->>>>>>> master
                                     "addresse": {
                                         "type": "string"
                                     },
                                     "password": {
                                         "type": "string"
                                     },
-<<<<<<< HEAD
-                                    "nom": {
-                                        "type": "string"
-                                    },
-                                    "login": {
-                                        "type": "string"
-                                    },
-                                    "sexe": {
-                                        "type": "string"
-=======
                                     "sexe": {
                                         "type": "string",
                                         "example": "Masculin"
->>>>>>> master
                                     }
                                 },
                                 "type": "object"
@@ -2578,22 +2561,6 @@
                                         "type": "string"
                                     },
                                     "sexe": {
-                                        "type": "string"
-                                    },
-                                    "telephone": {
-                                        "type": "string"
-                                    },
-<<<<<<< HEAD
-                                    "slug": {
-                                        "type": "string"
-                                    },
-                                    "addresse": {
-                                        "type": "string"
-                                    },
-                                    "telephone": {
-=======
-                                    "addresse": {
->>>>>>> master
                                         "type": "string"
                                     }
                                 },

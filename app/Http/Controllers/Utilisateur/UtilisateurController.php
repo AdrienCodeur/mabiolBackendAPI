@@ -70,7 +70,7 @@ class UtilisateurController extends Controller
  *             @OA\Property(property="telephone", type="string"),
  *             @OA\Property(property="addresse", type="string"),
  *             @OA\Property(property="password", type="string"),
- *             @OA\Property(property="statut", type="string"),
+ *             @OA\Property(property="sexe", type="string" ,example="Masculin"),
  *         )
  *     ),
  *     @OA\Response(response="200", description="User updated"),
@@ -90,9 +90,6 @@ class UtilisateurController extends Controller
                 'telephone' => 'required|string',
                 'addresse' => 'required|string',
                 'sexe' => 'required|string',
-                'login' => 'required|string',
-                'statut' => 'required|string',
-                'slug' => 'required|string',
                 // 'type_user_id' => 'required|exists:type_users,id'
             ])  ;
         
@@ -109,9 +106,8 @@ class UtilisateurController extends Controller
               if($utilisateurUpdate){
                 return response()->json([
                     'statusCode' => 200,
-                    'message' => "utilisateurs mis a jour  success",
-                    'data' => $utilisateurUpdate
-                ]);
+                    'message' => "locataire mis a jour  success",
+                    'data' => $utilisateurId                ] ,200);
               }else{
                 return response()->json([
                     'statusCode' => 204,
@@ -145,9 +141,6 @@ class UtilisateurController extends Controller
         *             @OA\Property(property="password", type="string") ,
         *             @OA\Property(property="nom", type="string") ,
         *             @OA\Property(property="sexe", type="string") ,
-        *             @OA\Property(property="login", type="string") ,
-        *             @OA\Property(property="slug", type="string") ,
-        *             @OA\Property(property="statut", type="string") ,
         *         )
         *     ),
         *     @OA\Response(response="201", description="utilisateurs created"),
@@ -163,9 +156,6 @@ class UtilisateurController extends Controller
             'telephone' => 'required|string',
             'addresse' => 'required|string',
             'sexe' => 'required|string',
-            'login' => 'required|string',
-            'statut' => 'required|string',
-            'slug' => 'required|string',
             // 'type_user_id' => 'required|exists:type_users,id'
         ])  ;
          
@@ -183,18 +173,15 @@ class UtilisateurController extends Controller
             $newUtilisateur->email =$request->email ;
             $newUtilisateur->nom =$request->nom ;
             $newUtilisateur->telephone =$request->telephone ;
-            $newUtilisateur->adresse =$request->adresse ;
-            $newUtilisateur->slug =$request->slug ;
-            $newUtilisateur->type_user_id = $typeUser->id;
-            $newUtilisateur->login = $request->login ;
+            $newUtilisateur->addresse =$request->addresse ;
+            $newUtilisateur->type_user = $typeUser->id;
+            $newUtilisateur->login = $request->email ;
             $newUtilisateur->sexe = $request->sexe ;
-            $newUtilisateur->slug = $request->slug ;
-            $newUtilisateur->statut = $request->statut ;
-            $newUtilisateur->deleted_at =  new Carbon();
+            $newUtilisateur->slug = $request->nom ;
+            $newUtilisateur->statut = "actif";
             $newUtilisateur->password = Hash::make($request->password) ;
             $newUtilisateur->save() ;
             if ($newUtilisateur) {
-
                 // $data =  $newUtilisateur->with('typeUser')->first();
                 // return $data ;
                 return response()->json([
@@ -207,14 +194,14 @@ class UtilisateurController extends Controller
                     'statusCode' => 203,
                     'message' => "utilisateur n'a pas ete creer",
                     // 'data'=>$userUtilisateur   
-                ]);
+                ] ,203);
             }
         } catch (Exception $e) {
             return response()->json([
                 'statusCode' => 500,
                 'message' => 'un probleme est survenu ',
                 'error' => $e->getMessage()
-            ]);
+            ] ,500);
         }
     }
 
