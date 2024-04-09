@@ -216,13 +216,6 @@
                                     "locataire_id"
                                 ],
                                 "properties": {
-                                    "statut": {
-                                        "type": "string",
-                                        "example": "En cours"
-                                    },
-                                    "slug": {
-                                        "type": "string"
-                                    },
                                     "duree": {
                                         "type": "string"
                                     },
@@ -336,18 +329,10 @@
                             "schema": {
                                 "required": [
                                     "duree",
-                                    "slug",
                                     "utilisateur_id",
                                     "locataire_id"
                                 ],
                                 "properties": {
-                                    "statut": {
-                                        "type": "string",
-                                        "example": "En cours"
-                                    },
-                                    "slug": {
-                                        "type": "string"
-                                    },
                                     "duree": {
                                         "type": "string"
                                     },
@@ -1364,7 +1349,7 @@
                     "Bien"
                 ],
                 "summary": "Delete a Bien",
-                "operationId": "c281bfd6800550a3a67b8358577aead5",
+                "operationId": "a8dad8f9e3e4e67e1a21fdced9895c8a",
                 "parameters": [
                     {
                         "name": "id",
@@ -1576,10 +1561,6 @@
                                     "duree": {
                                         "type": "string",
                                         "example": "En cours"
-                                    },
-                                    "slug": {
-                                        "type": "string",
-                                        "example": "En cours"
                                     }
                                 },
                                 "type": "object"
@@ -1626,9 +1607,6 @@
                                         "type": "string"
                                     },
                                     "duree": {
-                                        "type": "string"
-                                    },
-                                    "slug": {
                                         "type": "string"
                                     }
                                 },
@@ -1901,7 +1879,7 @@
                                 "properties": {
                                     "libelle": {
                                         "type": "string",
-                                        "example": "En cours"
+                                        "example": "Admin"
                                     }
                                 },
                                 "type": "object"
@@ -2115,7 +2093,7 @@
                     "Locataires"
                 ],
                 "summary": "Update a utilisateurs",
-                "operationId": "49d41f059ceaf23bda2091e53c902751",
+                "operationId": "64b1e023801a1c0b8586853cd9f7d5f2",
                 "parameters": [
                     {
                         "name": "id",
@@ -2137,16 +2115,12 @@
                                 ],
                                 "properties": {
                                     "email": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "djeudjeschool@gmail.com"
                                     },
                                     "telephone": {
-                                        "type": "string"
-                                    },
-                                    "type_user_id": {
-                                        "type": "string"
-                                    },
-                                    "slug": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "+237 650513914"
                                     },
                                     "addresse": {
                                         "type": "string"
@@ -2154,8 +2128,13 @@
                                     "password": {
                                         "type": "string"
                                     },
-                                    "statut": {
-                                        "type": "string"
+                                    "nom": {
+                                        "type": "string",
+                                        "example": "djeudje tenkeu"
+                                    },
+                                    "sexe": {
+                                        "type": "string",
+                                        "example": "Masculin"
                                     }
                                 },
                                 "type": "object"
@@ -2203,22 +2182,19 @@
                                         "type": "string"
                                     },
                                     "nom": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "adrien kevin"
                                     },
                                     "sexe": {
                                         "type": "string"
                                     },
-                                    "login": {
-                                        "type": "string"
+                                    "telephone": {
+                                        "type": "string",
+                                        "example": "+237 651503914"
                                     },
-                                    "slug": {
-                                        "type": "string"
-                                    },
-                                    "statut": {
-                                        "type": "string"
-                                    },
-                                    "type_user_id": {
-                                        "type": "string"
+                                    "addresse": {
+                                        "type": "string",
+                                        "example": "RSA"
                                     }
                                 },
                                 "type": "object"
@@ -2336,13 +2312,11 @@
                                     "email": {
                                         "type": "string"
                                     },
+                                    "nom": {
+                                        "type": "string",
+                                        "example": "djeudje tenkeu"
+                                    },
                                     "telephone": {
-                                        "type": "string"
-                                    },
-                                    "type_user_id": {
-                                        "type": "string"
-                                    },
-                                    "slug": {
                                         "type": "string"
                                     },
                                     "addresse": {
@@ -2351,8 +2325,9 @@
                                     "password": {
                                         "type": "string"
                                     },
-                                    "statut": {
-                                        "type": "string"
+                                    "sexe": {
+                                        "type": "string",
+                                        "example": "Masculin"
                                     }
                                 },
                                 "type": "object"
@@ -2405,13 +2380,10 @@
                                     "sexe": {
                                         "type": "string"
                                     },
-                                    "login": {
+                                    "telephone": {
                                         "type": "string"
                                     },
-                                    "slug": {
-                                        "type": "string"
-                                    },
-                                    "statut": {
+                                    "addresse": {
                                         "type": "string"
                                     }
                                 },

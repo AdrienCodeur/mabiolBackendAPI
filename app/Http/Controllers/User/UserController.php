@@ -62,10 +62,10 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'statusCode' => 400,
+                'statusCode' => 422,
                 'message' => 'probleme de validation de donnee',
                 'error' => $validator->errors()
-            ], 400);
+            ], 422);
         }
 
         try {
@@ -73,12 +73,11 @@ class UserController extends Controller
             //  return $user ;
             if ($user && Hash::check($request->password, $user->password)) {
                 $token =    $user->createToken('privatekey')->plainTextToken;
-
                 return   response()->json([
                     'message' => "utilisateur connecter",
                     "data" => $user,
                     'token' => $token
-                ]);
+                ] ,203);
             }
 
             return   response()->json([
