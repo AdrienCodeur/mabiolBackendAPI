@@ -181,6 +181,7 @@ public function deleleTypeUser(string $id)
     $typeUser = TypeUser::find($id) ;
     if($typeUser){
         $typeUser->deleted_at = Carbon::now() ;
+        $typeUser->save() ;
         return response()->json([
             'message'=>"typeUser suprimer avec succcess" ,
             "statusCode"=>203
