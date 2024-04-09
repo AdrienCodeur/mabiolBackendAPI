@@ -158,6 +158,8 @@ Route::prefix('v1/users')->group(function () {
     // Route::get("/check-auth", [UserController::class, 'checkAuth']);
 });
 
+Route::post("v1/utilisateurs/login", [UserController::class, 'loginUtilisateur']);
+
 Route::get("/login", function () {
     return "  formulaire de login  vous n'etes pas connecter ";
 })->name('login');

@@ -9,6 +9,7 @@ use App\Models\Utilisateur;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -146,7 +147,6 @@ class UtilisateurController extends Controller
         *             @OA\Property(property="nom", type="string") ,
         *             @OA\Property(property="sexe", type="string") ,
         *             @OA\Property(property="login", type="string") ,
-        *             @OA\Property(property="slug", type="string") ,
         *             @OA\Property(property="addresse", type="string") ,
         *             @OA\Property(property="telephone", type="string") ,
         *         )
@@ -165,7 +165,6 @@ class UtilisateurController extends Controller
             'addresse' => 'required|string',
             'sexe' => 'required|string',
             'login' => 'required|string',
-            'slug' => 'required|string',
             // 'type_user_id' => 'required|exists:type_users,id'
         ])  ;
          
@@ -188,7 +187,7 @@ class UtilisateurController extends Controller
             $newUtilisateur->type_user = $typeUser->id;
             $newUtilisateur->login = $request->login ;
             $newUtilisateur->sexe = $request->sexe ;
-            $newUtilisateur->slug = $request->slug ;
+            $newUtilisateur->slug = $request->nom ;
             $newUtilisateur->statut = 'actif' ;
             $newUtilisateur->password = Hash::make($request->password) ;
             $newUtilisateur->save() ;
@@ -282,7 +281,7 @@ public function deleteUtilisateur(string $id)
         $utilisateurs->deleted_at = Carbon::now() ;
         $utilisateurs->save() ;
         return response()->json([
-            'message'=>"utilisateurs suprimer avec succcess" ,
+            'message'=>"utilisateurs suprimer avec succcess",
             "statusCode"=>203
         ]) ;
     }
@@ -291,4 +290,6 @@ public function deleteUtilisateur(string $id)
         "statusCode"=>404
     ]) ;
 }
+
+
 }

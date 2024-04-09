@@ -1508,7 +1508,7 @@
                     "Bien"
                 ],
                 "summary": "Delete a Bien",
-                "operationId": "c281bfd6800550a3a67b8358577aead5",
+                "operationId": "a8dad8f9e3e4e67e1a21fdced9895c8a",
                 "parameters": [
                     {
                         "name": "id",
@@ -2163,7 +2163,7 @@
                     "User"
                 ],
                 "summary": "login  user",
-                "operationId": "aa5a24c82fbab40f4dd012210c908c66",
+                "operationId": "c87cd81b1165a469ffa3f2f8af9042ae",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -2221,6 +2221,45 @@
                                         "type": "string"
                                     },
                                     "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "TypeUser created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/utilisateurs/login": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "route pour login les bailleurs  comme  les locataires ",
+                "operationId": "51d6cdeefd591f2a9a00869c35c9c82d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
                                         "type": "string"
                                     }
                                 },
