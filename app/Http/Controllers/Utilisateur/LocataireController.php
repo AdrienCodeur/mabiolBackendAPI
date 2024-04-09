@@ -282,6 +282,7 @@ public function deleteLocataire(string $id)
     $utilisateurs =Utilisateur::find($id) ;
     if($utilisateurs){
         $utilisateurs->deleted_at = Carbon::now() ;
+        $utilisateurs->save() ;
         return response()->json([
             'message'=>"utilisateurs suprimer avec succcess" ,
             "statusCode"=>203

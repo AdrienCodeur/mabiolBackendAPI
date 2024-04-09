@@ -173,9 +173,10 @@ class TypeBienController extends Controller
  */
 public function deleletypeAb(string $id)
 {
-    $typeAb = Typebien::find($id) ;
-    if($typeAb){
-        $typeAb->deleted_at = Carbon::now() ;
+    $typeBien = Typebien::find($id) ;
+    if($typeBien){
+        $typeBien->deleted_at = Carbon::now() ;
+        $typeBien->save() ;
         return response()->json([
             'message'=>"typeBien suprimer avec succcess" ,
             "statusCode"=>203

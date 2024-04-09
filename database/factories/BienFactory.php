@@ -16,6 +16,15 @@ class BienFactory extends Factory
      */
     public function definition(): array
     {
+        
+$images = [];
+for ($i = 0; $i < 5; $i++) {
+    $images[] = [
+        'url' => $this->faker->imageUrl(),
+        'alt' => $this->faker->sentence()
+    ];
+}
+
         return [
              'nom'=>$this->faker->sentence(4,true) ,
              'surface'=>$this->faker->numberBetween(200,500),
@@ -29,7 +38,7 @@ class BienFactory extends Factory
              'typemouvement'=>$this->faker->sentence(10 ,true) ,
              'ungarage'=>$this->faker->boolean(),
              'ville_id'=>rand(1,5),
-             'img'=>$this->faker->imageUrl() ,
+             'img'=> json_encode($images),
              'unecave'=>$this->faker->boolean(),
              'internet'=>$this->faker->boolean(),
              'dep_tvecranplat'=>$this->faker->boolean(),

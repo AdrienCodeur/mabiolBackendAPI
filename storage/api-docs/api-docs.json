@@ -1009,13 +1009,13 @@
                 }
             }
         },
-        "/api/v1/bien": {
+        "/api/v1/proprieter": {
             "get": {
                 "tags": [
                     "Bien"
                 ],
                 "summary": "Liste des Bien",
-                "operationId": "a79267033b2636b945536081a1ae30c0",
+                "operationId": "22bcbd0c9d85274fe9aa3354e3ad2454",
                 "responses": {
                     "200": {
                         "description": "Liste des utilisateurs récupérée avec succès"
@@ -1023,18 +1023,18 @@
                 }
             }
         },
-        "/api/v1/bien/edit/{id}": {
+        "/api/v1/proprieter/edit/{id}": {
             "put": {
                 "tags": [
                     "Bien"
                 ],
-                "summary": "Update a bien",
-                "operationId": "322d7e440239d01584835e4d0c5c4a33",
+                "summary": "Mettre à jour un bien",
+                "operationId": "1e337e346299c7a1a607f37394898f6c",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID of the bien",
+                        "description": "ID du bien",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1047,32 +1047,37 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "nom"
+                                    "nom",
+                                    "adresse",
+                                    "code_postal",
+                                    "proprietaire_id",
+                                    "typeBien_id"
                                 ],
                                 "properties": {
                                     "nom": {
                                         "type": "string"
                                     },
                                     "surface": {
-                                        "type": "string"
+                                        "type": "number"
                                     },
                                     "addresse": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "string"
                                     },
                                     "code_postal": {
-                                        "type": "string"
+                                        "type": "number"
                                     },
                                     "nbrbatiment": {
-                                        "type": "string"
+                                        "type": "number"
                                     },
                                     "nbrescalier": {
-                                        "type": "string"
+                                        "type": "number"
                                     },
                                     "nbrchambre": {
-                                        "type": "string"
+                                        "type": "number"
                                     },
                                     "numeroporte": {
-                                        "type": "string"
+                                        "type": "number"
                                     },
                                     "zoneStationnement": {
                                         "type": "string"
@@ -1081,79 +1086,86 @@
                                         "type": "string"
                                     },
                                     "ungarage": {
-                                        "type": "string"
-                                    },
-                                    "img": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "unecave": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "internet": {
-                                        "type": "string"
+                                        "type": "boolean"
+                                    },
+                                    "ville_id": {
+                                        "type": "boolean"
                                     },
                                     "dep_tvecranplat": {
-                                        "type": "string"
+                                        "type": "boolean"
+                                    },
+                                    "tv_ecran_plat": {
+                                        "type": "boolean"
                                     },
                                     "proprietaire_id": {
-                                        "type": "string"
+                                        "type": "number",
+                                        "example": "1"
                                     },
                                     "typeBien_id": {
-                                        "type": "string"
+                                        "type": "number"
                                     },
                                     "exist_proxi_restaurant": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "anneeconstruction": {
                                         "type": "string"
                                     },
                                     "pc_vide_ordure": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "pc_espace_vert": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "pc_interphone": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "nbr_salle_bain": {
-                                        "type": "string"
+                                        "type": "number"
                                     },
                                     "exist_sous_sol": {
-                                        "type": "string"
+                                        "type": "boolean"
+                                    },
+                                    "pc_chauffage_collective": {
+                                        "type": "boolean"
+                                    },
+                                    "pc_eau_chaude_collective": {
+                                        "type": "boolean"
                                     },
                                     "dep_lingemaison": {
-                                        "type": "string"
+                                        "type": "boolean"
+                                    },
+                                    "pc_gardiennage": {
+                                        "type": "boolean"
                                     },
                                     "exist_proxi_education": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "exist_salle_manger": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "exist_cheminee": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "pc_antennetv_collective": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "exist_balcon": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "exist_proxi_centre_sante": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "pc_ascenseur": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "dep_lavevaiselle": {
-                                        "type": "string"
-                                    },
-                                    "statut": {
-                                        "type": "string"
-                                    },
-                                    "slug": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     }
                                 },
                                 "type": "object"
@@ -1163,24 +1175,24 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "User updated"
+                        "description": "Bien mis à jour"
                     },
                     "404": {
-                        "description": "User not found"
+                        "description": "Bien non trouvé"
                     },
                     "422": {
-                        "description": "Validation error"
+                        "description": "Erreur de validation"
                     }
                 }
             }
         },
-        "/api/v1/bien/create": {
+        "/api/v1/proprieter/create": {
             "post": {
                 "tags": [
                     "Bien"
                 ],
                 "summary": "Create a new Bien",
-                "operationId": "63a8cc950482d0fcf581dc4829535632",
+                "operationId": "53f8ace6aa6db6b179473a33da064718",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1194,25 +1206,30 @@
                                         "type": "string"
                                     },
                                     "surface": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "300"
                                     },
                                     "addresse": {
                                         "type": "string"
                                     },
                                     "code_postal": {
-                                        "type": "string"
+                                        "type": "number"
                                     },
                                     "nbrbatiment": {
-                                        "type": "string"
+                                        "type": "number"
                                     },
                                     "nbrescalier": {
-                                        "type": "string"
+                                        "type": "number"
                                     },
                                     "nbrchambre": {
-                                        "type": "string"
+                                        "type": "number"
+                                    },
+                                    "ville_id": {
+                                        "type": "number",
+                                        "example": "1"
                                     },
                                     "numeroporte": {
-                                        "type": "string"
+                                        "type": "number"
                                     },
                                     "zoneStationnement": {
                                         "type": "string"
@@ -1221,79 +1238,81 @@
                                         "type": "string"
                                     },
                                     "ungarage": {
-                                        "type": "string"
-                                    },
-                                    "img": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "unecave": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "internet": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "dep_tvecranplat": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "proprietaire_id": {
-                                        "type": "string"
+                                        "type": "number",
+                                        "example": "2"
                                     },
                                     "typeBien_id": {
-                                        "type": "string"
+                                        "type": "number",
+                                        "example": "1"
                                     },
                                     "exist_proxi_restaurant": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "anneeconstruction": {
                                         "type": "string"
                                     },
                                     "pc_vide_ordure": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "pc_espace_vert": {
-                                        "type": "string"
+                                        "type": "boolean"
+                                    },
+                                    "pc_eau_chaude_collective": {
+                                        "type": "boolean"
+                                    },
+                                    "pc_chauffage_collective": {
+                                        "type": "boolean"
                                     },
                                     "pc_interphone": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "nbr_salle_bain": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "exist_sous_sol": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "dep_lingemaison": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "exist_proxi_education": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "exist_salle_manger": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "exist_cheminee": {
-                                        "type": "string"
+                                        "type": "boolean"
+                                    },
+                                    "pc_gardiennage": {
+                                        "type": "boolean"
                                     },
                                     "pc_antennetv_collective": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "exist_balcon": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "exist_proxi_centre_sante": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "pc_ascenseur": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     },
                                     "dep_lavevaiselle": {
-                                        "type": "string"
-                                    },
-                                    "statut": {
-                                        "type": "string"
-                                    },
-                                    "slug": {
-                                        "type": "string"
+                                        "type": "boolean"
                                     }
                                 },
                                 "type": "object"
@@ -1311,13 +1330,13 @@
                 }
             }
         },
-        "/api/v1/bien/show/{id}": {
+        "/api/v1/proprieter/show/{id}": {
             "get": {
                 "tags": [
                     "Bien"
                 ],
                 "summary": "Get a specific resource",
-                "operationId": "716800d1539fc3e3e7731af9fc8d6a67",
+                "operationId": "f7cb8e9a42559160368a984de05566cf",
                 "parameters": [
                     {
                         "name": "id",
@@ -1339,13 +1358,13 @@
                 }
             }
         },
-        "/api/v1/bien/delete/{id}": {
+        "/api/v1/proprieter/delete/{id}": {
             "delete": {
                 "tags": [
                     "Bien"
                 ],
                 "summary": "Delete a Bien",
-                "operationId": "fdb4a0e70f85b81b9046089bfb5a27bf",
+                "operationId": "c281bfd6800550a3a67b8358577aead5",
                 "parameters": [
                     {
                         "name": "id",

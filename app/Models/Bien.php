@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Bien extends Model
 {
     use HasFactory;
-
+    protected $guarded = [];
     public function typeBien()
     {
         return $this->belongsTo(TypeBien::class, 'type_bien');

@@ -39,6 +39,7 @@ Route::prefix('v1')->group(
             // route post put pour Propertier
             Route::put('/edit/{id}', [ProprieterController::class, 'updateProprieter']);
             Route::post('/create', [ProprieterController::class, 'registerProprieter']);
+            Route::delete('/delete/{id}', [ProprieterController::class, 'deleteProprieter']);
         });
         Route::prefix('/pays')->group(function () {
             // route  get pour le model Pays

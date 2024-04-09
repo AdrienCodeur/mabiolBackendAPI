@@ -206,6 +206,7 @@ public function deleletypeAb(string $id)
     $typeAb = TypeAbonnement::find($id) ;
     if($typeAb){
         $typeAb->deleted_at = Carbon::now() ;
+        $typeAb->save() ;
         return response()->json([
             'message'=>"typeAb suprimer avec succcess" ,
             "statusCode"=>203
