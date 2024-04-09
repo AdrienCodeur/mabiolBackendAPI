@@ -52,7 +52,7 @@ class TypeUserController extends Controller
  *         required=true,
  *         @OA\JsonContent(
  *             required={"libelle"},
- *             @OA\Property(property="libelle", type="string", example="En cours"),
+ *             @OA\Property(property="libelle", type="string", example="Admin"),
  *         )
  *     ),
  *     @OA\Response(response="200", description="User updated"),
@@ -69,20 +69,20 @@ class TypeUserController extends Controller
                 return response()->json([
                     'message'=>"erreur de validation",
                     "error"=>$validator->errors()
-                ]) ;
+                ] ,422) ;
             }
             $typeUser->update($validator->validated());
             return response()->json([
                 'statusCode' => 200,
                 'message' => "type user  mis a jour avec success",
                 'data' => $typeUser
-            ]);
+            ] ,200);
         }
         return response()->json([
             'statusCode' => 404,
             'message' =>" nous n'avons pas trouver de type user avec cette id",
             'data' => $typeUser
-        ]);
+        ] ,404);
         
     }
       /** 
@@ -103,16 +103,12 @@ class TypeUserController extends Controller
         */
     public function registerTypeUser(Request $request)
     {
-        // $validated = $request->validate([
-        //     'libelle' => 'required|string'
-        // ]);
-
         $validator  =   Validator::make($request->all() ,[ 'libelle'=>"required|string"]) ;
         if($validator->fails()){
             return response()->json([
                 'message'=>"erreur de validation"  ,
                 "error"=>$validator->errors()
-            ]) ;
+            ] ,422) ;
         }
 
         $typeUser =   new TypeUser()   ;
@@ -122,7 +118,7 @@ class TypeUserController extends Controller
         return response()->json(['statusCode' => 200,
         'message' => "type utilisateur creer avec success",
         'data' => $typeUser
-    ]);
+    ] ,200);
     }
         /**
      * @OA\Get(
@@ -148,12 +144,12 @@ class TypeUserController extends Controller
                 'statusCode' => 200,
                 'message' => "type utilisateur  recuperer avec success",
                 'data' => $typeuser
-            ]);
+            ],200);
         }else{
             return response()->json([
                 'statusCode' => 404,
                 'message' => 'nous  n\'avons pas trouver de type user avec cette id  ',
-            ]);
+            ] ,404);
         }
 
     }
@@ -181,6 +177,7 @@ public function deleleTypeUser(string $id)
     $typeUser = TypeUser::find($id) ;
     if($typeUser){
         $typeUser->deleted_at = Carbon::now() ;
+        $typeUser->save() ;
         return response()->json([
             'message'=>"typeUser suprimer avec succcess" ,
             "statusCode"=>203

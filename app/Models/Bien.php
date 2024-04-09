@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Bien extends Model
 {
     use HasFactory;
-
+    protected $guarded = [];
     public function typeBien()
     {
         return $this->belongsTo(TypeBien::class, 'type_bien');
@@ -23,5 +24,8 @@ class Bien extends Model
         return $this->hasMany(Finance::class);
     }
 
-
+    public function setSlugAttribute($value)
+    {
+        $this->attributes['slug'] = Str::slug($value);
+    }
 }

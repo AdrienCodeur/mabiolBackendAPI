@@ -65,13 +65,12 @@ class LocataireController extends Controller
  *         required=true,
  *         @OA\JsonContent(
  *             required={"email"},
- *             @OA\Property(property="email", type="string"),
- *             @OA\Property(property="telephone", type="string"),
- *             @OA\Property(property="type_user_id", type="string"),
- *             @OA\Property(property="slug", type="string"),
+ *             @OA\Property(property="email", type= "string" , example="djeudjeschool@gmail.com"),
+ *             @OA\Property(property="telephone", type="string",example="+237 650513914"),
  *             @OA\Property(property="addresse", type="string"),
  *             @OA\Property(property="password", type="string"),
- *             @OA\Property(property="statut", type="string"),
+ *             @OA\Property(property="nom",type="string",example="djeudje tenkeu"),
+ *             @OA\Property(property="sexe",type="string",example="Masculin"),
  *         )
  *     ),
  *     @OA\Response(response="200", description="User updated"),
@@ -79,7 +78,7 @@ class LocataireController extends Controller
  *     @OA\Response(response="422", description="Validation error")
  * ) 
   */
-    public function  editUtilisateur(Request $request ,$id) {
+    public function  editLocataire(Request $request ,$id) {
 
         // return $request ;
         $utilisateurId =  Utilisateur::find($id)  ;
@@ -91,10 +90,6 @@ class LocataireController extends Controller
                 'telephone' => 'required|string',
                 'addresse' => 'required|string',
                 'sexe' => 'required|string',
-                'login' => 'required|string',
-                'statut' => 'required|string',
-                'slug' => 'required|string',
-                'type_user_id' => 'required|exists:type_users,id'
             ])  ;
              
             if($validator->fails()){
@@ -110,19 +105,19 @@ class LocataireController extends Controller
               if($utilisateurUpdate){
                 return response()->json([
                     'statusCode' => 200,
-                    'message' => "utilisateurs mis a jour  success",
-                    'data' => $utilisateurUpdate
+                    'message' => "locataire mis a jour  success",
+                    'data' => $utilisateurId
                 ]);
               }else{
                 return response()->json([
-                    'statusCode' => 204,
+                    'statusCode' => 422 ,
                     'message' => "utilisateurs na pas ete  mis a jour"
-                ]);
+                ],422);
               }
            }catch (Exception $e) {
             return response()->json([
                 'statusCode' => 500,
-                'message' => 'un probleme est survenu ',
+                'message' => 'un probleme est survenu',
                 'error' => $e->getMessage()
             ]);
         }
@@ -130,7 +125,7 @@ class LocataireController extends Controller
             return response()->json([
                 'statusCode' => 404,
                 'message' => 'nous n\'avons pas trouver utilisateur avec cette id',
-            ]);
+            ],404);
         }
     }
           /** 
@@ -144,12 +139,10 @@ class LocataireController extends Controller
         *             required={"email" ,"password" ,"nom","telephone","addresse"},
         *             @OA\Property(property="email", type="string") ,
         *             @OA\Property(property="password", type="string") ,
-        *             @OA\Property(property="nom", type="string") ,
+        *             @OA\Property(property="nom", type="string" ,example="adrien kevin") ,
         *             @OA\Property(property="sexe", type="string") ,
-        *             @OA\Property(property="login", type="string") ,
-        *             @OA\Property(property="slug", type="string") ,
-        *             @OA\Property(property="statut", type="string") ,
-        *             @OA\Property(property="type_user_id", type="string") ,
+        *             @OA\Property(property="telephone", type="string" ,example="+237 651503914") ,
+        *             @OA\Property(property="addresse", type="string" ,example="RSA") ,
         *         )
         *     ),
         *     @OA\Response(response="201", description="utilisateurs created"),
@@ -165,9 +158,6 @@ class LocataireController extends Controller
             'telephone' => 'required|string',
             'addresse' => 'required|string',
             'sexe' => 'required|string',
-            'login' => 'required|string',
-            'statut' => 'required|string',
-            'slug' => 'required|string',
             // 'type_user_id' => 'exists:type_users,id'
         ])  ;
          
@@ -185,13 +175,12 @@ class LocataireController extends Controller
             $newUtilisateur->email =$request->email ;
             $newUtilisateur->nom =$request->nom ;
             $newUtilisateur->telephone =$request->telephone ;
-            $newUtilisateur->adresse =$request->adresse ;
-            $newUtilisateur->slug =$request->slug ;
-            $newUtilisateur->type_user_id = $typeUser->id ;
-            $newUtilisateur->login = $request->login ;
+            $newUtilisateur->addresse =$request->addresse ;
+            $newUtilisateur->type_user = $typeUser->id ;
+            $newUtilisateur->login = $request->email ;
             $newUtilisateur->sexe = $request->sexe ;
-            $newUtilisateur->slug = $request->slug ;
-            $newUtilisateur->statut = $request->statut ;
+            $newUtilisateur->slug = $request->nom;
+            $newUtilisateur->statut = 'actif' ;
             $newUtilisateur->deleted_at =  new Carbon();
             $newUtilisateur->password = Hash::make($request->password) ;
             
@@ -199,15 +188,15 @@ class LocataireController extends Controller
             if ($newUtilisateur) {
                 return response()->json([
                     'statusCode' => 200,
-                    'message' => "utilisateur creer avec success",
+                    'message' => "locataire creer avec success",
                     'data' => $newUtilisateur
-                ]);
+                ] ,200);
             } else {
                 return response()->json([
                     'statusCode' => 203,
                     'message' => "utilisateur n'a pas ete creer",
                     // 'data'=>$userUtilisateur   
-                ]);
+                ],203);
             }
         } catch (Exception $e) {
             return response()->json([
@@ -282,14 +271,15 @@ public function deleteLocataire(string $id)
     $utilisateurs =Utilisateur::find($id) ;
     if($utilisateurs){
         $utilisateurs->deleted_at = Carbon::now() ;
+        $utilisateurs->save() ;
         return response()->json([
-            'message'=>"utilisateurs suprimer avec succcess" ,
-            "statusCode"=>203
-        ]) ;
+            'message'=>"locataire suprimer avec succcess" ,
+            "statusCode"=>202
+        ],202) ;
     }
     return response()->json([
         'message'=>"nous n'avons pas trouver de utilisateurs avec cette id" ,
         "statusCode"=>404
-    ]) ;
+    ],404) ;
 }
 }

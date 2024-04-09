@@ -47,7 +47,7 @@ return new class extends Migration
             $table->boolean("exist_sous_sol") ;
             $table->string('anneeconstruction') ;
             $table->integer("nbr_salle_bain") ;
-            $table->string('img') ;
+            $table->json('img') ;
             $table->enum("statut" ,['actif' , 'inactif']) ;
             $table->string("slug" ,100)->unique() ;
             //cle etrangerer 

@@ -44,8 +44,6 @@ class ContratController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             required={"duree", "slug", "utilisateur_id" ,"locataire_id"},
-     *             @OA\Property(property="statut", type="string", example="En cours"),
-     *             @OA\Property(property="slug", type="string"),
      *             @OA\Property(property="duree", type="string"),
      *             @OA\Property(property="charge", type="string"),
      *             @OA\Property(property="description_bail", type="string"),
@@ -79,8 +77,6 @@ class ContratController extends Controller
             'aut_paiement' => 'required|string',
             'aut_avis_echeance' => 'required|string',
             'aut_quittance' => 'required|string',
-            "statut" => "required|",
-            "slug" => "required|",
             "charge" => "required|",
             "type_echange_id" => "required|exists:type_echanges ,id",
             "type_paiement_id" => "required|exists:type_paiements ,id",
@@ -96,7 +92,10 @@ class ContratController extends Controller
             ]);
         }
         try {
-            $contrat =  Contrat::create($validator->validated());
+            $dataContrat = $validator->validated() ;
+            $dataContrat['slug'] = $request->charge ;
+            $dataContrat['statut'] = "actif";
+            $contrat =  Contrat::create($dataContrat);
             if ($contrat) {
                 return response()->json([
                     'statusCode' => 200,
@@ -167,9 +166,7 @@ class ContratController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"duree", "slug", "utilisateur_id" ,"locataire_id"},
-     *             @OA\Property(property="statut", type="string", example="En cours"),
-     *             @OA\Property(property="slug", type="string"),
+     *             required={"duree", "utilisateur_id" ,"locataire_id"},
      *             @OA\Property(property="duree", type="string"),
      *             @OA\Property(property="charge", type="string"),
      *             @OA\Property(property="description_bail", type="string"),
@@ -206,8 +203,6 @@ class ContratController extends Controller
                 'aut_paiement' => 'required|string',
                 'aut_avis_echeance' => 'required|string',
                 'aut_quittance' => 'required|string',
-                "statut" => "required|",
-                "slug" => "required|",
                 "charge" => "required|",
                 "type_echange_id" => "required|exists:type_echanges ,id",
                 "type_paiement_id" => "required|exists:type_paiements ,id",

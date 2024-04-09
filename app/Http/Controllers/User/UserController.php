@@ -7,6 +7,7 @@ use App\Events\RegisterUser;
 use App\Http\Controllers\Controller;
 use App\Mail\RegisterUserMail;
 use App\Models\User;
+use App\Models\Utilisateur;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,7 +53,7 @@ class UserController extends Controller
      * )
      */
 
-    public function doLogin(Request $request)
+    public function doLoginUser(Request $request)
     {
         // validation de donnees de connection 
         $validator = Validator::make($request->all(), [
@@ -62,10 +63,10 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'statusCode' => 400,
+                'statusCode' => 422,
                 'message' => 'probleme de validation de donnee',
                 'error' => $validator->errors()
-            ], 400);
+            ], 422);
         }
 
         try {
@@ -73,12 +74,11 @@ class UserController extends Controller
             //  return $user ;
             if ($user && Hash::check($request->password, $user->password)) {
                 $token =    $user->createToken('privatekey')->plainTextToken;
-
                 return   response()->json([
                     'message' => "utilisateur connecter",
                     "data" => $user,
                     'token' => $token
-                ]);
+                ] ,203);
             }
 
             return   response()->json([
@@ -148,4 +148,91 @@ class UserController extends Controller
             ]);
         }
     }
+    // use Illuminate\Support\Facades\Auth;
+
+// Pour un 'user'
+// if (Auth::guard('user')->attempt($credentials)) {
+//     $token = Auth::guard('user')->user()->createToken('Token Name')->accessToken;
+//     // Retourner le token
+// }
+
+// Pour un 'utilisateur'
+
+// 'providers' => [
+//     'users' => [
+//         'driver' => 'eloquent',
+//         'model' => App\Models\User::class,
+//     ],
+//     'utilisateurs' => [
+//         'driver' => 'eloquent',
+//         'model' => App\Models\Utilisateur::class,
+//     ],
+// ],
+// 'guards' => [
+//     'user' => [
+//         'driver' => 'token',
+//         'provider' => 'users',
+//     ],
+//     'utilisateur' => [
+//         'driver' => 'token',
+//         'provider' => 'utilisateurs',
+//     ],
+// ],
+
+    /** 
+     * @OA\Post(
+     *     path="/api/v1/utilisateurs/login",
+     *     tags={"User"},
+     *     summary="route pour login les bailleurs  comme  les locataires ",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email" ,"password"},
+     *             @OA\Property(property="email", type="string") ,
+     *             @OA\Property(property="password", type="string") ,
+     *         )
+     *     ),
+     *     @OA\Response(response="201", description="TypeUser created"),
+     *     @OA\Response(response="422", description="Validation error")
+     * )
+     */
+public function loginUtilisateur(Request $request) 
+{
+    $validator = Validator::make($request->all(),[
+        'email' => 'required|string|email',
+        'password' => 'required|',
+    ]);
+    if ($validator->fails()) {
+        return response()->json([
+            'statusCode' => 422,
+            'message' => 'probleme de validation de donnee',
+            'error' => $validator->errors()
+        ] ,422);
+    }
+    $user =  Utilisateur::where('email', $request->email)->first();
+    if($user){
+        if(Hash::check($request->password, $user->password)){
+            $token =    $user->createToken('privateekey')->plainTextToken;
+            return   response()->json([
+                'message' => "utilisateur  connecter",
+                'token' => $token
+            ],200);
+        }else{
+            return   response()->json([
+                'message' => "Identifiant de connection inconnue",
+                'statusCode' =>423
+            ] ,423);
+
+        }
+   
+    }else{
+        return   response()->json([
+            'message' => "nous n'avons pas trouver d'utilisateurs avec cette addresse email ",
+            "statusCode" =>404 ,
+        ] ,404) ;
+    }
+    
+
+}
+
 }

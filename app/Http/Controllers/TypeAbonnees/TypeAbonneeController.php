@@ -56,7 +56,6 @@ class TypeAbonneeController extends Controller
  *             @OA\Property(property="montant", type="string", example="En cours"),
  *             @OA\Property(property="description", type="string", example="En cours"),
  *             @OA\Property(property="duree", type="string", example="En cours"),
- *             @OA\Property(property="slug", type="string", example="En cours"),
  *         )
  *     ),
  *     @OA\Response(response="200", description="User updated"),
@@ -72,8 +71,7 @@ class TypeAbonneeController extends Controller
                 'nom' => 'required|string',
                 'montant' => 'required|string',
                 'description' => 'required|string',
-                'duree' => 'required' ,
-                'slug' => 'required'
+                'duree' => 'required'  
             ])  ; 
             if($validator->fails()){
                 return response()->json([
@@ -113,7 +111,6 @@ class TypeAbonneeController extends Controller
         *             @OA\Property(property="montant", type="string"),
         *             @OA\Property(property="description", type="string"),
         *             @OA\Property(property="duree", type="string"),
-        *             @OA\Property(property="slug", type="string"),
         *         )
         *     ),
         *     @OA\Response(response="201", description="TypeAb created"),
@@ -127,18 +124,19 @@ class TypeAbonneeController extends Controller
             'montant' => 'required|string',
             'description' => 'required|string',
             'duree' => 'required' ,
-            'slug' => 'required'
         ])  ;
          
         if($validator->fails()){
             return response()->json([
-                'statusCode' => 203,
+                'statusCode' => 422,
                 'message' => 'probleme de validation de donnee',
                 'error' => $validator->errors()
-            ]);
+            ] ,422);
         }
         try {
-        $typeAb = TypeAbonnement::create($validator->validated());
+            $dataTypeAb = $validator->validated() ;
+            $dataTypeAb['slug'] = $request->nom ;
+        $typeAb = TypeAbonnement::create($dataTypeAb);
         return response()->json([
             'statusCode' => 202,
             'message' => 'type abonnement creer avec success',
@@ -147,9 +145,9 @@ class TypeAbonneeController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'statusCode' => 500,
-                'message' => 'un probleme est surven',
+                'message' => 'un probleme est survenue',
                 'error' => $e->getMessage()
-            ]);
+            ] ,500);
         }
     }
          /**
@@ -182,7 +180,7 @@ class TypeAbonneeController extends Controller
         return   response()->json( [
             'statusCode'=>404,
                 'message'=>"type abonnement  not found",
-        ]) ;
+        ] ,404) ;
     }
 
  /**
@@ -206,6 +204,7 @@ public function deleletypeAb(string $id)
     $typeAb = TypeAbonnement::find($id) ;
     if($typeAb){
         $typeAb->deleted_at = Carbon::now() ;
+        $typeAb->save() ;
         return response()->json([
             'message'=>"typeAb suprimer avec succcess" ,
             "statusCode"=>203

@@ -15,7 +15,7 @@ class ProprieterController extends Controller
 
         /**
  * @OA\Get(
- *     path="/api/v1/bien",
+ *     path="/api/v1/proprieter",
  *     tags={"Bien"},
  *     summary="Liste des Bien",
  *     @OA\Response(
@@ -28,7 +28,7 @@ class ProprieterController extends Controller
     public function getAllProprieter()
 
     {
-        $bien = Bien::all();
+        $bien = Bien::whereNull("deleted_at")->get();
         return response()->json(
             [
                 "message" => 'tout les biens recuperer avec success',
@@ -37,110 +37,111 @@ class ProprieterController extends Controller
             ]
         );
     }
+
     /**
-     * Update the specified resource in storage.
-     */ /**
-     * @OA\Put(
-     *     path="/api/v1/bien/edit/{id}",
-     *     tags={"Bien"},
-     *     summary="Update a bien",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID of the bien",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"nom"},
-     *             @OA\Property(property="nom", type="string"),
-     *             @OA\Property(property="surface", type="string"),
-     *             @OA\Property(property="addresse", type="string"),
-     *             @OA\Property(property="code_postal", type="string"),
-     *             @OA\Property(property="nbrbatiment", type="string"),
-     *             @OA\Property(property="nbrescalier", type="string"),
-     *             @OA\Property(property="nbrchambre", type="string"),
-     *             @OA\Property(property="numeroporte", type="string"),
-     *             @OA\Property(property="zoneStationnement", type="string"),
-     *             @OA\Property(property="typemouvement", type="string"),
-     *             @OA\Property(property="ungarage", type="string"),
-     *             @OA\Property(property="img", type="string"),
-     *             @OA\Property(property="unecave", type="string"),
-     *             @OA\Property(property="internet", type="string"),
-     *             @OA\Property(property="dep_tvecranplat", type="string"),
-     *             @OA\Property(property="proprietaire_id", type="string"),
-     *             @OA\Property(property="typeBien_id", type="string"),
-     *             @OA\Property(property="exist_proxi_restaurant", type="string"),
-     *             @OA\Property(property="anneeconstruction", type="string"),
-     *             @OA\Property(property="pc_vide_ordure", type="string"),
-     *             @OA\Property(property="pc_espace_vert", type="string"),
-     *             @OA\Property(property="pc_interphone", type="string"),
-     *             @OA\Property(property="nbr_salle_bain", type="string"),
-     *             @OA\Property(property="exist_sous_sol", type="string"),
-     *             @OA\Property(property="dep_lingemaison", type="string"),
-     *             @OA\Property(property="exist_proxi_education", type="string"),
-     *             @OA\Property(property="exist_salle_manger", type="string"),
-     *             @OA\Property(property="exist_cheminee", type="string"),
-     *             @OA\Property(property="pc_antennetv_collective", type="string"),
-     *             @OA\Property(property="exist_balcon", type="string"),
-     *             @OA\Property(property="exist_proxi_centre_sante", type="string"),
-     *             @OA\Property(property="pc_ascenseur", type="string"),
-     *             @OA\Property(property="dep_lavevaiselle", type="string"),
-     *             @OA\Property(property="statut", type="string"),
-     *             @OA\Property(property="slug", type="string"),
-     *         )
-     *     ),
-     *     @OA\Response(response="200", description="User updated"),
-     *     @OA\Response(response="404", description="User not found"),
-     *     @OA\Response(response="422", description="Validation error")
-     * )
-     */
+ * @OA\Put(
+ *     path="/api/v1/proprieter/edit/{id}",
+ *     tags={"Bien"},
+ *     summary="Mettre à jour un bien",
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         description="ID du bien",
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"nom", "adresse", "code_postal", "proprietaire_id", "typeBien_id"},
+ *             @OA\Property(property="nom", type="string"),
+ *             @OA\Property(property="surface", type="number"),
+ *             @OA\Property(property="addresse", type="string",example="string"),
+ *             @OA\Property(property="code_postal", type="number"),
+ *             @OA\Property(property="nbrbatiment", type="number"),
+ *             @OA\Property(property="nbrescalier", type="number"),
+ *             @OA\Property(property="nbrchambre", type="number"),
+ *             @OA\Property(property="numeroporte", type="number"),
+ *             @OA\Property(property="zoneStationnement", type="string"),
+ *             @OA\Property(property="typemouvement", type="string"),
+ *             @OA\Property(property="ungarage", type="boolean"),
+ *             @OA\Property(property="unecave", type="boolean"),
+ *             @OA\Property(property="internet", type="boolean"),
+ *             @OA\Property(property="ville_id", type="boolean"),
+ *             @OA\Property(property="dep_tvecranplat", type="boolean"),
+ *             @OA\Property(property="tv_ecran_plat", type="boolean"),
+ *             @OA\Property(property="proprietaire_id", type="number" ,example="1"),
+ *             @OA\Property(property="typeBien_id", type="number"),
+ *             @OA\Property(property="exist_proxi_restaurant", type="boolean"),
+ *             @OA\Property(property="anneeconstruction", type="string"),
+ *             @OA\Property(property="pc_vide_ordure", type="boolean"),
+ *             @OA\Property(property="pc_espace_vert", type="boolean"),
+ *             @OA\Property(property="pc_interphone", type="boolean"),
+ *             @OA\Property(property="nbr_salle_bain", type="number"),
+ *             @OA\Property(property="exist_sous_sol", type="boolean"),
+ *             @OA\Property(property="pc_chauffage_collective", type="boolean"),
+ *             @OA\Property(property="pc_eau_chaude_collective", type="boolean"),
+ *             @OA\Property(property="dep_lingemaison", type="boolean"),
+ *             @OA\Property(property="pc_gardiennage", type="boolean"),
+ *             @OA\Property(property="exist_proxi_education", type="boolean"),
+ *             @OA\Property(property="exist_salle_manger", type="boolean"),
+ *             @OA\Property(property="exist_cheminee", type="boolean"),
+ *             @OA\Property(property="pc_antennetv_collective", type="boolean"),
+ *             @OA\Property(property="exist_balcon", type="boolean"),
+ *             @OA\Property(property="exist_proxi_centre_sante", type="boolean"),
+ *             @OA\Property(property="pc_ascenseur", type="boolean"),
+ *             @OA\Property(property="dep_lavevaiselle", type="boolean"),
+ *         )
+ *     ),
+ *     @OA\Response(response="200", description="Bien mis à jour"),
+ *     @OA\Response(response="404", description="Bien non trouvé"),
+ *     @OA\Response(response="422", description="Erreur de validation")
+ * )
+ */
+
+
     public function updateProprieter(Request $request, $id)
     {
         $bien = Bien::find($id) ;
         if($bien){
             $validator =   Validator::make($request->all() ,[
                 'nom' => 'required|string',
-                "surface"=>'required|string' ,
-               " addresse"=>'required|string' ,
-                "code_postal"=>'required|string' ,
-                "nbrbatiment" =>'required|' ,
-                "nbrescalier" =>'required|string' ,
-                "nbrchambre" =>'required|string' ,
-                "numeroporte" =>'required|string' ,
+                "surface"=>'required|integer' ,
+               "addresse"=>'required|string' ,
+                "code_postal"=>'required|integer' ,
+                "nbrbatiment" =>'required|integer' ,
+                "nbrescalier" =>'required|integer' ,
+                "nbrchambre" =>'required|integer' ,
+                "numeroporte" =>'required|integer' ,
                 "zoneStationnement" =>'required|string' ,
                 "typemouvement" =>'required|string' ,
-                "ungarage" =>'required|string' ,
+                "ungarage" =>'required|boolean' ,
                 "ville_id"=>'required|exists:villes,id' ,
-                "img"=>'required|string' ,
-                "unecave"=>'required' ,
-                "internet"=>'required' ,
-                'dep_tvecranplat'=>'required' ,
-                'dep_lingemaison'=>'required' ,
-                'dep_lavevaiselle'=>'required' ,
-                "pc_gardiennage"=>'required' ,
-                "pc_interphone"=>'required' ,
-                "pc_ascenseur"=>'required' ,
-                "pc_vide_ordure"=>'required' ,
-                "pc_espace_vert"=>'required' ,
-                "pc_chauffage_collective"=>'required' ,
-                "pc_eau_chaude_collective"=>'required' ,
-                "pc_antennetv_collective"=>'required' ,
+                // "img"=>'required|string|array' ,
+                "unecave"=>'required|boolean' ,
+                "internet"=>'required|boolean' ,
+                'dep_tvecranplat'=>'required|boolean' ,
+                'dep_lingemaison'=>'required|boolean' ,
+                'dep_lavevaiselle'=>'required|boolean' ,
+                "pc_gardiennage"=>'required|boolean' ,
+                "pc_interphone"=>'required|boolean' ,
+                "pc_ascenseur"=>'required|boolean' ,
+                "pc_vide_ordure"=>'required|boolean' ,
+                "pc_espace_vert"=>'required|boolean' ,
+                "pc_chauffage_collective"=>'required|boolean' ,
+                "pc_eau_chaude_collective"=>'required|boolean' ,
+                "pc_antennetv_collective"=>'required|boolean' ,
                 "exist_balcon"=>'required' ,
                 "exist_cheminee"=>'required' ,
-                "exist_salle_manger"=>'required' ,
-                "exist_proxi_education"=>'required' ,
-                "exist_sous_sol"=>'required' ,
-                "exist_proxi_centre_sante"=>'required' ,
-                "exist_proxi_restaurant"=>'required' ,
+                "exist_salle_manger"=>'required|boolean' ,
+                "exist_proxi_education"=>'required|boolean' ,
+                "exist_sous_sol"=>'required|boolean' ,
+                "exist_proxi_centre_sante"=>'required|boolean' ,
+                "exist_proxi_restaurant"=>'required|boolean' ,
                 "anneeconstruction"=>'required' ,
-                'nbr_salle_bain'=>'required' ,
-                "typeBien_id"=>'required|exists:typebiens , id' ,
-                "statut"=>'required' ,
-                "slug"=>'required' ,
-                ' proprietaire_id' =>'required|exists:utilisateurs,id',
+                'nbr_salle_bain'=>'required|integer' ,
+                "typeBien_id"=>'required|exists:typebiens,id' ,
+                'proprietaire_id' =>'required|exists:utilisateurs,id',
             ])  ;
             if($validator->fails()){
                 return response()->json([
@@ -176,7 +177,7 @@ class ProprieterController extends Controller
     }
     /** 
     * @OA\Post(
-        *     path="/api/v1/bien/create",
+        *     path="/api/v1/proprieter/create",
         *     tags={"Bien"},
         *     summary="Create a new Bien",
         *     @OA\RequestBody(
@@ -184,40 +185,41 @@ class ProprieterController extends Controller
         *         @OA\JsonContent(
      *             required={"nom"},
      *             @OA\Property(property="nom", type="string"),
-     *             @OA\Property(property="surface", type="string"),
+     *             @OA\Property(property="surface", type="string" ,example="300"),
      *             @OA\Property(property="addresse", type="string"),
-     *             @OA\Property(property="code_postal", type="string"),
-     *             @OA\Property(property="nbrbatiment", type="string"),
-     *             @OA\Property(property="nbrescalier", type="string"),
-     *             @OA\Property(property="nbrchambre", type="string"),
-     *             @OA\Property(property="numeroporte", type="string"),
+     *             @OA\Property(property="code_postal", type="number"),
+     *             @OA\Property(property="nbrbatiment", type="number"),
+     *             @OA\Property(property="nbrescalier", type="number"),
+     *             @OA\Property(property="nbrchambre", type="number"),
+     *             @OA\Property(property="ville_id", type="number" ,example="1"),
+     *             @OA\Property(property="numeroporte", type="number"),
      *             @OA\Property(property="zoneStationnement", type="string"),
      *             @OA\Property(property="typemouvement", type="string"),
-     *             @OA\Property(property="ungarage", type="string"),
-     *             @OA\Property(property="img", type="string"),
-     *             @OA\Property(property="unecave", type="string"),
-     *             @OA\Property(property="internet", type="string"),
-     *             @OA\Property(property="dep_tvecranplat", type="string"),
-     *             @OA\Property(property="proprietaire_id", type="string"),
-     *             @OA\Property(property="typeBien_id", type="string"),
-     *             @OA\Property(property="exist_proxi_restaurant", type="string"),
+     *             @OA\Property(property="ungarage", type="boolean"),
+     *             @OA\Property(property="unecave", type="boolean"),
+     *             @OA\Property(property="internet", type="boolean"),
+     *             @OA\Property(property="dep_tvecranplat", type="boolean"),
+     *             @OA\Property(property="proprietaire_id", type="number" ,example="2"),
+     *             @OA\Property(property="typeBien_id", type="number" ,example="1"),
+     *             @OA\Property(property="exist_proxi_restaurant", type="boolean"),
      *             @OA\Property(property="anneeconstruction", type="string"),
-     *             @OA\Property(property="pc_vide_ordure", type="string"),
-     *             @OA\Property(property="pc_espace_vert", type="string"),
-     *             @OA\Property(property="pc_interphone", type="string"),
-     *             @OA\Property(property="nbr_salle_bain", type="string"),
-     *             @OA\Property(property="exist_sous_sol", type="string"),
-     *             @OA\Property(property="dep_lingemaison", type="string"),
-     *             @OA\Property(property="exist_proxi_education", type="string"),
-     *             @OA\Property(property="exist_salle_manger", type="string"),
-     *             @OA\Property(property="exist_cheminee", type="string"),
-     *             @OA\Property(property="pc_antennetv_collective", type="string"),
-     *             @OA\Property(property="exist_balcon", type="string"),
-     *             @OA\Property(property="exist_proxi_centre_sante", type="string"),
-     *             @OA\Property(property="pc_ascenseur", type="string"),
-     *             @OA\Property(property="dep_lavevaiselle", type="string"),
-     *             @OA\Property(property="statut", type="string"),
-     *             @OA\Property(property="slug", type="string"),
+     *             @OA\Property(property="pc_vide_ordure", type="boolean"),
+     *             @OA\Property(property="pc_espace_vert", type="boolean"),
+     *             @OA\Property(property="pc_eau_chaude_collective", type="boolean"),
+     *             @OA\Property(property="pc_chauffage_collective", type="boolean"),
+     *             @OA\Property(property="pc_interphone", type="boolean"),
+     *             @OA\Property(property="nbr_salle_bain", type="boolean"),
+     *             @OA\Property(property="exist_sous_sol", type="boolean"),
+     *             @OA\Property(property="dep_lingemaison", type="boolean"),
+     *             @OA\Property(property="exist_proxi_education", type="boolean"),
+     *             @OA\Property(property="exist_salle_manger", type="boolean"),
+     *             @OA\Property(property="exist_cheminee", type="boolean"),
+     *             @OA\Property(property="pc_gardiennage", type="boolean"),
+     *             @OA\Property(property="pc_antennetv_collective", type="boolean"),
+     *             @OA\Property(property="exist_balcon", type="boolean"),
+     *             @OA\Property(property="exist_proxi_centre_sante", type="boolean"),
+     *             @OA\Property(property="pc_ascenseur", type="boolean"),
+     *             @OA\Property(property="dep_lavevaiselle", type="boolean"),
         *         )
         *     ),
         *     @OA\Response(response="201", description="Bien created"),
@@ -231,17 +233,17 @@ class ProprieterController extends Controller
         $validator =   Validator::make($request->all() ,[
             'nom' => 'required|string',
             "surface"=>'required|string' ,
-           " addresse"=>'required|string' ,
-            "code_postal"=>'required|string' ,
-            "nbrbatiment" =>'required|' ,
-            "nbrescalier" =>'required|string' ,
-            "nbrchambre" =>'required|string' ,
-            "numeroporte" =>'required|string' ,
+           "addresse"=>'required|string' ,
+            "code_postal"=>'required|integer' ,
+            "nbrbatiment" =>'required|integer' ,
+            "nbrescalier" =>'required|integer' ,
+            "nbrchambre" =>'required|integer' ,
+            "numeroporte" =>'required|integer' ,
             "zoneStationnement" =>'required|string' ,
             "typemouvement" =>'required|string' ,
-            "ungarage" =>'required|string' ,
+            "ungarage" =>'required|boolean' ,
             "ville_id"=>'required|exists:villes,id' ,
-            "img"=>'required|string' ,
+            // "img"=>'required|string' ,
             "unecave"=>'required' ,
             "internet"=>'required' ,
             'dep_tvecranplat'=>'required' ,
@@ -249,25 +251,23 @@ class ProprieterController extends Controller
             'dep_lavevaiselle'=>'required' ,
             "pc_gardiennage"=>'required' ,
             "pc_interphone"=>'required' ,
-            "pc_ascenseur"=>'required' ,
-            "pc_vide_ordure"=>'required' ,
-            "pc_espace_vert"=>'required' ,
-            "pc_chauffage_collective"=>'required' ,
-            "pc_eau_chaude_collective"=>'required' ,
-            "pc_antennetv_collective"=>'required' ,
+            "pc_ascenseur"=>'required|boolean' ,
+            "pc_vide_ordure"=>'required|boolean' ,
+            "pc_espace_vert"=>'required|boolean' ,
+            "pc_chauffage_collective"=>'required|boolean' ,
+            "pc_eau_chaude_collective"=>'required|boolean' ,
+            "pc_antennetv_collective"=>'required|boolean' ,
             "exist_balcon"=>'required' ,
-            "exist_cheminee"=>'required' ,
-            "exist_salle_manger"=>'required' ,
-            "exist_proxi_education"=>'required' ,
-            "exist_sous_sol"=>'required' ,
-            "exist_proxi_centre_sante"=>'required' ,
-            "exist_proxi_restaurant"=>'required' ,
+            "exist_cheminee"=>'required|boolean' ,
+            "exist_salle_manger"=>'required|boolean' ,
+            "exist_proxi_education"=>'required|boolean' ,
+            "exist_sous_sol"=>'required|boolean' ,
+            "exist_proxi_centre_sante"=>'required|boolean' ,
+            "exist_proxi_restaurant"=>'required|boolean' ,
             "anneeconstruction"=>'required' ,
-            'nbr_salle_bain'=>'required' ,
-            "typeBien_id"=>'required|exists:typebiens , id' ,
-            "statut"=>'required' ,
-            "slug"=>'required' ,
-            ' proprietaire_id' =>'required|exists:utilisateurs,id',
+            'nbr_salle_bain'=>'required|integer' ,
+            "typeBien_id"=>'required|exists:typebiens,id' ,
+            'proprietaire_id' =>'required|exists:utilisateurs,id',
         ])  ;
          
         if($validator->fails()){
@@ -278,7 +278,11 @@ class ProprieterController extends Controller
             ]);
         }
         try {
-            $bien =  Bien::create($validator->validated());
+            $dataBien= $validator->validated() ;
+            $dataBien['slug'] = $request->nom ;
+            $dataBien['statut'] = 'actif';
+            $dataBien['img'] =json_encode(['image1' ,'image2' ,'image3']);
+            $bien =  Bien::create($dataBien);
             return response()->json(
                 [
                     "message" => 'bien ajouter avec success',
@@ -296,7 +300,7 @@ class ProprieterController extends Controller
     }
     /**
      * @OA\Get(
-     *     path="/api/v1/bien/show/{id}",
+     *     path="/api/v1/proprieter/show/{id}",
      *     tags={"Bien"},
      *     summary="Get a specific resource",
      *     @OA\Parameter(
@@ -332,7 +336,7 @@ class ProprieterController extends Controller
 
  /**
  * @OA\Delete(
- *     path="/api/v1/bien/delete/{id}",
+ *     path="/api/v1/proprieter/delete/{id}",
  *     tags={"Bien"},
  *     summary="Delete a Bien",
  *     @OA\Parameter(
@@ -346,11 +350,12 @@ class ProprieterController extends Controller
  *     @OA\Response(response="404", description="User not found")
  * )
  */
-public function deleleBien(string $id)
+public function deleteProprieter(string $id)
 {
     $bien = Bien::find($id) ;
     if($bien){
         $bien->deleted_at = Carbon::now() ;
+        $bien->save() ;
         return response()->json([
             'message'=>"bien suprimer avec succcess" ,
             "statusCode"=>203
