@@ -244,15 +244,20 @@ class UtilisateurController extends Controller
 
 
             if ($newUtilisateur) {
-                // Authentifier l'utilisateur et générer un token
-                $token = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
+                // Récupérer le libellé du type d'utilisateur associé
+                $typeUserLibelle = $typeUser->libelle;
+
+                // Remplacer l'ID du type d'utilisateur par son libellé dans la réponse JSON
+                $newUtilisateur->type_user = $typeUserLibelle;
+                $token =    $newUtilisateur->createToken('privateekey')->plainTextToken;
+
                 if ($token) {
                     // Retourner la réponse avec le token
                     return response()->json([
                         'statusCode' => 200,
                         'message' => "Utilisateur créé avec succès et connecté",
                         'token' => $token,
-                        'data' => $newUtilisateur
+                        "data" => $newUtilisateur,
                     ], 200);
                 }
 
@@ -265,7 +270,6 @@ class UtilisateurController extends Controller
                 return response()->json([
                     'statusCode' => 203,
                     'message' => "utilisateur n'a pas ete creer",
-                    // 'data'=>$userUtilisateur   
                 ], 203);
             }
         } catch (Exception $e) {
