@@ -20,7 +20,9 @@ class UserController extends Controller
 
     public function checkAuth(Request $request)
     {
-        if (auth()->check()) {
+        $user = Auth::user();
+
+        if ($user) {
             // L'utilisateur est authentifié
             return response()->json([
                 'statusCode' => 200,

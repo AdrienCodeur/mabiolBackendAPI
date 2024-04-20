@@ -157,7 +157,6 @@ Route::prefix('v1/locataire')->group(function () {
 Route::prefix('v1/users')->group(function () {
     // route  get pour le authentifications
     Route::post('/login', [UserController::class, 'dologin']);
-    Route::get('/checkAuth', [UserController::class, 'checkAuth']);
     Route::post("/register", [UserController::class, 'store']);
     // Route::get("/check-auth", [UserController::class, 'checkAuth']);
 });
@@ -174,3 +173,5 @@ Route::prefix('v1/utilisateur')->group(function () {
     Route::post('/login', [UserController::class, 'dologin']);
     Route::post("/register", [UserController::class, 'store']);
 });
+
+Route::get('v1/getProfile', [UserController::class, 'checkAuth']);
