@@ -227,6 +227,8 @@ public function loginUtilisateur(Request $request)
             $token =    $user->createToken('privateekey')->plainTextToken;
                 // $userToken = Auth::guard('utilisateur')->user() ;
                     // $token =$userToken->createToken('privateKeyToken')->plainTextToken;
+                    $user->api_token = $token ;
+                    $user->save() ;
             return   response()->json([
                 'message' => "utilisateur  connecter",
                 'token' => $token
