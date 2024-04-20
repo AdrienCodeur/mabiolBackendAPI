@@ -36,6 +36,7 @@ Route::prefix('v1')->group(
             // route  get pour le model Proprieter
             Route::get('/', [ProprieterController::class, 'getAllProprieter']);
             Route::get('/show/{id}', [ProprieterController::class, 'showProprieter']);
+            Route::get('/showForProprietaire/{proprietaire_id}', [ProprieterController::class, 'getAllProprieterForProprietaire']);
             // route post put pour Propertier
             Route::put('/edit/{id}', [ProprieterController::class, 'updateProprieter']);
             Route::post('/create', [ProprieterController::class, 'registerProprieter']);
@@ -136,9 +137,11 @@ Route::prefix('v1')->group(
 Route::prefix('v1/utilisateurs')->group(function () {
     // routes en post put p
     Route::get('/', [UtilisateurController::class, 'index']);
+    Route::get('/getAPL/{id}', [UtilisateurController::class, 'getProprietaire']);
     Route::get('/show/{id}', [UtilisateurController::class, 'showUtilisateur']);
     // route post et put pour le model utitlisateur 
     Route::put('/edit/{id}', [UtilisateurController::class, 'editUtilisateur']);
+    Route::put('/editStatus/{id}', [UtilisateurController::class, 'updateStatus']);
     Route::post('/create', [UtilisateurController::class, 'createUtilisateur']);
     Route::delete('/delete/{id}', [UtilisateurController::class, 'deleteUtilisateur']);
 

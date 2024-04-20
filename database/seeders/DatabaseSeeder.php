@@ -20,10 +20,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        
-    $this->call([
-        PaysSeeder::class,
-    ]);
+
+        $this->call([
+            PaysSeeder::class,
+        ]);
 
         \App\Models\Utilisateur::factory(11)->create();
         \App\Models\Ville::factory(5)->create();
@@ -33,7 +33,5 @@ class DatabaseSeeder extends Seeder
         \App\Models\Contrat::factory(5)->create();
         \App\Models\Finance::factory(5)->create();
         \App\Models\Location::factory(5)->create();
-
-
     }
 }

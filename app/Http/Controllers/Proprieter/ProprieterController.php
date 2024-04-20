@@ -295,7 +295,7 @@ class ProprieterController extends Controller
                 'statusCode' => 500,
                 'message' => 'un probleme est survenu ',
                 'error' => $e->getMessage()
-            ]);
+            ] ,500);
         }
     }
     /**
@@ -326,9 +326,9 @@ class ProprieterController extends Controller
             ]) ;
         }else{
             return   response()->json( [
-                'statusCode'=>203,
+                'statusCode'=>404,
                     'message'=>"nous n'avons pas trouver de  bien avec l'identifiant unique passer", 
-            ]) ;
+            ],404) ;
         }
     
         
@@ -366,4 +366,39 @@ public function deleteProprieter(string $id)
         "statusCode"=>404
     ]) ;
 }
+
+    /**
+     * @OA\Get(
+     *     path="/api/v1/proprieter/showForProprietaire/{proprietaire_id}",
+     *     tags={"Bien"},
+     *     summary="listes de tout les biens d'un proprietaire",
+     *     @OA\Parameter(
+     *         name="proprietaire_id",
+     *         in="path",
+     *         required=true,
+     *         description=" id du Bien",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response="200", description="Success"),
+     *     @OA\Response(response="404", description="Resource not found")
+     * )
+     */
+
+     public function  getAllProprieterForProprietaire($proprietaire_id)
+     {
+
+        $bienId = Bien::where("proprietaire_id" ,$proprietaire_id)->get();
+        if($bienId){
+        return   response()->json( [
+            'statusCode'=>200,
+                'message'=>"biens recuperer avec success pour le proprietaire en question", 
+                'data'=>$bienId
+        ]) ;
+    }else{
+        return   response()->json( [
+            'statusCode'=>404,
+                'message'=>"nous n'avons pas trouver de  bien avec l'identifiant du proprietaire passer", 
+        ],404) ;
+    }
+     }
 }

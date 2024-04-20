@@ -1,34 +1,29 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
-return new class extends Migration
+class VilleSeederTwo extends Seeder
 {
     /**
-     * Run the migrations.
+     * Run the database seeds.
+     *
+     * @return void
      */
-    public function up(): void
+    public function run()
     {
-        Schema::create('villes', function (Blueprint $table) {
-            $table->id();
-            $table->string('nom' ,50) ;
-            // a modifier 
-            $table->dateTime('deleted_at') ->nullable();
-            // cle etrangere 
-            $table->foreignId('pay_id')->constrained(table:'pays');
-            $table->foreignId('region_id')->constrained(table:'regions');
-            // $table->string("region_id");
-            $table->timestamps();
-        });
-    }
+        // Supprime les données existantes de la table 'villes'
+        DB::table('villes')->truncate();
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('villes');
+        // Insérer des données de test dans la table 'villes'
+        $villes = [
+            ['nom' => 'Paris', 'pay_id' => 1, 'region_id' => 1],
+            ['nom' => 'Marseille', 'pay_id' => 1, 'region_id' => 1],
+            ['nom' => 'Lyon', 'pay_id' => 1, 'region_id' => 2],
+            // Ajoutez d'autres villes selon vos besoins
+        ];
+
+        // Insertion des données dans la table 'villes'
+        DB::table('villes')->insert($villes);
     }
-};
+}

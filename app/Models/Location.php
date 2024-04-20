@@ -22,4 +22,6 @@ class Location extends Model
         return $this->belongsTo(Contrat::class ,'contrat_id');
     }
 
+
+
 }
