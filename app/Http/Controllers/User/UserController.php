@@ -20,7 +20,7 @@ class UserController extends Controller
 
     public function checkAuth(Request $request)
     {
-        if (auth()->check()) {
+        if (Auth::guard('nom_du_guard_personnalise')->check() ){
             // L'utilisateur est authentifié
             return response()->json([
                 'statusCode' => 200,

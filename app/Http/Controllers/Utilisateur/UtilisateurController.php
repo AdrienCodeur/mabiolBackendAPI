@@ -282,39 +282,41 @@ public function deleteUtilisateur(string $id)
     ] ,404) ;
 }
 
+
+
+
+
    /**
      * @OA\Get(
-     *     path="/api/v1/utilisateurs/getAPL/{id}",
+     *     path="/api/v1/utilisateurs/getLocataires/{proprietaire_id}",
      *     tags={"Utilisateurs"},
-     *     summary="Liste tout les proprietaires/locataires pour un utilisateurs avec cette id ",
+     *     summary="Liste tous les proprietaires d'un locataires en passant l'id  du locataires",
      *     @OA\Parameter(
-     *         name="id",
+     *         name="proprietaire_id",
      *         in="path",
      *         required=true,
      *         description=" id de utilisateurs",
-     *         @OA\Schema(type="integer")
+     *         @OA\Schema(type="string")
      *     ),
      *     @OA\Response(response="200", description="Success"),
      *     @OA\Response(response="404", description="Resource not found")
      * )
      */
-
-
- public function getProprietaire($id)
-
+ public function getLocataires($proprietaire_id)
  {
+    $id = $proprietaire_id ;
     $utilisateur = Utilisateur::find($id) ;
     if($utilisateur){
         $result = $utilisateur->locataires ;
         return response()->json([
             "statusCode"=>200,
-            "message"=>"nous avons recuperer les proprietaires/locataires  pour le proprietaire/locataire  avec l'Id passer" ,
+            "message"=>"nous avons recuperer les locataire  du  proprietaires  avec l'Id passer" ,
             "data"=>$result
         ]) ;
     }else{
         return response()->json([
             "statusCode"=>404,
-            "message"=>"nous n'avons pas trouver de proprietaire/locataire avec cette identifiant"
+            "message"=>"nous n'avons pas trouver de locataire  pour le   proprietaire   avec identifiant"
         ],404) ;
 
     }

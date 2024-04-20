@@ -35,6 +35,16 @@ class Utilisateur extends Model
         return $this->hasManyThrough(Utilisateur::class, Location::class, 'utilisateur_id', 'id', 'id', 'locataire_id');
     }
    
-
+    public function proprietaires()
+    {
+        return $this->hasManyThrough(
+            Utilisateur::class, // La table finale
+            Location::class,    // La table intermédiaire
+            'locataire_id',     // Clé étrangère sur la table intermédiaire
+            'id',               // Clé primaire sur la table finale
+            'id',               // Clé primaire sur la table principale
+            'utilisateur_id'    // Clé étrangère sur la table intermédiaire
+        );
+    }
 
 }
