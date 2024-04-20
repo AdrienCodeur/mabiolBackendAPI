@@ -17,9 +17,9 @@ class LocationFactory extends Factory
     public function definition(): array
     {
         return [
-             'locataire_id'=>rand(1,5),
-             'utilisateur_id'=>rand(6,10) ,
-             'contrat_id'=>rand(1,5) ,
+             'locataire_id'=>rand(1,6),
+             'utilisateur_id'=>rand(7,11),
+             'contrat_id'=>rand(1,5),
              'slug'=>$this->faker->unique()->slug(2)
         ];
     }

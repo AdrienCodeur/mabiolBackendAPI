@@ -2163,6 +2163,20 @@
                 }
             }
         },
+        "/api/v1/user/checkAuth": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "check Auth",
+                "operationId": "f5e7d00b7d7f0cdb7efd283f0037f9e8",
+                "responses": {
+                    "200": {
+                        "description": "L'utilisateur est authentifié "
+                    }
+                }
+            }
+        },
         "/api/v1/user/login": {
             "post": {
                 "tags": [

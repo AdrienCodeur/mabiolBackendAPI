@@ -18,13 +18,25 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
 
+     /**
+ * @OA\Get(
+ *     path="/api/v1/user/checkAuth",
+ *     tags={"User"},
+ *     summary="check Auth",
+ *     @OA\Response(
+ *         response=200,
+ *         description="L'utilisateur est authentifié "
+ *     )
+ * )
+ */
     public function checkAuth(Request $request)
     {
-        if (Auth::guard('nom_du_guard_personnalise')->check() ){
+        if (Auth::guard('utilisateur')->check()){
             // L'utilisateur est authentifié
+            $utilisateur =  Auth::guard('utilisateur')->user();
             return response()->json([
                 'statusCode' => 200,
-                'data' => auth()->user(),
+                'data' =>  $utilisateur
             ]);
         } else {
             // L'utilisateur n'est pas authentifié
@@ -34,7 +46,7 @@ class UserController extends Controller
                 'message' => 'Utilisateur non authentifié.',
             ], 401);
         }
-    }
+    } 
     /** 
      * @OA\Post(
      *     path="/api/v1/user/login",
@@ -213,6 +225,8 @@ public function loginUtilisateur(Request $request)
     if($user){
         if(Hash::check($request->password, $user->password)){
             $token =    $user->createToken('privateekey')->plainTextToken;
+                // $userToken = Auth::guard('utilisateur')->user() ;
+                    // $token =$userToken->createToken('privateKeyToken')->plainTextToken;
             return   response()->json([
                 'message' => "utilisateur  connecter",
                 'token' => $token

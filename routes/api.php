@@ -155,7 +155,7 @@ Route::prefix('v1/locataire')->group(function () {
     Route::post('/create', [LocataireController::class, 'createLocataire']);
     Route::delete('/delete/{id}', [LocataireController::class, 'deleteLocataire']);
 });
-Route::prefix('v1/users')->group(function () {
+Route::prefix('v1/user')->group(function () {
     // route  get pour le authentifications
     Route::post('/login', [UserController::class, 'dologin']);
     Route::get('/checkAuth', [UserController::class, 'checkAuth']);
