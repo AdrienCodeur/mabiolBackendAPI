@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Location;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LocationRequest;
 use App\Models\Location;
+use App\Models\Utilisateur;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -27,15 +28,17 @@ class LocationsController extends Controller
  */
     public function getALLlocations()
     {
-        $location =  Location::all();
+        $location =  Location::all(); 
+    
+        
         return response()->json([
             'statusCode' => 200,
-            'message' => "type bien recuperer avec success",
-            'data' => $location
-        ]);
+            'message' => "locations recuperer avec success",
+            'data' =>$location
+        ],200);
     }
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in storage.[]
      */ /**
      * @OA\Put(
      *     path="/api/v1/location/edit/{id}",
@@ -148,7 +151,7 @@ class LocationsController extends Controller
                 if($location){
                         return   response()->json( [
                             'statusCode'=>200,
-                                'message'=>"type bien  recuperer avec success", 
+                                'message'=>"Location  recuperer avec success", 
                                 'data'=>$location
                         ]) ;
                 }else{
@@ -219,7 +222,7 @@ public function deleleLocation(string $id)
         if($location){
             return   response()->json( [
                 'statusCode'=>200,
-                    'message'=>"type bien  recuperer avec success", 
+                    'message'=>"location  recuperer avec success", 
                     'data'=>$location
             ]) ;
         }

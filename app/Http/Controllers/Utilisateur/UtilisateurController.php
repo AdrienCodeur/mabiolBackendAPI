@@ -282,5 +282,103 @@ public function deleteUtilisateur(string $id)
     ] ,404) ;
 }
 
+   /**
+     * @OA\Get(
+     *     path="/api/v1/utilisateurs/getAPL/{id}",
+     *     tags={"Utilisateurs"},
+     *     summary="Liste tout les proprietaires/locataires pour un utilisateurs avec cette id ",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description=" id de utilisateurs",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response="200", description="Success"),
+     *     @OA\Response(response="404", description="Resource not found")
+     * )
+     */
 
+
+ public function getProprietaire($id)
+
+ {
+    $utilisateur = Utilisateur::find($id) ;
+    if($utilisateur){
+        $result = $utilisateur->locataires ;
+        return response()->json([
+            "statusCode"=>200,
+            "message"=>"nous avons recuperer les proprietaires/locataires  pour le proprietaire/locataire  avec l'Id passer" ,
+            "data"=>$result
+        ]) ;
+    }else{
+        return response()->json([
+            "statusCode"=>404,
+            "message"=>"nous n'avons pas trouver de proprietaire/locataire avec cette identifiant"
+        ],404) ;
+
+    }
+
+ }
+ /**
+ * Update the specified resource in storage.
+ */ /**
+ * @OA\Put(
+ *     path="/api/v1/utilisateurs/editStatus/{id}",
+ *     tags={"Utilisateurs"},
+ *     summary="Update a proprietaire",
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         description="ID of the utilisateurs edit Status",
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"statut"},
+ *             @OA\Property(property="statut", type="string" ,example="Inactif"),
+ *         )
+ *     ),
+ *     @OA\Response(response="200", description="User updated"),
+ *     @OA\Response(response="404", description="User not found"),
+ *     @OA\Response(response="422", description="Validation error")
+ * ) 
+  */
+
+ public function updateStatus($id,Request $request){
+
+    $validator =   Validator::make($request->all() ,[
+        'statut' => 'required|string|',
+
+    ])  ;
+     
+    if($validator->fails()){
+        return response()->json([
+            'statusCode' => 422,
+            'message' => ' probleme de validation de donnee',
+            'error' => $validator->errors()
+        ],422);
+
+    }
+
+
+    $utilisateur = Utilisateur::find($id);
+    if($utilisateur){
+        $utilisateur->statut = $request->statut  ;
+        $utilisateur->save()  ;
+        return response()->json([
+            'statusCode' => 200,
+            'message' => 'status modifier avec success',
+            'data' => $utilisateur
+        ],200);
+    }else{
+        return response()->json([
+            'statusCode' => 404,
+            'message' => 'nous n\' avons pas trouver de  utilisateur avec cette id',
+        ],404);
+    }
+
+ }
 }

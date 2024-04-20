@@ -29,4 +29,12 @@ class Utilisateur extends Model
         
         $this->attributes['slug'] = Str::slug($value);
     }
+
+    public function locataires()
+    {
+        return $this->hasManyThrough(Utilisateur::class, Location::class, 'utilisateur_id', 'id', 'id', 'locataire_id');
+    }
+   
+
+
 }

@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
-            $table->string('slug' ,70) ;         
+            $table->string('slug' ,100) ;         
             $table->foreignId('locataire_id')->constrained(table:'utilisateurs');
             $table->foreignId('utilisateur_id')->constrained(table:'utilisateurs');
+            $table->unique(['locataire_id' ,'utilisateur_id']) ;
             $table->foreignId('contrat_id')->constrained(table:'contrats');
             $table->dateTime("deleted_at") ->nullable();
             $table->timestamps();

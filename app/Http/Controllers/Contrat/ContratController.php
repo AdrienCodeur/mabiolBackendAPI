@@ -26,7 +26,7 @@ class ContratController extends Controller
  */
     public function getAllContrat()
     {
-        $contrat = Contrat::paginate(30);
+        $contrat = Contrat::with('locataire')->get() ;
         return response()->json(
             [
                 "message" => 'contrats recuperer avec success',
@@ -89,7 +89,7 @@ class ContratController extends Controller
                 'statusCode' => 422,
                 'message' => 'probleme de validation de donnee',
                 'error' => $validator->errors()
-            ]);
+            ],422);
         }
         try {
             $dataContrat = $validator->validated() ;
@@ -113,7 +113,7 @@ class ContratController extends Controller
                 'statusCode' => 500,
                 'message' => 'un probleme est survenu ',
                 'error' => $e->getMessage()
-            ]);
+            ],500);
         }
     }
 
@@ -146,7 +146,7 @@ class ContratController extends Controller
         return response()->json([
             'statusCode' => 404,
             'message' => 'nous n\'avons pas trouver de contrat avec cette id',
-        ]);
+        ] ,404);
     }
 
     /**

@@ -25,6 +25,10 @@ class Contrat extends Model
     {
         return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
     }
+    public function locataire()
+    {
+        return $this->belongsTo(Utilisateur::class, 'locataire_id');
+    }
     public function location()
     {
         return $this->belongsTo(Location::class, 'location_id');
