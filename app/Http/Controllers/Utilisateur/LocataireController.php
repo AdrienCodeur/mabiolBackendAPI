@@ -282,5 +282,46 @@ class LocataireController extends Controller
             'message' => "nous n'avons pas trouver de utilisateurs avec cette id",
             "statusCode" => 404
         ], 404);
+        return response()->json([
+            'message' => "nous n'avons pas trouver de utilisateurs avec cette id",
+            "statusCode" => 404
+        ], 404);
+    }
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/v1/locataire/getProprietaires/{locataire_id}",
+     *     tags={"Locataires"},
+     *     summary="Liste tous les proprietaires d'un locataires en passant l'id  du locataires",
+     *     @OA\Parameter(
+     *         name="locataire_id",
+     *         in="path",
+     *         required=true,
+     *         description=" id de utilisateurs",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response="200", description="Success"),
+     *     @OA\Response(response="404", description="Resource not found")
+     * )
+     */
+
+    public function getProprietaire($locataire_id)
+    {
+        $id = $locataire_id;
+        $utilisateur = Utilisateur::find($id);
+        if ($utilisateur) {
+            $result = $utilisateur->proprietaires;
+            return response()->json([
+                "statusCode" => 200,
+                "message" => "nous avons recuperer les proprietaires  du  locataire  avec l'Id passer",
+                "data" => $result
+            ]);
+        } else {
+            return response()->json([
+                "statusCode" => 404,
+                "message" => "nous n'avons pas trouver de proprietaire  pour le locataire avec identifiant"
+            ], 404);
+        }
     }
 }

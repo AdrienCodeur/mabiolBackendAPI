@@ -18,15 +18,25 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
 
+    /**
+     * @OA\Get(
+     *     path="/api/v1/user/checkAuth",
+     *     tags={"User"},
+     *     summary="check Auth",
+     *     @OA\Response(
+     *         response=200,
+     *         description="L'utilisateur est authentifié "
+     *     )
+     * )
+     */
     public function checkAuth(Request $request)
     {
-        $user = Auth::user();
-
-        if ($user) {
+        if (Auth::guard('utilisateur')->check()) {
             // L'utilisateur est authentifié
+            $utilisateur =  Auth::guard('utilisateur')->user();
             return response()->json([
                 'statusCode' => 200,
-                'data' => auth()->user(),
+                'data' =>  $utilisateur
             ]);
         } else {
             // L'utilisateur n'est pas authentifié
@@ -211,20 +221,16 @@ class UserController extends Controller
                 'error' => $validator->errors()
             ], 422);
         }
-
-
-        $user =  Utilisateur::where('email', $request->email)
-            ->with(["typeUser" => function ($query) {
-                $query->select('id', 'libelle');
-            }])->first();
-
-
+        $user =  Utilisateur::where('email', $request->email)->first();
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 $token =    $user->createToken('privateekey')->plainTextToken;
+                // $userToken = Auth::guard('utilisateur')->user() ;
+                // $token =$userToken->createToken('privateKeyToken')->plainTextToken;
+                $user->api_token = $token;
+                $user->save();
                 return   response()->json([
                     'message' => "utilisateur  connecter",
-                    "data" => $user,
                     'token' => $token
                 ], 200);
             } else {
@@ -233,11 +239,6 @@ class UserController extends Controller
                     'statusCode' => 423
                 ], 423);
             }
-        } else {
-            return   response()->json([
-                'message' => "nous n'avons pas trouver d'utilisateurs avec cette addresse email ",
-                "statusCode" => 404,
-            ], 404);
         }
     }
 }

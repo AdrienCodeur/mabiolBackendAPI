@@ -2163,6 +2163,20 @@
                 }
             }
         },
+        "/api/v1/user/checkAuth": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "check Auth",
+                "operationId": "f5e7d00b7d7f0cdb7efd283f0037f9e8",
+                "responses": {
+                    "200": {
+                        "description": "L'utilisateur est authentifié "
+                    }
+                }
+            }
+        },
         "/api/v1/user/login": {
             "post": {
                 "tags": [
@@ -2479,6 +2493,34 @@
                 }
             }
         },
+        "/api/v1/locataire/getProprietaires/{locataire_id}": {
+            "get": {
+                "tags": [
+                    "Locataires"
+                ],
+                "summary": "Liste tous les proprietaires d'un locataires en passant l'id  du locataires",
+                "operationId": "48b187028597f3b070f30a41d0ddd15e",
+                "parameters": [
+                    {
+                        "name": "locataire_id",
+                        "in": "path",
+                        "description": " id de utilisateurs",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
         "/api/v1/utilisateurs": {
             "get": {
                 "tags": [
@@ -2669,21 +2711,21 @@
                 }
             }
         },
-        "/api/v1/utilisateurs/getAPL/{id}": {
+        "/api/v1/utilisateurs/getLocataires/{proprietaire_id}": {
             "get": {
                 "tags": [
                     "Utilisateurs"
                 ],
-                "summary": "Liste tout les proprietaires/locataires pour un utilisateurs avec cette id ",
-                "operationId": "a68690667f3a14153275b912a6b59d9f",
+                "summary": "Liste tous les proprietaires d'un locataires en passant l'id  du locataires",
+                "operationId": "7beb1497baa45beb382a3451e4e7906e",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "proprietaire_id",
                         "in": "path",
                         "description": " id de utilisateurs",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     }
                 ],

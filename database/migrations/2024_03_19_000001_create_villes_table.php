@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class VilleSeederTwo extends Seeder
+class VilleSeeder extends Seeder
 {
     /**
      * Run the database seeds.

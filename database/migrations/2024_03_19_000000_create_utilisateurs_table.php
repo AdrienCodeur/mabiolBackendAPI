@@ -20,9 +20,10 @@ return new class extends Migration
             $table->string('password') ;
             $table->string('sexe') ;
             $table->string('telephone'); 
+            $table->string('api_token', 80)->unique()->nullable()->default(null);
             // cle etrangerer 
             // $table->string('typeUserId') ;
-            $table->foreignId('type_user')->constrained(table:'type_users');
+            $table->foreignId('type_user')->constrained(table:'type_users')->nullable(false);
             $table->enum('statut' ,['actif' ,'inactif']);
             $table->string('slug' ,100)->unique() ;
             // a modifier 

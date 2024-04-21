@@ -137,7 +137,7 @@ Route::prefix('v1')->group(
 Route::prefix('v1/utilisateurs')->group(function () {
     // routes en post put p
     Route::get('/', [UtilisateurController::class, 'index']);
-    Route::get('/getAPL/{id}', [UtilisateurController::class, 'getProprietaire']);
+    Route::get('/getLocataires/{proprietaire_id}', [UtilisateurController::class, 'getLocataires']);
     Route::get('/show/{id}', [UtilisateurController::class, 'showUtilisateur']);
     // route post et put pour le model utitlisateur 
     Route::put('/edit/{id}', [UtilisateurController::class, 'editUtilisateur']);
@@ -153,11 +153,12 @@ Route::prefix('v1/locataire')->group(function () {
     Route::get('/', [LocataireController::class, 'index']);
     Route::get('/show/{id}', [LocataireController::class, 'showLocataire']);
     // route post et put pour le model utitlisateur 
+    Route::get('/getProprietaires/{locataire_id}', [LocataireController::class, 'getProprietaire']);
     Route::put('/edit/{id}', [LocataireController::class, 'editLocataire']);
     Route::post('/create', [LocataireController::class, 'createLocataire']);
     Route::delete('/delete/{id}', [LocataireController::class, 'deleteLocataire']);
 });
-Route::prefix('v1/users')->group(function () {
+Route::prefix('v1/user')->group(function () {
     // route  get pour le authentifications
     Route::post('/login', [UserController::class, 'dologin']);
     Route::post("/register", [UserController::class, 'store']);
@@ -171,10 +172,13 @@ Route::get("/login", function () {
     return "  formulaire de login  vous n'etes pas connecter ";
 })->name('login');
 
+
 Route::prefix('v1/utilisateur')->group(function () {
     // route  get pour le authentifications
+    Route::get("/CheckAuth",  [UserController::class, 'checkAuth']) ;
     Route::post('/login', [UserController::class, 'dologin']);
     Route::post("/register", [UserController::class, 'store']);
+
 });
 
 Route::get('v1/getProfile', [UserController::class, 'checkAuth']);
