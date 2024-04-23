@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Events\CreateUtilisateurEvent;
-use App\Events\RegisterUser;
 use App\Http\Controllers\Controller;
-use App\Mail\RegisterUserMail;
 use App\Models\User;
 use App\Models\Utilisateur;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller

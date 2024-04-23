@@ -175,10 +175,9 @@ Route::get("/login", function () {
 
 Route::prefix('v1/utilisateur')->group(function () {
     // route  get pour le authentifications
-    Route::get("/CheckAuth",  [UserController::class, 'checkAuth']) ;
+    Route::get("/CheckAuth",  [UserController::class, 'checkAuth']);
     Route::post('/login', [UserController::class, 'dologin']);
     Route::post("/register", [UserController::class, 'store']);
-
 });
 
-Route::get('v1/getProfile', [UserController::class, 'checkAuth']);
+// Route::get('v1/getProfile', [UserController::class, 'checkAuth']);
