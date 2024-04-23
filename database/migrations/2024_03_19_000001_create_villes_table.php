@@ -1,29 +1,28 @@
 <?php
 
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class VilleSeeder extends Seeder
+return new class extends Migration
 {
     /**
-     * Run the database seeds.
-     *
-     * @return void
+     * Run the migrations.
      */
-    public function run()
+    public function up(): void
     {
-        // Supprime les données existantes de la table 'villes'
-        DB::table('villes')->truncate();
-
-        // Insérer des données de test dans la table 'villes'
-        $villes = [
-            ['nom' => 'Paris', 'pay_id' => 1, 'region_id' => 1],
-            ['nom' => 'Marseille', 'pay_id' => 1, 'region_id' => 1],
-            ['nom' => 'Lyon', 'pay_id' => 1, 'region_id' => 2],
-            // Ajoutez d'autres villes selon vos besoins
-        ];
-
-        // Insertion des données dans la table 'villes'
-        DB::table('villes')->insert($villes);
+        Schema::create('villes', function (Blueprint $table) {
+            $table->id();
+            $table->string('nom' ,50) ;
+            // cle etrangerer  et a modifier;
+            $table->foreignId('pay_id')->constrained(table:'pays');
+            $table->foreignId('region_id')->constrained(table:'regions');
+            $table->dateTime("delete_at")->nullable() ;
+            $table->timestamps() ;
+        });
     }
-}
+    public function down(): void
+    {
+        Schema::dropIfExists('villes');
+    }
+};
