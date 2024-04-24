@@ -30,6 +30,8 @@ class UserController extends Controller
         if (Auth::guard('utilisateur')->check()) {
             // L'utilisateur est authentifié
             $utilisateur =  Auth::guard('utilisateur')->user();
+            $utilisateur->type_user = $utilisateur->typeUser;
+            // dd($utilisateur);
             return response()->json([
                 'statusCode' => 200,
                 'data' =>  $utilisateur
@@ -82,6 +84,7 @@ class UserController extends Controller
             //  return $user ;
             if ($user && Hash::check($request->password, $user->password)) {
                 $token =    $user->createToken('privatekey')->plainTextToken;
+                dd($user);
                 return   response()->json([
                     'message' => "utilisateur connecter",
                     "data" => $user,
@@ -225,8 +228,10 @@ class UserController extends Controller
                 // $token =$userToken->createToken('privateKeyToken')->plainTextToken;
                 $user->api_token = $token;
                 $user->save();
+                $user->type_user = $user->typeUser;
                 return   response()->json([
                     'message' => "utilisateur  connecter",
+                    'data' => $user,
                     'token' => $token
                 ], 200);
             } else {

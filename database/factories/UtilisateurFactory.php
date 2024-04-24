@@ -18,18 +18,16 @@ class UtilisateurFactory extends Factory
     public function definition(): array
     {
         return [
-                'nom'=>$this->faker->firstName ,
-                'addresse'=>$this->faker->address(),
-                'email'=>$this->faker->unique()->safeEmail() ,
-                'telephone'=>$this->faker->phoneNumber() ,
-                'slug'=>$this->faker->unique()->slug(4),
-                'statut'=>'actif',
-                'login'=>'login',
-                'password'=>Hash::make('12345') ,
-                'type_user'=>rand(1,2) ,
-                'sexe'=>array_rand(['feminum' ,'masculin'] ,1) ,
-
-
+            'nom' => $this->faker->firstName,
+            'addresse' => $this->faker->address(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'telephone' => $this->faker->phoneNumber(),
+            'slug' => $this->faker->unique()->slug(4),
+            'statut' => 'actif',
+            'login' => 'login',
+            'password' => Hash::make('12345'),
+            'type_user' => rand(1, 2),
+            'sexe' => array_rand(['feminum', 'masculin'], 1),
         ];
     }
 }
