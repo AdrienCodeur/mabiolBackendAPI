@@ -43,4 +43,9 @@ class Utilisateur extends Model
             'utilisateur_id'    // Clé étrangère sur la table intermédiaire
         );
     }
+
+    protected $hidden = [
+        'password',
+        // 'remember_token',
+    ];
 }

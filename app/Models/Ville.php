@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Ville extends Model
 {
     use HasFactory;
+
+    public function biens()
+    {
+        return $this->hasMany(Bien::class);
+    }
+
 }

@@ -25,10 +25,41 @@ class ProprieterController extends Controller
  * )
  */
  
-    public function getAllProprieter()
-
+    public function getAllProprieter(Request $request)
     {
-        $bien = Bien::whereNull("deleted_at")->get();
+        $type =$request->type ;
+        $region =$request->region ;
+        $ville =$request->ville;
+        $search = $request->search ;
+
+    //     $bien = Bien::query()
+    // ->whereNull("deleted_at")
+    // ->when($request->type, function ($query, $type) {
+    //     return $query->whereHas('typeBien', function ($query) use ($type) {
+    //         $query->where('type', $type);
+    //     });
+    // })
+    // ->when($request->region, function ($query, $region) {
+    //     return $query->whereHas('region', function ($query) use ($region) {
+    //         $query->where('region', $region);
+    //     });
+    // })
+    // ->when($request->ville, function ($query, $ville) {
+    //     return $query->whereHas('ville', function ($query) use ($ville) {
+    //         $query->where('ville', $ville);
+    //     });
+    // })
+    // ->when($request->search, function ($query, $search) {
+    //     return $query->where(function ($query) use ($search) {
+    //         $query->where('name', 'LIKE', "%{$search}%")
+    //               ->orWhere('description', 'LIKE', "%{$search}%")
+    //               ->orWhere('address', 'LIKE', "%{$search}%");
+    //     });
+    // })
+    // ->with(['typeBien' ,'proprietaire' ,'ville'])
+    // ->get();
+
+        $bien = Bien::whereNull("deleted_at")->with(['typeBien' ,'proprietaire' ,'ville'])->get();
         return response()->json(
             [
                 "message" => 'tout les biens recuperer avec success',
@@ -36,6 +67,9 @@ class ProprieterController extends Controller
                 'statusCode' => 200
             ]
         );
+
+
+
     }
 
     /**
@@ -115,11 +149,11 @@ class ProprieterController extends Controller
                 "numeroporte" =>'required|integer' ,
                 "zoneStationnement" =>'required|string' ,
                 "typemouvement" =>'required|string' ,
-                "ungarage" =>'required|boolean' ,
+                "ungarage" =>'required' ,
                 "ville_id"=>'required|exists:villes,id' ,
-                // "img"=>'required|string|array' ,
-                "unecave"=>'required|boolean' ,
-                "internet"=>'required|boolean' ,
+                "img"=>'required|url' ,
+                "unecave"=>'required|' ,
+                "internet"=>'required|' ,
                 'dep_tvecranplat'=>'required|boolean' ,
                 'dep_lingemaison'=>'required|boolean' ,
                 'dep_lavevaiselle'=>'required|boolean' ,
@@ -241,55 +275,65 @@ class ProprieterController extends Controller
             "numeroporte" =>'required|integer' ,
             "zoneStationnement" =>'required|string' ,
             "typemouvement" =>'required|string' ,
-            "ungarage" =>'required|boolean' ,
+            "ungarage" =>'required' ,
             "ville_id"=>'required|exists:villes,id' ,
-            // "img"=>'required|string' ,
+            "img.*"=>'required|url' ,
             "unecave"=>'required' ,
             "internet"=>'required' ,
-            'dep_tvecranplat'=>'required' ,
-            'dep_lingemaison'=>'required' ,
+            'dep_tvecranplat'=>'required|' ,
+            'dep_lingemaison'=>'required|' ,
             'dep_lavevaiselle'=>'required' ,
             "pc_gardiennage"=>'required' ,
             "pc_interphone"=>'required' ,
-            "pc_ascenseur"=>'required|boolean' ,
-            "pc_vide_ordure"=>'required|boolean' ,
-            "pc_espace_vert"=>'required|boolean' ,
-            "pc_chauffage_collective"=>'required|boolean' ,
-            "pc_eau_chaude_collective"=>'required|boolean' ,
-            "pc_antennetv_collective"=>'required|boolean' ,
+            "pc_ascenseur"=>'required|' ,
+            "pc_vide_ordure"=>'required|' ,
+            "pc_espace_vert"=>'required|' ,
+            "pc_chauffage_collective"=>'required|' ,
+            "pc_eau_chaude_collective"=>'required|' ,
+            "pc_antennetv_collective"=>'required|' ,
             "exist_balcon"=>'required' ,
-            "exist_cheminee"=>'required|boolean' ,
-            "exist_salle_manger"=>'required|boolean' ,
-            "exist_proxi_education"=>'required|boolean' ,
-            "exist_sous_sol"=>'required|boolean' ,
-            "exist_proxi_centre_sante"=>'required|boolean' ,
-            "exist_proxi_restaurant"=>'required|boolean' ,
+            "exist_cheminee"=>'required|' ,
+            "exist_salle_manger"=>'required|' ,
+            "exist_proxi_education"=>'required|' ,
+            "exist_sous_sol"=>'required|' ,
+            "exist_proxi_centre_sante"=>'required|' ,
+            "exist_proxi_restaurant"=>'required|' ,
             "anneeconstruction"=>'required' ,
             'nbr_salle_bain'=>'required|integer' ,
             "typeBien_id"=>'required|exists:typebiens,id' ,
-            'proprietaire_id' =>'required|exists:utilisateurs,id',
+            'proprietaire_id' =>'required||exists:utilisateurs,id',
         ])  ;
-         
         if($validator->fails()){
             return response()->json([
-                'statusCode' => 203,
+                'statusCode' => 422,
                 'message' => 'probleme de validation de donnee',
                 'error' => $validator->errors()
-            ]);
+            ],422);
         }
         try {
-            $dataBien= $validator->validated() ;
+            $dataBien=     $validator->validated() ;
+            // return $dataBien["images"] ; 
             $dataBien['slug'] = $request->nom ;
             $dataBien['statut'] = 'actif';
-            $dataBien['img'] =json_encode(['image1' ,'image2' ,'image3']);
+            $dataBien['img'] =json_encode($dataBien["img"]);
             $bien =  Bien::create($dataBien);
-            return response()->json(
-                [
-                    "message" => 'bien ajouter avec success',
-                    'data' => $bien,
-                    'statusCode' => 200
-                ]
-            );
+            if($bien){
+                return response()->json(
+                    [
+                        "message" => 'bien ajouter avec success',
+                        'data' => $bien,
+                        'statusCode' => 200
+                    ] ,200
+                );
+            }else{
+                return response()->json(
+                    [
+                        "message" => ' bien non ajouter une erreur est survenue ',
+                        'data' => $bien,
+                        'statusCode' => 500
+                    ],500);
+            }
+           
         } catch (Exception $e) {
             return response()->json([
                 'statusCode' => 500,
@@ -317,7 +361,45 @@ class ProprieterController extends Controller
     public function showProprieter($id)
     {
 
-            $bienId = Bien::find($id) ;
+        $bienId = Bien::with(['proprietaire' => function($query) {
+            $query->select('nom', 'telephone', 'email'); // Sélectionne les colonnes que tu veux retourner
+        }])->find($id);
+            if($bienId){
+            return   response()->json( [
+                'statusCode'=>200,
+                    'message'=>"bien  recuperer en particulier  avec success", 
+                    'data'=>$bienId
+            ]) ;
+        }else{
+            return   response()->json( [
+                'statusCode'=>404,
+                    'message'=>"nous n'avons pas trouver de  bien avec l'identifiant unique passer", 
+            ],404) ;
+        }
+    
+        
+}
+    /**
+     * @OA\Get(
+     *     path="/api/v1/proprieter/showWithSlug/{slug}",
+     *     tags={"Bien"},
+     *     summary="Get a specific resource",
+     *     @OA\Parameter(
+     *         name="slug",
+     *         in="path",
+     *         required=true,
+     *         description=" slug du Bien",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response="200", description="Success"),
+     *     @OA\Response(response="404", description="Resource not found")
+     * )
+     */
+
+    public function showProprieterForSlug($slug)
+    {
+
+            $bienId = Bien::where('slug' ,$slug)->with(['typeBien' ,'proprietaire' ,'ville']) ->get();
             if($bienId){
             return   response()->json( [
                 'statusCode'=>200,
@@ -401,4 +483,56 @@ public function deleteProprieter(string $id)
         ],404) ;
     }
      }
+
+     private function validateProperty(Request $request){
+
+        $validator =   Validator::make($request->all() ,[
+            'nom' => 'required|string',
+            "surface"=>'required|integer' ,
+           "addresse"=>'required|string' ,
+            "code_postal"=>'required|integer' ,
+            "nbrbatiment" =>'required|integer' ,
+            "nbrescalier" =>'required|integer' ,
+            "nbrchambre" =>'required|integer' ,
+            "numeroporte" =>'required|integer' ,
+            "zoneStationnement" =>'required|string' ,
+            "typemouvement" =>'required|string' ,
+            "ungarage" =>'required' ,
+            "ville_id"=>'required|exists:villes,id' ,
+            "img"=>'required|url' ,
+            "unecave"=>'required|' ,
+            "internet"=>'required|' ,
+            'dep_tvecranplat'=>'required|boolean' ,
+            'dep_lingemaison'=>'required|boolean' ,
+            'dep_lavevaiselle'=>'required|boolean' ,
+            "pc_gardiennage"=>'required|boolean' ,
+            "pc_interphone"=>'required|boolean' ,
+            "pc_ascenseur"=>'required|boolean' ,
+            "pc_vide_ordure"=>'required|boolean' ,
+            "pc_espace_vert"=>'required|boolean' ,
+            "pc_chauffage_collective"=>'required|boolean' ,
+            "pc_eau_chaude_collective"=>'required|boolean' ,
+            "pc_antennetv_collective"=>'required|boolean' ,
+            "exist_balcon"=>'required' ,
+            "exist_cheminee"=>'required' ,
+            "exist_salle_manger"=>'required|boolean' ,
+            "exist_proxi_education"=>'required|boolean' ,
+            "exist_sous_sol"=>'required|boolean' ,
+            "exist_proxi_centre_sante"=>'required|boolean' ,
+            "exist_proxi_restaurant"=>'required|boolean' ,
+            "anneeconstruction"=>'required' ,
+            'nbr_salle_bain'=>'required|integer' ,
+            "typeBien_id"=>'required|exists:typebiens,id' ,
+            'proprietaire_id' =>'required|exists:utilisateurs,id',
+        ])  ;
+        if($validator->fails()){
+            return response()->json([
+                'statusCode' => 203,
+                'message' => 'probleme de validation de donnee',
+                'error' => $validator->errors()
+            ]);
+        }
+
+     }
+     
 }

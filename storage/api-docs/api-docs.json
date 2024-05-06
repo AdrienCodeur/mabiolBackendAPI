@@ -1487,6 +1487,34 @@
                 }
             }
         },
+        "/api/v1/proprieter/showWithSlug/{slug}": {
+            "get": {
+                "tags": [
+                    "Bien"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "4809df24e05a14225f63ce700ae47fa1",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": " slug du Bien",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
         "/api/v1/proprieter/delete/{id}": {
             "delete": {
                 "tags": [

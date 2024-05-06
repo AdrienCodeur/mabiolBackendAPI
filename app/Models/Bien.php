@@ -12,12 +12,15 @@ class Bien extends Model
     protected $guarded = [];
     public function typeBien()
     {
-        return $this->belongsTo(TypeBien::class, 'type_bien');
+        return $this->belongsTo(TypeBien::class, 'typeBien_id');
     }
-
+    public function proprietaire()
+    {
+        return $this->belongsTo(Utilisateur::class, 'proprietaire_id');
+    }
     public function ville()
     {
-        return $this->belongsTo(ville::class, 'ville');
+        return $this->belongsTo(ville::class, 'ville_id');
     }
     public function finances()
     {
