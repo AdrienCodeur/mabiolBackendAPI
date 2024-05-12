@@ -36,6 +36,7 @@ Route::prefix('v1')->group(
             // route  get pour le model Proprieter
             Route::get('/', [ProprieterController::class, 'getAllProprieter']);
             Route::get('/show/{id}', [ProprieterController::class, 'showProprieter']);
+            Route::get('/showWithSlug/{slug}', [ProprieterController::class, 'showProprieterForSlug']);
             Route::get('/showForProprietaire/{proprietaire_id}', [ProprieterController::class, 'getAllProprieterForProprietaire']);
             // route post put pour Propertier
             Route::put('/edit/{id}', [ProprieterController::class, 'updateProprieter']);

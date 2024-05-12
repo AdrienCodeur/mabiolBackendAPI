@@ -24,7 +24,7 @@ class VilleController extends Controller
  */
     public function getAllVille()
     {
-         $ville = Ville::all() ;
+         $ville = Ville::with('biens')->get();
          return response()->json([
             "message" =>"villes recuperer avec success" ,
             'data'=>$ville
