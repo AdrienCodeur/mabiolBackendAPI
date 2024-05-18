@@ -66,33 +66,41 @@ class ContratController extends Controller
      */
     public function registerContrat(Request $request)
     {
-        $validator =   Validator::make($request->all(), [
-            'duree' => "required|",
-            'montantLoyer' => 'required|string',
-            'close_revision_loyer' => 'required|string',
-            'indice_reference' => 'required|string',
-            'description_bail' => 'required|string',
-            'closeparticuliere' => 'required|string',
-            'garantsolidaire' => 'required|string',
-            'aut_paiement' => 'required|string',
-            'aut_avis_echeance' => 'required|string',
-            'aut_quittance' => 'required|string',
-            "charge" => "required|",
-            "type_echange_id" => "required|exists:type_echanges ,id",
-            "type_paiement_id" => "required|exists:type_paiements ,id",
-            "type_contrat_id" => "required|exists:type_contrats ,id",
-            "utilisateur_id" => "required|exists:utilisateurs ,id",
-            "locataire_id" => "required|exists:utilisateurs ,id",
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'statusCode' => 422,
-                'message' => 'probleme de validation de donnee',
-                'error' => $validator->errors()
-            ],422);
+        // $validator =   Validator::make($request->all(), [
+        //     'duree' => "required|",
+        //     'montantLoyer' => 'required|string',
+        //     'close_revision_loyer' => 'required|string',
+        //     'indice_reference' => 'required|string',
+        //     'description_bail' => 'required|string',
+        //     'closeparticuliere' => 'required|string',
+        //     'garantsolidaire' => 'required|string',
+        //     'aut_paiement' => 'required|string',
+        //     'aut_avis_echeance' => 'required|string',
+        //     'aut_quittance' => 'required|string',
+        //     "charge" => "required|",
+        //     "type_echange_id" => "required|exists:type_echanges ,id",
+        //     "type_paiement_id" => "required|exists:type_paiements ,id",
+        //     "type_contrat_id" => "required|exists:type_contrats ,id",
+        //     "utilisateur_id" => "required|exists:utilisateurs ,id",
+        //     "locataire_id" => "required|exists:utilisateurs ,id",
+        // ]);
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'statusCode' => 422,
+        //         'message' => 'probleme de validation de donnee',
+        //         'error' => $validator->errors()
+        //     ],422);
+        // }
+        $validator=   $this->validateContrat($request);
+        if($validator !== null){
+         return response()->json([
+             'statusCode' => 422,
+             'message' => 'probleme de validation de donner',
+             'error' => $validator
+         ],422) ;
         }
         try {
-            $dataContrat = $validator->validated() ;
+            $dataContrat = $request->all() ;
             $dataContrat['slug'] = $request->charge ;
             $dataContrat['statut'] = "actif";
             $contrat =  Contrat::create($dataContrat);
@@ -192,33 +200,52 @@ class ContratController extends Controller
     {
         $contrat = Contrat::find($id);
         if ($contrat) {
-            $validator =   Validator::make($request->all(), [
-                'duree' => "required|",
-                'montantLoyer' => 'required|string',
-                'close_revision_loyer' => 'required|string',
-                'indice_reference' => 'required|string',
-                'description_bail' => 'required|string',
-                'closeparticuliere' => 'required|string',
-                'garantsolidaire' => 'required|string',
-                'aut_paiement' => 'required|string',
-                'aut_avis_echeance' => 'required|string',
-                'aut_quittance' => 'required|string',
-                "charge" => "required|",
-                "type_echange_id" => "required|exists:type_echanges ,id",
-                "type_paiement_id" => "required|exists:type_paiements ,id",
-                "type_contrat_id" => "required|exists:type_contrats ,id",
-                "utilisateur_id" => "required|exists:utilisateurs ,id",
-                "locataire_id" => "required|exists:utilisateurs ,id",
-            ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    'statusCode' => 422,
-                    'message' => 'probleme de validation de donnee',
-                    'error' => $validator->errors()
-                ]);
+            try{
+                $this->authorize('update', $contrat) ;
+                  }catch(Exception $e){
+                      return response()->json([
+                          'statusCode' => 403,
+                          'message' => ' probleme d\'authorisation',
+                          'error' => $e->getMessage()
+                      ], 403);
+                  }
+            // $validator =   Validator::make($request->all(), [
+            //     'duree' => "required|",
+            //     'montantLoyer' => 'required|string',
+            //     'close_revision_loyer' => 'required|string',
+            //     'indice_reference' => 'required|string',
+            //     'description_bail' => 'required|string',
+            //     'closeparticuliere' => 'required|string',
+            //     'garantsolidaire' => 'required|string',
+            //     'aut_paiement' => 'required|string',
+            //     'aut_avis_echeance' => 'required|string',
+            //     'aut_quittance' => 'required|string',
+            //     "charge" => "required|",
+            //     "type_echange_id" => "required|exists:type_echanges ,id",
+            //     "type_paiement_id" => "required|exists:type_paiements ,id",
+            //     "type_contrat_id" => "required|exists:type_contrats ,id",
+            //     "utilisateur_id" => "required|exists:utilisateurs ,id",
+            //     "locataire_id" => "required|exists:utilisateurs ,id",
+            // ]);
+            // if ($validator->fails()) {
+            //     return response()->json([
+            //         'statusCode' => 422,
+            //         'message' => 'probleme de validation de donnee',
+            //         'error' => $validator->errors()
+            //     ]);
+            // }
+
+            $validator=   $this->validateContrat($request);
+            if($validator !== null){
+             return response()->json([
+                 'statusCode' => 422,
+                 'message' => 'probleme de validation de donner',
+                 'error' => $validator
+             ],422) ;
             }
+
             try {
-                $contrat->update($validator->validated());
+                $contrat->update($request->all());
                 return response()->json([
                     'statusCode' => 200,
                     'message' => "contrat mis a jour  avec success",
@@ -263,6 +290,15 @@ class ContratController extends Controller
     {
         $contrat = Contrat::find($id);
         if ($contrat) {
+            try{
+                $this->authorize('delete', $contrat) ;
+                  }catch(Exception $e){
+                      return response()->json([
+                          'statusCode' => 403,
+                          'message' => ' probleme d\'authorisation',
+                          'error' => $e->getMessage()
+                      ], 403);
+                  }
             $contrat->deleted_at = Carbon::now();
             return response()->json([
                 'message' => "contrat suprimer avec succcess",
@@ -273,5 +309,36 @@ class ContratController extends Controller
             'message' => "nous n'avons pas trouver de contrat avec cette id",
             "statusCode" => 404
         ]);
+    }
+
+    private function  validateContrat($request){
+        
+        $validator =   Validator::make($request->all(), [
+            'duree' => "required|",
+            'montantLoyer' => 'required|string',
+            'close_revision_loyer' => 'required|string',
+            'indice_reference' => 'required|string',
+            'description_bail' => 'required|string',
+            'closeparticuliere' => 'required|string',
+            'garantsolidaire' => 'required|string',
+            'aut_paiement' => 'required|string',
+            'aut_avis_echeance' => 'required|string',
+            'aut_quittance' => 'required|string',
+            "charge" => "required|",
+            "type_echange_id" => "required|exists:type_echanges ,id",
+            "type_paiement_id" => "required|exists:type_paiements ,id",
+            "type_contrat_id" => "required|exists:type_contrats ,id",
+            "utilisateur_id" => "required|exists:utilisateurs ,id",
+            "locataire_id" => "required|exists:utilisateurs ,id",
+        ]);
+
+        if($validator->fails()){
+            return $validator->errors()  ;
+
+        }else{
+
+            return null ;
+        }
+
     }
 }

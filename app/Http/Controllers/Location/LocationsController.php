@@ -29,8 +29,7 @@ class LocationsController extends Controller
     public function getALLlocations()
     {
         $location =  Location::all(); 
-    
-        
+
         return response()->json([
             'statusCode' => 200,
             'message' => "locations recuperer avec success",
@@ -70,21 +69,39 @@ class LocationsController extends Controller
     {
         $location  = Location::find($id)  ;
         if($location){
-            $validator =   Validator::make($request->all() ,[
-                'locataire_id'=>'required|exists:utilisateurs,id' ,
-                'proprietaire'=>'required|exists:utilisateurs ,id' ,
-                'contrat_id'=>'required|exists:contrats ,id' ,
-                'slug'=>'required|string'
-            ])  ;
-            if($validator->fails()){
-                return response()->json([
-                    'statusCode' => 422,
-                    'message' => 'probleme de validation de donnee',
-                    'error' => $validator->errors()
-                ]);
-            }
+            try{
+                $this->authorize('update', $location) ;
+                  }catch(Exception $e){
+                      return response()->json([
+                          'statusCode' => 403,
+                          'message' => ' probleme d\'authorisation',
+                          'error' => $e->getMessage()
+                      ], 403);
+                  }
+            // $validator =   Validator::make($request->all() ,[
+            //     'locataire_id'=>'required|exists:utilisateurs,id' ,
+            //     'proprietaire'=>'required|exists:utilisateurs ,id' ,
+            //     'contrat_id'=>'required|exists:contrats ,id' ,
+            //     'slug'=>'required|string'
+            // ])  ;
+            // if($validator->fails()){
+            //     return response()->json([
+            //         'statusCode' => 422,
+            //         'message' => 'probleme de validation de donnee',
+            //         'error' => $validator->errors()
+            //     ]);
+            // }
+           $validator=   $this->ValidateLocation($request);
+           if($validator !== null){
+            return response()->json([
+                'statusCode' => 422,
+                'message' => 'probleme de validation de donner',
+                'error' => $validator
+            ],422);
+
+        }
             try {
-               $result =   $location->update($validator->validated());
+               $result =   $location->update($request->all());
                if($result){
                 return   response()->json( [
                     'statusCode'=>200,
@@ -133,21 +150,31 @@ class LocationsController extends Controller
     public function registerLocation(Request $request)
     {
 
-        $validator =   Validator::make($request->all() ,[
-            'locataire_id'=>'required|exists:utilisateurs,id' ,
-            'proprietaire'=>'required|exists:utilisateurs ,id' ,
-            'contrat_id'=>'required|exists:contrats ,id' ,
-            'slug'=>'required|string'
-        ])  ;
-        if($validator->fails()){
+           $validator=   $this->ValidateLocation($request) ;
+
+        // $validator =   Validator::make($request->all() ,[
+        //     'locataire_id'=>'required|exists:utilisateurs,id' ,
+        //     'proprietaire'=>'required|exists:utilisateurs ,id' ,
+        //     'contrat_id'=>'required|exists:contrats ,id' ,
+        //     'slug'=>'required|string'
+        // ])  ;
+        // if($validator->fails()){
+        //     return response()->json([
+        //         'statusCode' => 422,
+        //         'message' => 'probleme de validation de donnee',
+        //         'error' => $validator->errors()
+        //     ]);
+        // }
+        if($validator !== null){
             return response()->json([
                 'statusCode' => 422,
                 'message' => 'probleme de validation de donnee',
-                'error' => $validator->errors()
-            ]);
+                'error' => $validator
+            ],422);
+
         }
             try {
-        $location = Location::create($validator->validated());
+        $location = Location::create($request->all());
                 if($location){
                         return   response()->json( [
                             'statusCode'=>200,
@@ -156,17 +183,17 @@ class LocationsController extends Controller
                         ]) ;
                 }else{
                     return   response()->json( [
-                        'statusCode'=>203,
-                            'message'=>"location non  avec creer verifier vos donnees", 
+                        'statusCode'=>400,
+                            'message'=>"location non  a creer verifier vos donnees", 
                             // 'data'=>$location
-                    ]) ;
+                    ],400) ;
                 }
             } catch (Exception $e) {
                 return response()->json([
                     'statusCode' => 500,
                     'message' => 'un probleme est survenu ',
                     'error' => $e->getMessage()
-                ]);
+                ],500);
             }
     }    
     /**
@@ -189,6 +216,15 @@ public function deleleLocation(string $id)
 {
     $location = Location::find($id) ;
     if($location){
+        try{
+            $this->authorize('delete', $location) ;
+              }catch(Exception $e){
+                  return response()->json([
+                      'statusCode' => 403,
+                      'message' => ' probleme d\'authorisation',
+                      'error' => $e->getMessage()
+                  ], 403);
+              }
         $location->deleted_at = Carbon::now() ;
         return response()->json([
             'message'=>"location suprimer avec succcess" ,
@@ -231,5 +267,19 @@ public function deleleLocation(string $id)
                 'message'=>"nous n'avons pas trouver de location avec cette id", 
         ]) ;
       
+    }
+
+    private function  ValidateLocation($request){
+        $validator =   Validator::make($request->all() ,[
+            'locataire_id'=>'required|exists:utilisateurs,id' ,
+            'proprietaire'=>'required|exists:utilisateurs ,id' ,
+            'contrat_id'=>'required|exists:contrats ,id' ,
+            'slug'=>'required|string'
+        ])  ;
+        if($validator->fails()){
+            return   $validator->errors()   ;
+        }
+        return null ;
+
     }
 }

@@ -85,25 +85,43 @@ class UtilisateurController extends Controller
         // return $request ;
         $utilisateurId =  Utilisateur::find($id);
         if ($utilisateurId) {
-            $validator =   Validator::make($request->all(), [
-                'email' => ['required', 'email ', Rule::unique('utilisateurs')->ignore($utilisateurId->id),],
-                'password' => 'required|min:5',
-                'nom' => 'required|string',
-                'telephone' => 'required|string',
-                'addresse' => 'required|string',
-                'sexe' => 'required|string',
-                // 'type_user_id' => 'required|exists:type_users,id'
-            ]);
+            try{
+                $this->authorize('update', $utilisateurId) ;
+                  }catch(Exception $e){
+                      return response()->json([
+                          'statusCode' => 403,
+                          'message' => ' probleme d\'authorisation',
+                          'error' => $e->getMessage()
+                      ], 403);
+                  }
+            // $validator =   Validator::make($request->all(), [
+            //     'email' => ['required', 'email ', Rule::unique('utilisateurs')->ignore($utilisateurId->id),],
+            //     'password' => 'required|min:5',
+            //     'nom' => 'required|string',
+            //     'telephone' => 'required|string',
+            //     'addresse' => 'required|string',
+            //     'sexe' => 'required|string',
+            //     // 'type_user_id' => 'required|exists:type_users,id'
+            // ]);
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'statusCode' => 203,
-                    'message' => ' probleme de validation de donnee',
-                    'error' => $validator->errors()
-                ]);
-            }
+            // if ($validator->fails()) {
+            //     return response()->json([
+            //         'statusCode' => 203,
+            //         'message' => ' probleme de validation de donnee',
+            //         'error' => $validator->errors()
+            //     ]);
+            // }
+            $validator =  $this->validateUtilisateur($request);
+        if ($validator!==null) {
+            // Si le validateur renvoie des erreurs, retourner une réponse avec les erreurs
+            return response()->json([
+                'statusCode' => 422,
+                'message' => 'Problème de validation de données',
+                'errors' => $validator
+            ], 422);
+        }
             try {
-                $utilisateurUpdate =    $utilisateurId->update($validator->validated());
+                $utilisateurUpdate =    $utilisateurId->update($request->all());
                 if ($utilisateurUpdate) {
                     return response()->json([
                         'statusCode' => 200,
@@ -153,21 +171,31 @@ class UtilisateurController extends Controller
      */
     public function createUtilisateur(Request $request)
     {
-        $validator =   Validator::make($request->all(), [
-            'email' => 'required|string|email|unique:utilisateurs,email',
-            'password' => 'required|min:5',
-            'nom' => 'required|string',
-            'telephone' => 'required|string',
-            'addresse' => 'required|string',
-            'sexe' => 'required|string',
-            // 'type_user_id' => 'required|exists:type_users,id'
-        ]);
+        // $validator =   Validator::make($request->all(), [
+        //     'email' => 'required|string|email|unique:utilisateurs,email',
+        //     'password' => 'required|min:5',
+        //     'nom' => 'required|string',
+        //     'telephone' => 'required|string',
+        //     'addresse' => 'required|string',
+        //     'sexe' => 'required|string',
+        //     // 'type_user_id' => 'required|exists:type_users,id'
+        // ]);
 
-        if ($validator->fails()) {
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'statusCode' => 422,
+        //         'message' => ' probleme de validation de donnee',
+        //         'error' => $validator->errors()
+        //     ], 422);
+        // }
+
+        $validator =  $this->validateUtilisateur($request);
+        if ($validator!==null) {
+            // Si le validateur renvoie des erreurs, retourner une réponse avec les erreurs
             return response()->json([
                 'statusCode' => 422,
-                'message' => ' probleme de validation de donnee',
-                'error' => $validator->errors()
+                'message' => 'Problème de validation de données',
+                'errors' => $validator
             ], 422);
         }
         try {
@@ -194,10 +222,10 @@ class UtilisateurController extends Controller
                 ], 200);
             } else {
                 return response()->json([
-                    'statusCode' => 203,
+                    'statusCode' => 500,
                     'message' => "utilisateur n'a pas ete creer",
                     // 'data'=>$userUtilisateur   
-                ], 203);
+                ], 500);
             }
         } catch (Exception $e) {
             return response()->json([
@@ -208,7 +236,27 @@ class UtilisateurController extends Controller
         }
     }
 
-    // to create the user and login it directly
+   /** 
+     * @OA\Post(
+     *     path="/api/v1/utilisateurs/create_and_login",
+     *     tags={"Utilisateurs"},
+     *     summary="Create a new  utilisateurs",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email" ,"password" ,"nom","telephone","addresse"},
+     *             @OA\Property(property="email", type="string") ,
+     *             @OA\Property(property="password", type="string") ,
+     *             @OA\Property(property="nom", type="string") ,
+     *             @OA\Property(property="sexe", type="string") ,
+     *             @OA\Property(property="telephone", type="string") ,
+     *             @OA\Property(property="addresse", type="string") ,
+     *         )
+     *     ),
+     *     @OA\Response(response="201", description="utilisateurs created"),
+     *     @OA\Response(response="422", description="Validation error")
+     * )
+     */
     public function createAndLoginUser(Request $request)
     {
         $validator =   Validator::make($request->all(), [
@@ -219,7 +267,6 @@ class UtilisateurController extends Controller
             'addresse' => 'required|string',
             'sexe' => 'required|string',
         ]);
-
         if ($validator->fails()) {
             return response()->json([
                 'statusCode' => 422,
@@ -246,11 +293,9 @@ class UtilisateurController extends Controller
             if ($newUtilisateur) {
                 // Récupérer le libellé du type d'utilisateur associé
                 $typeUserLibelle = $typeUser->libelle;
-
                 // Remplacer l'ID du type d'utilisateur par son libellé dans la réponse JSON
                 $newUtilisateur->type_user = $typeUserLibelle;
-                $token =    $newUtilisateur->createToken('privateekey')->plainTextToken;
-
+                $token =    $newUtilisateur->createToken('utilisateurKey')->plainTextToken;
                 if ($token) {
                     // Retourner la réponse avec le token
                     return response()->json([
@@ -283,7 +328,7 @@ class UtilisateurController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/v1/utilisateurs/show/{id}",
+     *     path="/api/v1/utilisateurs/showBy/{id}",
      *     tags={"Utilisateurs"},
      *     summary="Get a specific resource",
      *     @OA\Parameter(
@@ -297,7 +342,7 @@ class UtilisateurController extends Controller
      *     @OA\Response(response="404", description="Resource not found")
      * )
      */
-    public function showUtilisateur($id)
+    public function showUtilisateurById($id)
     {
         $utilisateurId = Utilisateur::with('typeUser')->whereHas('typeUser', function ($query) {
             $query->where('libelle', 'Proprietaire');
@@ -309,6 +354,48 @@ class UtilisateurController extends Controller
                     'message' => " proprietaire  recuperer en particulier  avec success",
                     'data' => $utilisateurId
                 ], 203);
+            } else {
+                return   response()->json([
+                    'statusCode' => 404,
+                    'message' => "nous n'avons pas trouver de proprietaire  avec l'identifiant unique passer",
+                ], 404);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'statusCode' => 500,
+                'message' => 'un probleme est survenu ',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+        /**
+     * @OA\Get(
+     *     path="/api/v1/utilisateurs/showBy/{slug}",
+     *     tags={"Utilisateurs"},
+     *     summary="Get a specific resource",
+     *     @OA\Parameter(
+     *         name="slug",
+     *         in="path",
+     *         required=true,
+     *         description=" id de utilisateurs",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response="200", description="Success"),
+     *     @OA\Response(response="404", description="Resource not found")
+     * )
+     */
+    public function showUtilisateurBySlug($slug)
+    {
+        $utilisateurId = Utilisateur::with('typeUser')->whereHas('typeUser', function ($query) {
+            $query->where('libelle', 'Proprietaire');
+        })->find($slug);
+        try {
+            if ($utilisateurId) {
+                return   response()->json([
+                    'statusCode' => 200,
+                    'message' => " proprietaire  recuperer en particulier  avec success",
+                    'data' => $utilisateurId
+                ], 200);
             } else {
                 return   response()->json([
                     'statusCode' => 404,
@@ -344,6 +431,15 @@ class UtilisateurController extends Controller
     {
         $utilisateurs = Utilisateur::find($id);
         if ($utilisateurs) {
+            try{
+                $this->authorize('delete', $utilisateurs) ;
+                  }catch(Exception $e){
+                      return response()->json([
+                          'statusCode' => 403,
+                          'message' => ' probleme d\'authorisation',
+                          'error' => $e->getMessage()
+                      ], 403);
+                  }
             $utilisateurs->deleted_at = Carbon::now();
             $utilisateurs->save();
             return response()->json([
@@ -382,6 +478,16 @@ class UtilisateurController extends Controller
         $id = $proprietaire_id;
         $utilisateur = Utilisateur::find($id);
         if ($utilisateur) {
+            // pour  gerer les authorizations 
+            try{
+                $this->authorize('update', $utilisateur) ;
+            }catch(Exception $e){
+                return response()->json([
+                    'statusCode' => 403,
+                    'message' => ' probleme d\'authorisation',
+                    'error' => $e->getMessage()
+                ], 403);
+            }
             $result = $utilisateur->locataires;
             return response()->json([
                 "statusCode" => 200,
@@ -439,12 +545,9 @@ class UtilisateurController extends Controller
 
     public function updateStatus($id, Request $request)
     {
-
         $validator =   Validator::make($request->all(), [
             'statut' => 'required|string|',
-
         ]);
-
         if ($validator->fails()) {
             return response()->json([
                 'statusCode' => 422,
@@ -452,9 +555,16 @@ class UtilisateurController extends Controller
                 'error' => $validator->errors()
             ], 422);
         }
-
-
         $utilisateur = Utilisateur::find($id);
+        try{
+            $this->authorize('update', $utilisateur) ;
+        }catch(Exception $e){
+            return response()->json([
+                'statusCode' => 403,
+                'message' => ' probleme d\'authorisation',
+                'error' => $e->getMessage()
+            ], 403);
+        }
         if ($utilisateur) {
             $utilisateur->statut = $request->statut;
             $utilisateur->save();
@@ -469,5 +579,22 @@ class UtilisateurController extends Controller
                 'message' => 'nous n\' avons pas trouver de  utilisateur avec cette id',
             ], 404);
         }
+    }
+
+    private function  validateUtilisateur($request){
+        $validator =   Validator::make($request->all(), [
+            'email' => 'required|string|email|unique:utilisateurs,email',
+            'password' => 'required|min:5',
+            'nom' => 'required|string',
+            'telephone' => 'required|string',
+            'addresse' => 'required|string',
+            'sexe' => 'required|string',
+        ]);
+        if ($validator->fails()) {
+            return $validator->errors();
+        }else{
+        return  null ; 
+        }
+
     }
 }

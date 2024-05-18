@@ -80,10 +80,19 @@ class AbonneesController extends Controller
                 'error' => $validator->errors()
             ]);
         }
+        $validator=   $this->validateAbonnee($request);
+            if($validator !== null){
+             return response()->json([
+                 'statusCode' => 422,
+                 'message' => 'probleme de validation de donner',
+                 'error' => $validator
+             ],422) ;
+            }
+
          $abonnee = Abonnee::find($id) ;
          if($abonnee){
             try {
-                $abonnee->update($validator->validated());
+                $abonnee->update($request->all());
                 return response()->json(
                     [
                         "message" => 'abonnee mis a jour avec success',
@@ -229,4 +238,18 @@ class AbonneesController extends Controller
         ]) ;
     }
     
+    private function validateAbonnee($request){
+        $validator =   Validator::make($request->all() ,[
+            'statut' => 'required|string',
+            'slug' => 'required|string',
+            'utilisateur_id' => 'required|exists:utilisateurs,id' ,
+            'typeabonnement_id' => 'required|exists:type_abonnements,id'
+        ])  ;
+         
+        if($validator->fails()){
+            return  $validator->errors()  ;
+        }else{
+            return null ;
+        }
+    }
 }

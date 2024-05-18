@@ -1143,11 +1143,45 @@
                 "tags": [
                     "Bien"
                 ],
-                "summary": "Liste des Bien",
+                "summary": "Récupérer des Biens en fonction des paramètres",
                 "operationId": "22bcbd0c9d85274fe9aa3354e3ad2454",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Type de Bien",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "region",
+                        "in": "query",
+                        "description": "Région du Bien",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ville",
+                        "in": "query",
+                        "description": "Ville du Bien",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Terme de recherche",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Liste des utilisateurs récupérée avec succès"
+                        "description": "Liste des Biens récupérée avec succès"
                     }
                 }
             }
@@ -2683,13 +2717,67 @@
                 }
             }
         },
-        "/api/v1/utilisateurs/show/{id}": {
+        "/api/v1/utilisateurs/create_and_login": {
+            "post": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Create a new  utilisateurs",
+                "operationId": "2beec5cb315fa34389f0a93ad4981ce5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "nom",
+                                    "telephone",
+                                    "addresse"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "sexe": {
+                                        "type": "string"
+                                    },
+                                    "telephone": {
+                                        "type": "string"
+                                    },
+                                    "addresse": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "utilisateurs created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/utilisateurs/showBy/{id}": {
             "get": {
                 "tags": [
                     "Utilisateurs"
                 ],
                 "summary": "Get a specific resource",
-                "operationId": "c092670f311fe799fd525ac4865f55e2",
+                "operationId": "a0a81d7b94b0eea2ae16ac75a5b6a1f2",
                 "parameters": [
                     {
                         "name": "id",
@@ -2698,6 +2786,34 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/utilisateurs/showBy/{slug}": {
+            "get": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "88ca4ef20e82b0d0f1cbe4f9a2301348",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": " id de utilisateurs",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],

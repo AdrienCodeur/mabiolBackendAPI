@@ -45,7 +45,7 @@ class Utilisateur extends Model
     }
 
     protected $hidden = [
-        'password',
+        'password','api_token'
         // 'remember_token',
     ];
 }
