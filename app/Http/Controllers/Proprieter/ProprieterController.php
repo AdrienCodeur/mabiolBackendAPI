@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Proprieter;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProprierterRequest;
 use App\Models\Bien;
 use Carbon\Carbon;
 use Exception;
