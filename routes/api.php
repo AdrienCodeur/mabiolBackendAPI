@@ -149,8 +149,8 @@ Route::prefix('v1/utilisateurs')->group(function () {
 
     Route::get('/', [UtilisateurController::class, 'index']);
     Route::get('/getLocataires/{proprietaire_id}', [UtilisateurController::class, 'getLocataires']);
-    Route::get('/showBy/{id}', [UtilisateurController::class, 'showUtilisateurByID']);
-    Route::get('/showBy/{slug}', [UtilisateurController::class, 'showUtilisateurBySlug']);
+    Route::get('/showById/{id}', [UtilisateurController::class, 'showUtilisateurByID']);
+    Route::get('/showBySlug/{slug}', [UtilisateurController::class, 'showUtilisateurBySlug']);
     // route post et put pour le model utitlisateur 
     Route::put('/edit/{id}', [UtilisateurController::class, 'editUtilisateur'])->middleware('auth:sanctum');
     Route::put('/editStatus/{id}', [UtilisateurController::class, 'updateStatus'])->middleware('auth:sanctum');

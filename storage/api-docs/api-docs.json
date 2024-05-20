@@ -2772,13 +2772,13 @@
                 }
             }
         },
-        "/api/v1/utilisateurs/showBy/{id}": {
+        "/api/v1/utilisateurs/showById/{id}": {
             "get": {
                 "tags": [
                     "Utilisateurs"
                 ],
                 "summary": "Get a specific resource",
-                "operationId": "a0a81d7b94b0eea2ae16ac75a5b6a1f2",
+                "operationId": "20909286bbaeae07f01e39960d58cbef",
                 "parameters": [
                     {
                         "name": "id",
@@ -2800,13 +2800,13 @@
                 }
             }
         },
-        "/api/v1/utilisateurs/showBy/{slug}": {
+        "/api/v1/utilisateurs/showBySlug/{slug}": {
             "get": {
                 "tags": [
                     "Utilisateurs"
                 ],
                 "summary": "Get a specific resource",
-                "operationId": "88ca4ef20e82b0d0f1cbe4f9a2301348",
+                "operationId": "df4d63b120261ba52f00bd5d6c9746c1",
                 "parameters": [
                     {
                         "name": "slug",

@@ -83,10 +83,10 @@ class UtilisateurController extends Controller
     {
 
         // return $request ;
-        $utilisateurId =  Utilisateur::find($id);
-        if ($utilisateurId) {
+        $utilisateur =  Utilisateur::find($id);
+        if ($utilisateur) {
             try{
-                $this->authorize('update', $utilisateurId) ;
+                $this->authorize('update', $utilisateur) ;
                   }catch(Exception $e){
                       return response()->json([
                           'statusCode' => 403,
@@ -121,12 +121,12 @@ class UtilisateurController extends Controller
             ], 422);
         }
             try {
-                $utilisateurUpdate =    $utilisateurId->update($request->all());
+                $utilisateurUpdate =    $utilisateur->update($request->all());
                 if ($utilisateurUpdate) {
                     return response()->json([
                         'statusCode' => 200,
                         'message' => "locataire mis a jour  success",
-                        'data' => $utilisateurId
+                        'data' => $utilisateur
                     ], 200);
                 } else {
                     return response()->json([
@@ -328,7 +328,7 @@ class UtilisateurController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/v1/utilisateurs/showBy/{id}",
+     *     path="/api/v1/utilisateurs/showById/{id}",
      *     tags={"Utilisateurs"},
      *     summary="Get a specific resource",
      *     @OA\Parameter(
@@ -370,7 +370,7 @@ class UtilisateurController extends Controller
     }
         /**
      * @OA\Get(
-     *     path="/api/v1/utilisateurs/showBy/{slug}",
+     *     path="/api/v1/utilisateurs/showBySlug/{slug}",
      *     tags={"Utilisateurs"},
      *     summary="Get a specific resource",
      *     @OA\Parameter(
@@ -386,20 +386,21 @@ class UtilisateurController extends Controller
      */
     public function showUtilisateurBySlug($slug)
     {
-        $utilisateurId = Utilisateur::with('typeUser')->whereHas('typeUser', function ($query) {
-            $query->where('libelle', 'Proprietaire');
-        })->find($slug);
+        $utilisateur = Utilisateur::with('typeUser')
+        ->where('slug', $slug)
+        ->first();
         try {
-            if ($utilisateurId) {
+            if ($utilisateur) {
                 return   response()->json([
                     'statusCode' => 200,
-                    'message' => " proprietaire  recuperer en particulier  avec success",
-                    'data' => $utilisateurId
+                    'message' => " utilisateur  recuperer en particulier  avec success",
+                    'data' => $utilisateur
                 ], 200);
             } else {
                 return   response()->json([
-                    'statusCode' => 404,
+                    'statusCode' => 405,
                     'message' => "nous n'avons pas trouver de proprietaire  avec l'identifiant unique passer",
+                    "data" =>$utilisateur ,
                 ], 404);
             }
         } catch (Exception $e) {

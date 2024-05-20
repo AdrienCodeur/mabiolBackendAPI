@@ -63,7 +63,6 @@ class ProprieterController extends Controller
         $region = $request->region;
         $ville = $request->ville;
         $search = $request->search;
-        $slug = $request->slug;
 
         // return response()->json(
         //     [
@@ -74,34 +73,33 @@ class ProprieterController extends Controller
         //     200
         // );
     
-        
         $bien = Bien::query()
-            ->whereNull("deleted_at")
-            ->with(['typeBien', 'proprietaire', 'ville'])
-            ->when($request->type, function ($query, $type) {
-                return $query->whereHas('typeBien', function ($query) use ($type) {
-                    $query->where('libelle' ,'LIKE', "%{$type}%");
-                });
-            })
-            ->when($request->region, function ($query, $region) {
-                return $query->whereHas('ville.region', function ($query) use ($region) {
-                    $query->where('nom',  'LIKE', "%{$region}%");
-                });
-            })
-            ->when($request->ville, function ($query, $ville) {
-                return $query->whereHas('ville', function ($query) use ($ville) {
-                    $query->where('nom',  'LIKE', "%{$ville}%");
-                });
-            })
-            ->when($request->search, function ($query, $search) {
-                return $query->where(function ($query) use ($search) {
-                    $query->where('nom', 'LIKE', "%{$search}%")
-                        ->orWhere('slug', 'LIKE', "%{$search}%")
-                        ->orWhere('addresse', 'LIKE', "%{$search}%");
-                });
-            })
-            ->get();
-
+        ->whereNull("deleted_at")
+        ->with(['typeBien', 'proprietaire', 'ville'])
+        ->when($request->type, function ($query, $type) {
+            return $query->orWhereHas('typeBien', function ($query) use ($type) {
+                $query->where('libelle' ,'LIKE', "%{$type}%");
+            });
+        })
+        ->when($request->region, function ($query, $region) {
+            return $query->orWhereHas('ville.region', function ($query) use ($region) {
+                $query->where('nom',  'LIKE', "%{$region}%");
+            });
+        })
+        ->when($request->ville, function ($query, $ville) {
+            return $query->orWhereHas('ville', function ($query) use ($ville) {
+                $query->where('nom',  'LIKE', "%{$ville}%");
+            });
+        })
+        ->when($request->search, function ($query, $search) {
+            return $query->where(function ($query) use ($search) {
+                $query->where('nom', 'LIKE', "%{$search}%")
+                    ->orWhere('slug', 'LIKE', "%{$search}%")
+                    ->orWhere('addresse', 'LIKE', "%{$search}%");
+            });
+        })
+        ->get();
+    
         if (!$bien->isEmpty()) {
             return response()->json(
                 [
@@ -114,11 +112,11 @@ class ProprieterController extends Controller
         }
             return response()->json(
                 [
-                    "message" => 'aucun bien ne correspon a vos criteres de recherche',
+                    "message" => "aucun bien ne correspond a vos criteres de recherche",
                     'data' => $bien,
-                    'statusCode' => 404
+                    'statusCode' => 200
                 ],
-                404
+                200
             );
         
     }
