@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\getMessageForUser;
 use App\Events\getMessageForUserEvent;
 use App\Events\SendMessageForUser;
 use App\Http\Requests\MessageRequest;
@@ -27,13 +26,16 @@ class MyMessageController extends Controller
 
     public function getAllMessages()
     {
-        $messages =  Message::all();
-        event(new getMessageForUserEvent($messages)) ;
+        $message =  Message::with(['sender:id,nom' ,'receiver:id,nom'])->get();
+        if($message){
+            event(new getMessageForUserEvent($message)) ;
         return response()->json([
             'statusCode' => 200,
             'message' => "message recuperer avec success",
-            'data' => $messages
+            'data' => $message
         ]);
+        }
+        
     }
     /**
      * @OA\Put(
@@ -107,19 +109,19 @@ class MyMessageController extends Controller
      */
     public function registerMessage(Request $request)
     {
-        $validator =   Validator::make($request->all(), [
-            'emetteur_id' => 'required|string|exists:utilisateurs,id',
-            'recepteur_id' => 'required|string|exists:utilisateurs,id',
-            'contenue' => 'required|string',
-            // 'type_user_id' => 'required|exists:type_users,id'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'statusCode' => 203,
-                'message' => ' probleme de validation de donnee',
-                'error' => $validator->errors()
-            ]);
-        }
+        // $validator =   Validator::make($request->all(), [
+        //     'emetteur_id' => 'required|string|exists:utilisateurs,id',
+        //     'recepteur_id' => 'required|string|exists:utilisateurs,id',
+        //     'contenue' => 'required|string',
+        //     // 'type_user_id' => 'required|exists:type_users,id'
+        // ]);
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'statusCode' => 403,
+        //         'message' => ' probleme de validation de donnee',
+        //         'error' => $validator->errors()
+        //     ],403);
+        // }
         try {
             // return $request->all() ;
             $message = new  Message();
@@ -127,7 +129,7 @@ class MyMessageController extends Controller
             $message->emetteur_id = $request->emetteur_id ;
             $message->contenue = $request->contenue;
             $message->statut = "unread";
-            $message->slug = 'slug';
+            $message->slug = 'slug75ftfgvv';
             $message->save();
             if ($message) {
                 event(new SendMessageForUser($message));

@@ -30,6 +30,15 @@ use App\Http\Controllers\Contrat\ContratController;
 use App\Http\Controllers\Utilisateur\LocataireController;
 use App\Http\Controllers\Ville\VilleController;
 
+
+Route::any("/login", function () {
+    
+    return response()->json([
+        'statusCode' => 422,
+        'message' => 'utilisateur  pas  connecter',
+    ],422);
+})->name('login');
+
     Route::prefix('v1')->group(
         function () {
             Route::prefix('/proprieter')->group(function () {
@@ -39,7 +48,7 @@ use App\Http\Controllers\Ville\VilleController;
                 Route::get('/showWithSlug/{slug}', [ProprieterController::class, 'showProprieterForSlug']);
                 Route::get('/showForProprietaire/{proprietaire_id}', [ProprieterController::class, 'getAllProprieterForProprietaire']);
                 // route post put pour Propertier
-                Route::put('/edit/{id}', [ProprieterController::class, 'updateProprieter'])->middleware('auth:sanctum');
+                Route::put('/edit/{id}', [ProprieterController::class, 'updateProprieter'])->middleware('auth:sanctum') ;
                 Route::post('/create', [ProprieterController::class, 'registerProprieter']);
                 Route::delete('/delete/{id}', [ProprieterController::class, 'deleteProprieter'])->middleware('auth:sanctum');
             });
@@ -126,7 +135,7 @@ use App\Http\Controllers\Ville\VilleController;
         });
         Route::prefix('/message')->controller(MyMessageController::class)->group(function () {
             // route  get pour le model TyperUser
-            Route::get('get/',  'getAllMessages');
+            Route::get('/',  'getAllMessages');
             Route::get('/show/{message}',  'showMessage');
             // route post put pour le model TyperUser
             Route::post('/create',  'registerMessage');
@@ -137,13 +146,14 @@ use App\Http\Controllers\Ville\VilleController;
 );
 Route::prefix('v1/utilisateurs')->group(function () {
     // routes en get  pour le model utilisateur
+
     Route::get('/', [UtilisateurController::class, 'index']);
     Route::get('/getLocataires/{proprietaire_id}', [UtilisateurController::class, 'getLocataires']);
     Route::get('/showBy/{id}', [UtilisateurController::class, 'showUtilisateurByID']);
     Route::get('/showBy/{slug}', [UtilisateurController::class, 'showUtilisateurBySlug']);
     // route post et put pour le model utitlisateur 
     Route::put('/edit/{id}', [UtilisateurController::class, 'editUtilisateur'])->middleware('auth:sanctum');
-    Route::put('/editStatus/{id}', [UtilisateurController::class, 'updateStatus']);
+    Route::put('/editStatus/{id}', [UtilisateurController::class, 'updateStatus'])->middleware('auth:sanctum');
     Route::post('/create', [UtilisateurController::class, 'createUtilisateur']);
     Route::delete('/delete/{id}', [UtilisateurController::class, 'deleteUtilisateur'])->middleware('auth:sanctum');
 
@@ -162,7 +172,7 @@ Route::prefix('v1/locataire')->group(function () {
 });
 Route::prefix('v1/user')->group(function () {
     // route  get pour le authentifications
-    Route::post('/login', [UserController::class, 'dologin']);
+    Route::post('/login', [UserController::class, 'dologinUser']);
     Route::post("/register", [UserController::class, 'store']);
     // Route::get("/check-auth", [UserController::class, 'checkAuth']);
 });
@@ -170,19 +180,14 @@ Route::prefix('v1/user')->group(function () {
 // ??
 Route::post("v1/utilisateurs/login", [UserController::class, 'loginUtilisateur']);
 
-Route::get("/login", function () {
-    return response()->json([
-        'statusCode' => 422,
-        'message' => 'utilisateur  pas  connecter',
-    ]);
-})->name('login');
+
 
 
 Route::prefix('v1/utilisateur')->group(function () {
     // route  get pour le authentifications
-    Route::get("/CheckAuth",  [UserController::class, 'checkAuth']);
-    Route::post('/login', [UserController::class, 'dologin']);
-    Route::post("/register", [UserController::class, 'store']);
+    Route::get("/CheckAuth",  [UserController::class, 'checkAuth']);  
+    Route::post('/login', [UserController::class, 'dologin']);   
+    Route::post("/register", [UserController::class, 'store']);      
 });
 
 // Route::get('v1/getProfile', [UserController::class, 'checkAuth']);

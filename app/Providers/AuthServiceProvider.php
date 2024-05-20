@@ -10,6 +10,7 @@ use App\Models\Contrat;
 use App\Models\Finance;
 use App\Models\Location;
 use App\Models\Proprieter;
+use App\Models\Region;
 use App\Models\TypeAbonnement;
 use App\Models\Utilisateur;
 use App\Policies\AbonnementPolicy;
@@ -18,6 +19,7 @@ use App\Policies\ContratPolitique;
 use App\Policies\FinancePolicy;
 use App\Policies\LocationPolitique;
 use App\Policies\PropretierPolicy;
+use App\Policies\RegionPolicy;
 use App\Policies\TypeAbonnementPolicy;
 use App\Policies\UtilisateurPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -36,7 +38,8 @@ class AuthServiceProvider extends ServiceProvider
         Contrat::class => ContratPolitique::class ,
         Location::class => LocationPolitique::class ,
         Abonnee::class => AbonnementPolicy::class ,
-        Utilisateur::class =>UtilisateurPolicy::class
+        Utilisateur::class =>UtilisateurPolicy::class ,
+        Region::class =>RegionPolicy::class
     ];
 
     /**

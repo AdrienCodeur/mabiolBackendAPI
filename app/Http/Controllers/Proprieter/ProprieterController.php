@@ -112,8 +112,6 @@ class ProprieterController extends Controller
                 200
             );
         }
-
-        
             return response()->json(
                 [
                     "message" => 'aucun bien ne correspon a vos criteres de recherche',
@@ -150,21 +148,20 @@ class ProprieterController extends Controller
      *             @OA\Property(property="nbrchambre", type="number"),
      *             @OA\Property(property="numeroporte", type="number"),
      *             @OA\Property(property="zoneStationnement", type="string"),
-     *             @OA\Property(property="typemouvement", type="string"),
+     *             @OA\Property(property="typemouvement", type="string" ,example="A vendre"),
      *             @OA\Property(property="ungarage", type="boolean"),
      *             @OA\Property(property="unecave", type="boolean"),
      *             @OA\Property(property="internet", type="boolean"),
-     *             @OA\Property(property="ville_id", type="boolean"),
+     *             @OA\Property(property="ville_id", type="number" ,example="2"),
      *             @OA\Property(property="dep_tvecranplat", type="boolean"),
-     *             @OA\Property(property="tv_ecran_plat", type="boolean"),
      *             @OA\Property(property="proprietaire_id", type="number" ,example="1"),
-     *             @OA\Property(property="typeBien_id", type="number"),
+     *             @OA\Property(property="typeBien_id", type="number" ,example="3"),
      *             @OA\Property(property="exist_proxi_restaurant", type="boolean"),
      *             @OA\Property(property="anneeconstruction", type="string"),
      *             @OA\Property(property="pc_vide_ordure", type="boolean"),
      *             @OA\Property(property="pc_espace_vert", type="boolean"),
      *             @OA\Property(property="pc_interphone", type="boolean"),
-     *             @OA\Property(property="nbr_salle_bain", type="number"),
+     *             @OA\Property(property="nbr_salle_bain", type="number" ,example="3"),
      *             @OA\Property(property="exist_sous_sol", type="boolean"),
      *             @OA\Property(property="pc_chauffage_collective", type="boolean"),
      *             @OA\Property(property="pc_eau_chaude_collective", type="boolean"),
@@ -191,15 +188,15 @@ class ProprieterController extends Controller
     {
         $bien = Bien::find($id);
         if ($bien) {
-            try {
-                $this->authorize('update', $bien);
-            } catch (Exception $e) {
-                return response()->json([
-                    'statusCode' => 403,
-                    'message' => ' probleme d\'authorisation',
-                    'error' => $e->getMessage()
-                ], 403);
-            }
+            // try {
+            //     $this->authorize('update', $bien);
+            // } catch (Exception $e) {
+            //     return response()->json([
+            //         'statusCode' => 403,
+            //         'message' => ' probleme d\'authorisation',
+            //         'error' => $e->getMessage()
+            //     ], 403);
+            // }
             // return $resultt ;
             // return response()->json([
             //     "message"=>"texte" ,
@@ -261,7 +258,17 @@ class ProprieterController extends Controller
                 ], 422);
             }
             try {
+
+                // return response()->json(
+                //     [
+                //         "message" => 'bien mis a jour avec success',
+                //         'data' => $request->all(),
+                //         'statusCode' => 200
+                //     ],
+                //     200
+                // );
                 $bien->update($request->all());
+
                 return response()->json(
                     [
                         "message" => 'bien mis a jour avec success',
@@ -520,10 +527,10 @@ class ProprieterController extends Controller
         $bien = Bien::find($id);
         if ($bien) {
             try {
-                $this->authorize('delete', $bien);
+                     $this->authorize('delete', $bien);
             } catch (Exception $e) {
                 return response()->json([
-                    'statusCode' => 403,
+                    'statusCode' => 403, 
                     'message' => ' probleme d\'authorisation',
                     'error' => $e->getMessage()
                 ], 403);
@@ -593,7 +600,7 @@ class ProprieterController extends Controller
             "typemouvement" => 'required|string',
             "ungarage" => 'required',
             "ville_id" => 'required|exists:villes,id',
-            "img" => 'required|url',
+            // "img" => 'required|url',
             "unecave" => 'required|',
             "internet" => 'required|',
             'dep_tvecranplat' => 'required|boolean',

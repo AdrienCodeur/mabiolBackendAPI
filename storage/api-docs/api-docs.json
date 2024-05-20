@@ -1246,7 +1246,8 @@
                                         "type": "string"
                                     },
                                     "typemouvement": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "A vendre"
                                     },
                                     "ungarage": {
                                         "type": "boolean"
@@ -1258,12 +1259,10 @@
                                         "type": "boolean"
                                     },
                                     "ville_id": {
-                                        "type": "boolean"
+                                        "type": "number",
+                                        "example": "2"
                                     },
                                     "dep_tvecranplat": {
-                                        "type": "boolean"
-                                    },
-                                    "tv_ecran_plat": {
                                         "type": "boolean"
                                     },
                                     "proprietaire_id": {
@@ -1271,7 +1270,8 @@
                                         "example": "1"
                                     },
                                     "typeBien_id": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "example": "3"
                                     },
                                     "exist_proxi_restaurant": {
                                         "type": "boolean"
@@ -1289,7 +1289,8 @@
                                         "type": "boolean"
                                     },
                                     "nbr_salle_bain": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "example": "3"
                                     },
                                     "exist_sous_sol": {
                                         "type": "boolean"

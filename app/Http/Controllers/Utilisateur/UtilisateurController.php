@@ -546,7 +546,7 @@ class UtilisateurController extends Controller
     public function updateStatus($id, Request $request)
     {
         $validator =   Validator::make($request->all(), [
-            'statut' => 'required|string|',
+            'statut' => 'required|string',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -561,7 +561,7 @@ class UtilisateurController extends Controller
         }catch(Exception $e){
             return response()->json([
                 'statusCode' => 403,
-                'message' => ' probleme d\'authorisation',
+                'message' => 'probleme d\'authorisation',
                 'error' => $e->getMessage()
             ], 403);
         }
