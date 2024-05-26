@@ -74,32 +74,50 @@ class FinancesController extends Controller
      */
     public function updateFinance(string $id, Request $request)
     {
-
         $finance = Finance::find($id) ; 
         if($finance){
-            $validator =   Validator::make($request->all(), [
-                'proprietaire_id'=>'required' ,
-                'bien_id'=>'required' ,
-                'typePaiement_id'=>'required' ,
-                'autre_typepaiement'=>'required' ,
-                'datepaiement'=>'required',
-                'montant'=>'required',
-                'statut'=>'required' ,
-                'periode'=>'required' ,
-                'commentaire'=>'required' ,
-                'frequence'=>'required' ,
-                'typeFinance_id'=>'required' ,
-                'slug'=>'required' ,
-            ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    'statusCode' => 422,
-                    'message' => 'probleme de validation de donnee',
-                    'error' => $validator->errors()
-                ]);
-            }
+            try{
+                $this->authorize('update', $finance) ;
+                  }catch(Exception $e){
+                      return response()->json([
+                          'statusCode' => 403,
+                          'message' => ' probleme d\'authorisation',
+                          'error' => $e->getMessage()
+                      ], 403);
+                  }
+            // $validator =   Validator::make($request->all(), [
+            //     'proprietaire_id'=>'required' ,
+            //     'bien_id'=>'required' ,
+            //     'typePaiement_id'=>'required' ,
+            //     'autre_typepaiement'=>'required' ,
+            //     'datepaiement'=>'required',
+            //     'montant'=>'required',
+            //     'statut'=>'required' ,
+            //     'periode'=>'required' ,
+            //     'commentaire'=>'required' ,
+            //     'frequence'=>'required' ,
+            //     'typeFinance_id'=>'required' ,
+            //     'slug'=>'required' ,
+            // ]);
+            // if ($validator->fails()) {
+            //     return response()->json([
+            //         'statusCode' => 422,
+            //         'message' => 'probleme de validation de donnee',
+            //         'error' => $validator->errors()
+            //     ]);
+            // }
+            $validator =  $this->validateFinances($request);
+        if ($validator!==null) {
+            // Si le validateur renvoie des erreurs, retourner une réponse avec les erreurs
+            return response()->json([
+                'statusCode' => 422,
+                'message' => 'Problème de validation de données',
+                'errors' => $validator
+            ], 422);
+        }
                 try {
-                    $validated = $request->validate();
+
+                    $validated = $request->all();
                    $result =   $finance->update($validated);
                    if($result){
                     return   response()->json( [
@@ -158,36 +176,46 @@ class FinancesController extends Controller
     public function registerFinance(Request $request)
     {
 
-        $validator =   Validator::make($request->all(), [
-            'proprietaire_id'=>'required' ,
-            'bien_id'=>'required' ,
-            'typePaiment_id'=>'required' ,
-            'autre_typepaiment'=>'required' ,
-            'datepaiment'=>'required',
-            'montant'=>'required',
-            'statut'=>'required' ,
-            'periode'=>'required' ,
-            'commentaire'=>'required' ,
-            'frequence'=>'required' ,
-            'typeFinance_id'=>'required' ,
-            'slug'=>'required' ,
-        ]);
-        if ($validator->fails()) {
+        // $validator =   Validator::make($request->all(), [
+        //     'proprietaire_id'=>'required' ,
+        //     'bien_id'=>'required' ,
+        //     'typePaiment_id'=>'required' ,
+        //     'autre_typepaiment'=>'required' ,
+        //     'datepaiment'=>'required',
+        //     'montant'=>'required',
+        //     'statut'=>'required' ,
+        //     'periode'=>'required' ,
+        //     'commentaire'=>'required' ,
+        //     'frequence'=>'required' ,
+        //     'typeFinance_id'=>'required' ,
+        //     'slug'=>'required' ,
+        // ]);
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'statusCode' => 422,
+        //         'message' => 'probleme de validation de donnee',
+        //         'error' => $validator->errors()
+        //     ]);
+        // }
+
+        $validator =  $this->validateFinances($request);
+        if ($validator!==null) {
+            // Si le validateur renvoie des erreurs, retourner une réponse avec les erreurs
             return response()->json([
                 'statusCode' => 422,
-                'message' => 'probleme de validation de donnee',
-                'error' => $validator->errors()
-            ]);
+                'message' => 'Problème de validation de données',
+                'errors' => $validator
+            ], 422);
         }
             try {
-        $validated = $request->validate();
+        $validated = $request->all();
         $finance = Finance::create($validated);
                 if($finance){
-                        return   response()->json( [
+                        return   response()->json([
                             'statusCode'=>200,
                                 'message'=>"finance creer avec success", 
                                 'data'=>$finance
-                        ]) ;
+                        ]);
                 }else{
                     return   response()->json( [
                         'statusCode'=>203,
@@ -265,6 +293,29 @@ public function deleleFinance(string $id)
         'message'=>"nous n'avons pas trouver de abonee avec cette id" ,
         "statusCode"=>404
     ]) ;
+}
+
+private function validateFinances(Request $request){
+
+    $validator =   Validator::make($request->all(), [
+        'proprietaire_id'=>'required' ,
+        'bien_id'=>'required' ,
+        'typePaiment_id'=>'required' ,
+        'autre_typepaiment'=>'required' ,
+        'datepaiment'=>'required',
+        'montant'=>'required',
+        'statut'=>'required' ,
+        'periode'=>'required' ,
+        'commentaire'=>'required' ,
+        'frequence'=>'required' ,
+        'typeFinance_id'=>'required' ,
+        'slug'=>'required' ,
+    ]);
+    if ($validator->fails()) {
+        return $validator->errors();
+    }else{
+    return  null ; 
+    }
 }
 
 }

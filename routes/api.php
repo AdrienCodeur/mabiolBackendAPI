@@ -30,26 +30,35 @@ use App\Http\Controllers\Contrat\ContratController;
 use App\Http\Controllers\Utilisateur\LocataireController;
 use App\Http\Controllers\Ville\VilleController;
 
-Route::prefix('v1')->group(
-    function () {
-        Route::prefix('/proprieter')->group(function () {
-            // route  get pour le model Proprieter
-            Route::get('/', [ProprieterController::class, 'getAllProprieter']);
-            Route::get('/show/{id}', [ProprieterController::class, 'showProprieter']);
-            Route::get('/showWithSlug/{slug}', [ProprieterController::class, 'showProprieterForSlug']);
-            Route::get('/showForProprietaire/{proprietaire_id}', [ProprieterController::class, 'getAllProprieterForProprietaire']);
-            // route post put pour Propertier
-            Route::put('/edit/{id}', [ProprieterController::class, 'updateProprieter']);
-            Route::post('/create', [ProprieterController::class, 'registerProprieter']);
-            Route::delete('/delete/{id}', [ProprieterController::class, 'deleteProprieter']);
-        });
+
+Route::any("/login", function () {
+    
+    return response()->json([
+        'statusCode' => 422,
+        'message' => 'utilisateur  pas  connecter',
+    ],422);
+})->name('login');
+
+    Route::prefix('v1')->group(
+        function () {
+            Route::prefix('/proprieter')->group(function () {
+                // route  get pour le model Proprieter
+                Route::get('/', [ProprieterController::class, 'getAllProprieter']);
+                Route::get('/show/{id}', [ProprieterController::class, 'showProprieter']);
+                Route::get('/showWithSlug/{slug}', [ProprieterController::class, 'showProprieterForSlug']);
+                Route::get('/showForProprietaire/{proprietaire_id}', [ProprieterController::class, 'getAllProprieterForProprietaire']);
+                // route post put pour Propertier
+                Route::put('/edit/{id}', [ProprieterController::class, 'updateProprieter'])->middleware('auth:sanctum') ;
+                Route::post('/create', [ProprieterController::class, 'registerProprieter']);
+                Route::delete('/delete/{id}', [ProprieterController::class, 'deleteProprieter'])->middleware('auth:sanctum');
+            });
         Route::prefix('/pays')->group(function () {
             // route  get pour le model Pays
             Route::get('/', [PaysController::class, 'getAllPays']);
             Route::get('/show/{pays}', [PaysController::class, 'showPays']);
             // route post put pour le model Pays
-            Route::put('/edit/{id}', [PaysController::class, 'updatePays']);
-            Route::post('/create', [PaysController::class, 'registerPays']);
+            Route::put('/edit/{id}', [PaysController::class, 'updatePays'])->middleware('auth:sanctum');
+            Route::post('/create', [PaysController::class, 'registerPays'])->middleware('auth:sanctum');
         });
         Route::prefix('/ville')->controller(VilleController::class)->group(function () {
             // route  get pour le model Ville
@@ -57,7 +66,7 @@ Route::prefix('v1')->group(
             Route::get('/show/{id}',  'showVille');
             // route post put pour le model Ville
             Route::post('/create',  'registerVille');
-            Route::put('/edit/{id}',  'updateVille');
+            Route::put('/edit/{id}',  'updateVille')->middleware('auth:sanctum');
         });
         Route::prefix('/region')->controller(RegionController::class)->group(function () {
             // route  get pour le model Region
@@ -65,7 +74,7 @@ Route::prefix('v1')->group(
             Route::get('/show/{id}', 'showRegion');
             // route post put pour le model Region
             Route::post('/create', 'registerRegion');
-            Route::put('/edit/{id}', 'updateRegion');
+            Route::put('/edit/{id}', 'updateRegion')->middleware('auth:sanctum');
         });
         Route::prefix('/typeBien')->group(function () {
             // route  get pour le model Ville
@@ -73,7 +82,7 @@ Route::prefix('v1')->group(
             Route::get('/show/{TypeBienController}', [TypeBienController::class, 'showTypeBien']);
             // route post put pour le model Ville
             Route::post('/create', [TypeBienController::class, 'registerTypeBien']);
-            Route::put('/edit/{typebien}', [TypeBienController::class, 'updateTypeBien']);
+            Route::put('/edit/{typebien}', [TypeBienController::class, 'updateTypeBien'])->middleware('auth:sanctum');
         });
         Route::prefix('/contrat')->group(function () {
             // route  get pour le model Contrat
@@ -81,14 +90,14 @@ Route::prefix('v1')->group(
             Route::get('/show/{contrat}', [ContratController::class, 'showContrat']);
             // route post pour le model Contrat 
             Route::post('/create', [ContratController::class, 'registerContrat']);
-            Route::put('/edit/{contrat}', [ContratController::class, 'updateContrat']);
+            Route::put('/edit/{contrat}', [ContratController::class, 'updateContrat'])->middleware('auth:sanctum');
         });
         Route::prefix('/location')->group(function () {
             // route  get pour le model Location
             Route::get('/', [LocationsController::class, 'getAllLocations']);
             Route::get('/show/{id}', [LocationsController::class, 'showLocation']);
             // route post put pour le model Location
-            Route::put('/edit/{id}', [LocationsController::class, 'updateLocation']);
+            Route::put('/edit/{id}', [LocationsController::class, 'updateLocation'])->middleware('auth:sanctum');
             Route::post('/create', [LocationsController::class, 'registerLocation']);
         });
         Route::prefix('/typeAb')->group(function () {
@@ -96,7 +105,7 @@ Route::prefix('v1')->group(
             Route::get('/', [TypeAbonneeController::class, 'getAllTypeAb']);
             Route::get('/show/{id}', [TypeAbonneeController::class, 'showTypeAb']);
             // route post put pour le model Finance
-            Route::put('/edit/{id}', [TypeAbonneeController::class, 'updateTypeAb']);
+            Route::put('/edit/{id}', [TypeAbonneeController::class, 'updateTypeAb'])->middleware('auth:sanctum');
             Route::post('/create', [TypeAbonneeController::class, 'registerTypeAb']);
         });
         Route::prefix('/finance')->group(function () {
@@ -106,7 +115,7 @@ Route::prefix('v1')->group(
             // route post put pour le model Finance
 
             Route::post('/create', [FinancesController::class, 'registerFinance']);
-            Route::put('/edit/{id}', [FinancesController::class, 'showFinance']);
+            Route::put('/edit/{id}', [FinancesController::class, 'showFinance'])->middleware('auth:sanctum');
         });
         Route::prefix('/typeUser')->group(function () {
             // route post put pour le model TyperUser
@@ -114,7 +123,7 @@ Route::prefix('v1')->group(
             Route::put('/edit/{typeuser}', [TypeUserController::class, 'updateTypeUser']);
             // route  get pour le model TyperUser
             Route::get('/', [TypeUserController::class, 'getAllTypeUser']);
-            Route::get('/show/{typeuser}', [TypeUserController::class, 'showTypeUser']);
+            Route::get('/show/{typeuser}', [TypeUserController::class, 'showTypeUser'])->middleware('auth:sanctum');
         });
         Route::prefix('/abonnee')->group(function () {
             // route  get pour le model TyperUser
@@ -122,29 +131,31 @@ Route::prefix('v1')->group(
             Route::get('/show/{id}', [AbonneesController::class, 'showAbonnee']);
             // route post put pour le model TyperUser
             Route::post('/create', [AbonneesController::class, 'registerAbonnee']);
-            Route::put('/edit/{id}', [AbonneesController::class, 'updateAbonnee']);
+            Route::put('/edit/{id}', [AbonneesController::class, 'updateAbonnee'])->middleware('auth:sanctum');
         });
         Route::prefix('/message')->controller(MyMessageController::class)->group(function () {
             // route  get pour le model TyperUser
-            Route::get('get/',  'getAllMessages');
+            Route::get('/',  'getAllMessages');
             Route::get('/show/{message}',  'showMessage');
             // route post put pour le model TyperUser
             Route::post('/create',  'registerMessage');
-            Route::put('/edit/{message}',  'updateMessage');
+            // Route::put('/edit/{message}',  'updateMessage')->middleware('auth:sanctum');
         });
     }
 
 );
 Route::prefix('v1/utilisateurs')->group(function () {
-    // routes en post put p
+    // routes en get  pour le model utilisateur
+
     Route::get('/', [UtilisateurController::class, 'index']);
     Route::get('/getLocataires/{proprietaire_id}', [UtilisateurController::class, 'getLocataires']);
-    Route::get('/show/{id}', [UtilisateurController::class, 'showUtilisateur']);
+    Route::get('/showById/{id}', [UtilisateurController::class, 'showUtilisateurByID']);
+    Route::get('/showBySlug/{slug}', [UtilisateurController::class, 'showUtilisateurBySlug']);
     // route post et put pour le model utitlisateur 
-    Route::put('/edit/{id}', [UtilisateurController::class, 'editUtilisateur']);
-    Route::put('/editStatus/{id}', [UtilisateurController::class, 'updateStatus']);
+    Route::put('/edit/{id}', [UtilisateurController::class, 'editUtilisateur'])->middleware('auth:sanctum');
+    Route::put('/editStatus/{id}', [UtilisateurController::class, 'updateStatus'])->middleware('auth:sanctum');
     Route::post('/create', [UtilisateurController::class, 'createUtilisateur']);
-    Route::delete('/delete/{id}', [UtilisateurController::class, 'deleteUtilisateur']);
+    Route::delete('/delete/{id}', [UtilisateurController::class, 'deleteUtilisateur'])->middleware('auth:sanctum');
 
     // 
     Route::post("/create_and_login", [UtilisateurController::class, 'createAndLoginUser']);
@@ -155,26 +166,29 @@ Route::prefix('v1/locataire')->group(function () {
     Route::get('/show/{id}', [LocataireController::class, 'showLocataire']);
     // route post et put pour le model utitlisateur 
     Route::get('/getProprietaires/{locataire_id}', [LocataireController::class, 'getProprietaire']);
-    Route::put('/edit/{id}', [LocataireController::class, 'editLocataire']);
+    Route::put('/edit/{id}', [LocataireController::class, 'editLocataire'])->middleware('auth:sanctum');
     Route::post('/create', [LocataireController::class, 'createLocataire']);
-    Route::delete('/delete/{id}', [LocataireController::class, 'deleteLocataire']);
+    Route::delete('/delete/{id}', [LocataireController::class, 'deleteLocataire'])->middleware('auth:sanctum');
 });
 Route::prefix('v1/user')->group(function () {
+<<<<<<< HEAD
     Route::post('/login', [UserController::class, 'dologin']);
+=======
+    // route  get pour le authentifications
+    Route::post('/login', [UserController::class, 'dologinUser']);
+>>>>>>> 4fc7aea09fedf6f1fd46c33839c7161d9dde99ef
     Route::post("/register", [UserController::class, 'store']);
 });
 
 // ??
 Route::post("v1/utilisateurs/login", [UserController::class, 'loginUtilisateur']);
 
-Route::get("/login", function () {
-    return "  formulaire de login  vous n'etes pas connecter ";
-})->name('login');
+
 
 
 Route::prefix('v1/utilisateur')->group(function () {
     // route  get pour le authentifications
-    Route::get("/CheckAuth",  [UserController::class, 'checkAuth']);
-    Route::post('/login', [UserController::class, 'dologin']);
-    Route::post("/register", [UserController::class, 'store']);
+    Route::get("/CheckAuth",  [UserController::class, 'checkAuth']);  
+    Route::post('/login', [UserController::class, 'dologin']);   
+    Route::post("/register", [UserController::class, 'store']);      
 });

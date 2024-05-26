@@ -31,7 +31,7 @@ return new class extends Migration
             $table->foreignId('utilisateur_id')->constrained(table:'utilisateurs');
             $table->foreignId('locataire_id')->constrained(table:'utilisateurs');
             // $table->foreignId('type_contrat_id')->constrained(table:'type_contrats');
-
+            
             $table->string('close_revision_loyer') ;
             $table->string('indice_reference') ;
             $table->string('description_bail') ;

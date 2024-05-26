@@ -16,10 +16,42 @@ class ProprieterController extends Controller
      * @OA\Get(
      *     path="/api/v1/proprieter",
      *     tags={"Bien"},
-     *     summary="Liste des Bien",
+     *     summary="Récupérer des Biens en fonction des paramètres",
      *     @OA\Response(
      *         response=200,
-     *         description="Liste des utilisateurs récupérée avec succès"
+     *         description="Liste des Biens récupérée avec succès"
+     *     ),
+     *     @OA\Parameter(
+     *         name="type",
+     *         in="query",
+     *         description="Type de Bien",
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="region",
+     *         in="query",
+     *         description="Région du Bien",
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="ville",
+     *         in="query",
+     *         description="Ville du Bien",
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="Terme de recherche",
+     *         @OA\Schema(
+     *             type="string"
+     *         )
      *     )
      * )
      */
@@ -31,40 +63,59 @@ class ProprieterController extends Controller
         $ville = $request->ville;
         $search = $request->search;
 
-        //     $bien = Bien::query()
-        // ->whereNull("deleted_at")
-        // ->when($request->type, function ($query, $type) {
-        //     return $query->whereHas('typeBien', function ($query) use ($type) {
-        //         $query->where('type', $type);
-        //     });
-        // })
-        // ->when($request->region, function ($query, $region) {
-        //     return $query->whereHas('region', function ($query) use ($region) {
-        //         $query->where('region', $region);
-        //     });
-        // })
-        // ->when($request->ville, function ($query, $ville) {
-        //     return $query->whereHas('ville', function ($query) use ($ville) {
-        //         $query->where('ville', $ville);
-        //     });
-        // })
-        // ->when($request->search, function ($query, $search) {
-        //     return $query->where(function ($query) use ($search) {
-        //         $query->where('name', 'LIKE', "%{$search}%")
-        //               ->orWhere('description', 'LIKE', "%{$search}%")
-        //               ->orWhere('address', 'LIKE', "%{$search}%");
-        //     });
-        // })
-        // ->with(['typeBien' ,'proprietaire' ,'ville'])
-        // ->get();
+        // return response()->json(
+        //     [
+        //         "message" => 'biens recuperer avec success',
+        //         'data' => $type ,$region,$ville,$search,$slug ,
+        //         'statusCode' => 200
+        //     ],
+        //     200
+        // );
 
-        $bien = Bien::whereNull("deleted_at")->with(['typeBien', 'proprietaire', 'ville'])->get();
+        $bien = Bien::query()
+            ->whereNull("deleted_at")
+            ->with(['typeBien', 'proprietaire', 'ville'])
+            ->when($request->type, function ($query, $type) {
+                return $query->orWhereHas('typeBien', function ($query) use ($type) {
+                    $query->where('libelle', 'LIKE', "%{$type}%");
+                });
+            })
+            ->when($request->region, function ($query, $region) {
+                return $query->orWhereHas('ville.region', function ($query) use ($region) {
+                    $query->where('nom',  'LIKE', "%{$region}%");
+                });
+            })
+            ->when($request->ville, function ($query, $ville) {
+                return $query->orWhereHas('ville', function ($query) use ($ville) {
+                    $query->where('nom',  'LIKE', "%{$ville}%");
+                });
+            })
+            ->when($request->search, function ($query, $search) {
+                return $query->where(function ($query) use ($search) {
+                    $query->where('nom', 'LIKE', "%{$search}%")
+                        ->orWhere('slug', 'LIKE', "%{$search}%")
+                        ->orWhere('addresse', 'LIKE', "%{$search}%");
+                });
+            })
+            ->get();
+
+        if (!$bien->isEmpty()) {
+            return response()->json(
+                [
+                    "message" => 'biens recuperer avec success',
+                    'data' => $bien,
+                    'statusCode' => 200
+                ],
+                200
+            );
+        }
         return response()->json(
             [
-                "message" => 'tout les biens recuperer avec success',
+                "message" => "aucun bien ne correspond a vos criteres de recherche",
                 'data' => $bien,
                 'statusCode' => 200
-            ]
+            ],
+            200
         );
     }
 
@@ -93,21 +144,20 @@ class ProprieterController extends Controller
      *             @OA\Property(property="nbrchambre", type="number"),
      *             @OA\Property(property="numeroporte", type="number"),
      *             @OA\Property(property="zoneStationnement", type="string"),
-     *             @OA\Property(property="typemouvement", type="string"),
+     *             @OA\Property(property="typemouvement", type="string" ,example="A vendre"),
      *             @OA\Property(property="ungarage", type="boolean"),
      *             @OA\Property(property="unecave", type="boolean"),
      *             @OA\Property(property="internet", type="boolean"),
-     *             @OA\Property(property="ville_id", type="boolean"),
+     *             @OA\Property(property="ville_id", type="number" ,example="2"),
      *             @OA\Property(property="dep_tvecranplat", type="boolean"),
-     *             @OA\Property(property="tv_ecran_plat", type="boolean"),
      *             @OA\Property(property="proprietaire_id", type="number" ,example="1"),
-     *             @OA\Property(property="typeBien_id", type="number"),
+     *             @OA\Property(property="typeBien_id", type="number" ,example="3"),
      *             @OA\Property(property="exist_proxi_restaurant", type="boolean"),
      *             @OA\Property(property="anneeconstruction", type="string"),
      *             @OA\Property(property="pc_vide_ordure", type="boolean"),
      *             @OA\Property(property="pc_espace_vert", type="boolean"),
      *             @OA\Property(property="pc_interphone", type="boolean"),
-     *             @OA\Property(property="nbr_salle_bain", type="number"),
+     *             @OA\Property(property="nbr_salle_bain", type="number" ,example="3"),
      *             @OA\Property(property="exist_sous_sol", type="boolean"),
      *             @OA\Property(property="pc_chauffage_collective", type="boolean"),
      *             @OA\Property(property="pc_eau_chaude_collective", type="boolean"),
@@ -134,68 +184,102 @@ class ProprieterController extends Controller
     {
         $bien = Bien::find($id);
         if ($bien) {
-            $validator =   Validator::make($request->all(), [
-                'nom' => 'required|string',
-                "surface" => 'required|integer',
-                "addresse" => 'required|string',
-                "code_postal" => 'required|integer',
-                "nbrbatiment" => 'required|integer',
-                "nbrescalier" => 'required|integer',
-                "nbrchambre" => 'required|integer',
-                "numeroporte" => 'required|integer',
-                "zoneStationnement" => 'required|string',
-                "typemouvement" => 'required|string',
-                "ungarage" => 'required',
-                "ville_id" => 'required|exists:villes,id',
-                "img" => 'required|url',
-                "unecave" => 'required|',
-                "internet" => 'required|',
-                'dep_tvecranplat' => 'required|boolean',
-                'dep_lingemaison' => 'required|boolean',
-                'dep_lavevaiselle' => 'required|boolean',
-                "pc_gardiennage" => 'required|boolean',
-                "pc_interphone" => 'required|boolean',
-                "pc_ascenseur" => 'required|boolean',
-                "pc_vide_ordure" => 'required|boolean',
-                "pc_espace_vert" => 'required|boolean',
-                "pc_chauffage_collective" => 'required|boolean',
-                "pc_eau_chaude_collective" => 'required|boolean',
-                "pc_antennetv_collective" => 'required|boolean',
-                "exist_balcon" => 'required',
-                "exist_cheminee" => 'required',
-                "exist_salle_manger" => 'required|boolean',
-                "exist_proxi_education" => 'required|boolean',
-                "exist_sous_sol" => 'required|boolean',
-                "exist_proxi_centre_sante" => 'required|boolean',
-                "exist_proxi_restaurant" => 'required|boolean',
-                "anneeconstruction" => 'required',
-                'nbr_salle_bain' => 'required|integer',
-                "typeBien_id" => 'required|exists:typebiens,id',
-                'proprietaire_id' => 'required|exists:utilisateurs,id',
-            ]);
-            if ($validator->fails()) {
+            // try {
+            //     $this->authorize('update', $bien);
+            // } catch (Exception $e) {
+            //     return response()->json([
+            //         'statusCode' => 403,
+            //         'message' => ' probleme d\'authorisation',
+            //         'error' => $e->getMessage()
+            //     ], 403);
+            // }
+            // return $resultt ;
+            // return response()->json([
+            //     "message"=>"texte" ,
+            //     "status"=>$resultt
+            // ]) ;
+            // $validator =   Validator::make($request->all() ,[
+            //     'nom' => 'required|string',
+            //     "surface"=>'required|integer' ,
+            //    "addresse"=>'required|string' ,
+            //     "code_postal"=>'required|integer' ,
+            //     "nbrbatiment" =>'required|integer' ,
+            //     "nbrescalier" =>'required|integer' ,
+            //     "nbrchambre" =>'required|integer' ,
+            //     "numeroporte" =>'required|integer' ,
+            //     "zoneStationnement" =>'required|string' ,
+            //     "typemouvement" =>'required|string' ,
+            //     "ungarage" =>'required' ,
+            //     "ville_id"=>'required|exists:villes,id' ,
+            //     "img"=>'required|url' ,
+            //     "unecave"=>'required|' ,
+            //     "internet"=>'required|' ,
+            //     'dep_tvecranplat'=>'required|boolean' ,
+            //     'dep_lingemaison'=>'required|boolean' ,
+            //     'dep_lavevaiselle'=>'required|boolean' ,
+            //     "pc_gardiennage"=>'required|boolean' ,
+            //     "pc_interphone"=>'required|boolean' ,
+            //     "pc_ascenseur"=>'required|boolean' ,
+            //     "pc_vide_ordure"=>'required|boolean' ,
+            //     "pc_espace_vert"=>'required|boolean' ,
+            //     "pc_chauffage_collective"=>'required|boolean' ,
+            //     "pc_eau_chaude_collective"=>'required|boolean' ,
+            //     "pc_antennetv_collective"=>'required|boolean' ,
+            //     "exist_balcon"=>'required' ,
+            //     "exist_cheminee"=>'required' ,
+            //     "exist_salle_manger"=>'required|boolean' ,
+            //     "exist_proxi_education"=>'required|boolean' ,
+            //     "exist_sous_sol"=>'required|boolean' ,
+            //     "exist_proxi_centre_sante"=>'required|boolean' ,
+            //     "exist_proxi_restaurant"=>'required|boolean' ,
+            //     "anneeconstruction"=>'required' ,
+            //     'nbr_salle_bain'=>'required|integer' ,
+            //     "typeBien_id"=>'required|exists:typebiens,id' ,
+            //     'proprietaire_id' =>'required|exists:utilisateurs,id',
+            // ])  ;
+            // if($validator->fails()){
+            //    a return response()->json([
+            //         'statusCode' => 422,
+            //         'message' => 'probleme de validation de donnee',
+            //         'error' => $validator->errors()
+            //     ],422);
+            // }
+            $validator =  $this->validateProperty($request);
+            if ($validator !== null) {
+                // Si le validateur renvoie des erreurs, retourner une réponse avec les erreurs
                 return response()->json([
-                    'statusCode' => 203,
-                    'message' => 'probleme de validation de donnee',
-                    'error' => $validator->errors()
-                ]);
+                    'statusCode' => 422,
+                    'message' => 'Problème de validation de données',
+                    'errors' => $validator
+                ], 422);
             }
             try {
-                $bien->update($validator->validated());
+
+                // return response()->json(
+                //     [
+                //         "message" => 'bien mis a jour avec success',
+                //         'data' => $request->all(),
+                //         'statusCode' => 200
+                //     ],
+                //     200
+                // );
+                $bien->update($request->all());
+
                 return response()->json(
                     [
                         "message" => 'bien mis a jour avec success',
                         'data' => $bien,
                         'statusCode' => 200
-                    ]
+                    ],
+                    200
                 );
             } catch (Exception $e) {
                 //throw $th;
                 return response()->json([
                     'statusCode' => 500,
-                    'message' => 'un probleme est survenu',
+                    'message' => ' probleme de serveur',
                     'error' => $e->getMessage()
-                ]);
+                ], 500);
             }
         } else {
             return response()->json([
@@ -259,54 +343,63 @@ class ProprieterController extends Controller
     public function registerProprieter(Request $request)
     {
 
-        $validator =   Validator::make($request->all(), [
-            'nom' => 'required|string',
-            "surface" => 'required|string',
-            "addresse" => 'required|string',
-            "code_postal" => 'required|integer',
-            "nbrbatiment" => 'required|integer',
-            "nbrescalier" => 'required|integer',
-            "nbrchambre" => 'required|integer',
-            "numeroporte" => 'required|integer',
-            "zoneStationnement" => 'required|string',
-            "typemouvement" => 'required|string',
-            "ungarage" => 'required',
-            "ville_id" => 'required|exists:villes,id',
-            "img.*" => 'required|url',
-            "unecave" => 'required',
-            "internet" => 'required',
-            'dep_tvecranplat' => 'required|',
-            'dep_lingemaison' => 'required|',
-            'dep_lavevaiselle' => 'required',
-            "pc_gardiennage" => 'required',
-            "pc_interphone" => 'required',
-            "pc_ascenseur" => 'required|',
-            "pc_vide_ordure" => 'required|',
-            "pc_espace_vert" => 'required|',
-            "pc_chauffage_collective" => 'required|',
-            "pc_eau_chaude_collective" => 'required|',
-            "pc_antennetv_collective" => 'required|',
-            "exist_balcon" => 'required',
-            "exist_cheminee" => 'required|',
-            "exist_salle_manger" => 'required|',
-            "exist_proxi_education" => 'required|',
-            "exist_sous_sol" => 'required|',
-            "exist_proxi_centre_sante" => 'required|',
-            "exist_proxi_restaurant" => 'required|',
-            "anneeconstruction" => 'required',
-            'nbr_salle_bain' => 'required|integer',
-            "typeBien_id" => 'required|exists:typebiens,id',
-            'proprietaire_id' => 'required||exists:utilisateurs,id',
-        ]);
-        if ($validator->fails()) {
+        // $validator =   Validator::make($request->all() ,[
+        //     'nom' => 'required|string',
+        //     "surface"=>'required|string' ,
+        //    "addresse"=>'required|string' ,
+        //     "code_postal"=>'required|integer' ,
+        //     "nbrbatiment" =>'required|integer' ,
+        //     "nbrescalier" =>'required|integer' ,
+        //     "nbrchambre" =>'required|integer' ,
+        //     "numeroporte" =>'required|integer' ,
+        //     "zoneStationnement" =>'required|string' ,
+        //     "typemouvement" =>'required|string' ,
+        //     "ungarage" =>'required' ,
+        //     "ville_id"=>'required|exists:villes,id' ,
+        //     "img.*"=>'required|url' ,
+        //     "unecave"=>'required' ,
+        //     "internet"=>'required' ,
+        //     'dep_tvecranplat'=>'required|' ,
+        //     'dep_lingemaison'=>'required|' ,
+        //     'dep_lavevaiselle'=>'required' ,
+        //     "pc_gardiennage"=>'required' ,
+        //     "pc_interphone"=>'required' ,
+        //     "pc_ascenseur"=>'required|' ,
+        //     "pc_vide_ordure"=>'required|' ,
+        //     "pc_espace_vert"=>'required|' ,
+        //     "pc_chauffage_collective"=>'required|' ,
+        //     "pc_eau_chaude_collective"=>'required|' ,
+        //     "pc_antennetv_collective"=>'required|' ,
+        //     "exist_balcon"=>'required' ,
+        //     "exist_cheminee"=>'required|' ,
+        //     "exist_salle_manger"=>'required|' ,
+        //     "exist_proxi_education"=>'required|' ,
+        //     "exist_sous_sol"=>'required|' ,
+        //     "exist_proxi_centre_sante"=>'required|' ,
+        //     "exist_proxi_restaurant"=>'required|' ,
+        //     "anneeconstruction"=>'required' ,
+        //     'nbr_salle_bain'=>'required|integer' ,
+        //     "typeBien_id"=>'required|exists:typebiens,id' ,
+        //     'proprietaire_id' =>'required||exists:utilisateurs,id',
+        // ])  ;
+        // if($validator->fails()){
+        //     return response()->json([
+        //         'statusCode' => 422,
+        //         'message' => 'probleme de validation de donnee',
+        //         'error' => $validator->errors()
+        //     ],422);
+        // }
+        $validator =  $this->validateProperty($request);
+        if ($validator !== null) {
+            // Si le validateur renvoie des erreurs, retourner une réponse avec les erreurs
             return response()->json([
                 'statusCode' => 422,
-                'message' => 'probleme de validation de donnee',
-                'error' => $validator->errors()
+                'message' => 'Problème de validation de données',
+                'errors' => $validator
             ], 422);
         }
         try {
-            $dataBien =     $validator->validated();
+            $dataBien =     $request->all();
             // return $dataBien["images"] ; 
             $dataBien['slug'] = $request->nom;
             $dataBien['statut'] = 'actif';
@@ -429,17 +522,27 @@ class ProprieterController extends Controller
     {
         $bien = Bien::find($id);
         if ($bien) {
+            try {
+                $this->authorize('delete', $bien);
+            } catch (Exception $e) {
+                return response()->json([
+                    'statusCode' => 403,
+                    'message' => ' probleme d\'authorisation',
+                    'error' => $e->getMessage()
+                ], 403);
+            }
             $bien->deleted_at = Carbon::now();
             $bien->save();
             return response()->json([
                 'message' => "bien suprimer avec succcess",
                 "statusCode" => 203
             ]);
+
+            return response()->json([
+                'message' => "nous n'avons pas trouver de bien avec cette id",
+                "statusCode" => 404
+            ]);
         }
-        return response()->json([
-            'message' => "nous n'avons pas trouver de bien avec cette id",
-            "statusCode" => 404
-        ]);
     }
 
     /**
@@ -493,7 +596,7 @@ class ProprieterController extends Controller
             "typemouvement" => 'required|string',
             "ungarage" => 'required',
             "ville_id" => 'required|exists:villes,id',
-            "img" => 'required|url',
+            // "img" => 'required|url',
             "unecave" => 'required|',
             "internet" => 'required|',
             'dep_tvecranplat' => 'required|boolean',
@@ -520,11 +623,9 @@ class ProprieterController extends Controller
             'proprietaire_id' => 'required|exists:utilisateurs,id',
         ]);
         if ($validator->fails()) {
-            return response()->json([
-                'statusCode' => 203,
-                'message' => 'probleme de validation de donnee',
-                'error' => $validator->errors()
-            ]);
+            return $validator->errors();
+        } else {
+            return  null;
         }
     }
 }

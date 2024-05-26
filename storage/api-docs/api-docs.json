@@ -1143,11 +1143,45 @@
                 "tags": [
                     "Bien"
                 ],
-                "summary": "Liste des Bien",
+                "summary": "Récupérer des Biens en fonction des paramètres",
                 "operationId": "22bcbd0c9d85274fe9aa3354e3ad2454",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Type de Bien",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "region",
+                        "in": "query",
+                        "description": "Région du Bien",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ville",
+                        "in": "query",
+                        "description": "Ville du Bien",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Terme de recherche",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Liste des utilisateurs récupérée avec succès"
+                        "description": "Liste des Biens récupérée avec succès"
                     }
                 }
             }
@@ -1212,7 +1246,8 @@
                                         "type": "string"
                                     },
                                     "typemouvement": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "A vendre"
                                     },
                                     "ungarage": {
                                         "type": "boolean"
@@ -1224,12 +1259,10 @@
                                         "type": "boolean"
                                     },
                                     "ville_id": {
-                                        "type": "boolean"
+                                        "type": "number",
+                                        "example": "2"
                                     },
                                     "dep_tvecranplat": {
-                                        "type": "boolean"
-                                    },
-                                    "tv_ecran_plat": {
                                         "type": "boolean"
                                     },
                                     "proprietaire_id": {
@@ -1237,7 +1270,8 @@
                                         "example": "1"
                                     },
                                     "typeBien_id": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "example": "3"
                                     },
                                     "exist_proxi_restaurant": {
                                         "type": "boolean"
@@ -1255,7 +1289,8 @@
                                         "type": "boolean"
                                     },
                                     "nbr_salle_bain": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "example": "3"
                                     },
                                     "exist_sous_sol": {
                                         "type": "boolean"
@@ -2683,13 +2718,67 @@
                 }
             }
         },
-        "/api/v1/utilisateurs/show/{id}": {
+        "/api/v1/utilisateurs/create_and_login": {
+            "post": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Create a new  utilisateurs",
+                "operationId": "2beec5cb315fa34389f0a93ad4981ce5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "nom",
+                                    "telephone",
+                                    "addresse"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "sexe": {
+                                        "type": "string"
+                                    },
+                                    "telephone": {
+                                        "type": "string"
+                                    },
+                                    "addresse": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "utilisateurs created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/utilisateurs/showById/{id}": {
             "get": {
                 "tags": [
                     "Utilisateurs"
                 ],
                 "summary": "Get a specific resource",
-                "operationId": "c092670f311fe799fd525ac4865f55e2",
+                "operationId": "20909286bbaeae07f01e39960d58cbef",
                 "parameters": [
                     {
                         "name": "id",
@@ -2698,6 +2787,34 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/utilisateurs/showBySlug/{slug}": {
+            "get": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Get a specific resource",
+                "operationId": "df4d63b120261ba52f00bd5d6c9746c1",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": " id de utilisateurs",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],

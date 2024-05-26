@@ -12,11 +12,11 @@ class Message extends Model
         protected $fillable = ['emetteur_id' ,'recepteur_id' ,'contenue' ,'statut' ,'slug'] ;
     public function sender()
     {
-        return $this->belongsTo(User::class, 'recepteur_id');
+        return $this->belongsTo(Utilisateur::class, 'recepteur_id');
     }
 
     public function receiver()
     {
-        return $this->belongsTo(User::class, 'emetteur_id');
+        return $this->belongsTo(Utilisateur::class, 'emetteur_id');
     }
 }

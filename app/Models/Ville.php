@@ -14,4 +14,8 @@ class Ville extends Model
         return $this->hasMany(Bien::class);
     }
 
+    public function region()
+    {
+        return $this->belongsTo(Region::class, 'region_id');
+    }
 }

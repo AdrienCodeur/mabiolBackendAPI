@@ -62,10 +62,22 @@ class PaysSeeder extends Seeder
         ]);
         DB::table('typebiens')->insert([
             [
-                'libelle' => "neuble", 
+                'libelle' => "Studio", 
             ],
             [
-                'libelle' => "location normale",
+                'libelle' => "Chambre",
+            
+            ],
+            [
+                'libelle' => "Appartement",
+            
+            ],
+            [
+                'libelle' => "Bureau",
+            
+            ],
+            [
+                'libelle' => "Immeuble",
             
             ],
        ] );

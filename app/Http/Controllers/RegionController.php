@@ -133,7 +133,7 @@ class RegionController extends Controller
             return response()->json([
                 'statusCode' => 404,
                 'message' => 'nous n\'avons pas trouver de region avec cette id ',
-            ]);
+            ],404);
         //
     }
 
@@ -167,11 +167,21 @@ class RegionController extends Controller
  */
     public function updateRegion(Request $request, $id)
     {
+
+        try {
         $region = Region::find($id) ;
+            $this->authorize('update', $region);
+        } catch (Exception $e) {
+            return response()->json([
+                'statusCode' => 403,
+                'message' => ' probleme d\'authorisation',
+                'error' => $e->getMessage()
+            ], 403);
+        }
         if($region){
             $validator  =   Validator::make($request->all() ,[ 
                 'nom' => 'required|string',
-           'pay_id' => 'required|exists:pays ,id',
+           'pay_id' => 'required|exists:pays,id',
            ]) ;
            if($validator->fails()){
                return response()->json([
@@ -180,6 +190,7 @@ class RegionController extends Controller
                ]) ;
            }
             try {
+
                 $region->update($validator->validated());
                 return response()->json([
                     'statusCode' => 200,

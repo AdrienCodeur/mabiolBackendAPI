@@ -2,67 +2,66 @@
 
 namespace App\Policies;
 
-use App\Models\Bien;
+use App\Models\Region;
 use App\Models\User;
 use App\Models\Utilisateur;
 use Illuminate\Auth\Access\Response;
 
-class BienPolicy
+class RegionPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user)
     {
-         return true ;
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Bien $bien)
+    public function view(User $user, Region $region)
     {
-         return true ;
+        //
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user) :bool
+    public function create(User $user)
     {
-        return true ; 
+        //
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(Utilisateur $user, Bien $bien): bool
+    public function update(Utilisateur $user, Region $region): bool
     {
-         return $user->id === $bien->proprietaire_id  ||  $user->login === "Admin" ;
+         return  $user->login == "Admin" ;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(Utilisateur $user, Bien $bien): bool
+    public function delete(Utilisateur $user, Region $region): bool
     {
-        return $user->id === $bien->proprietaire_id  ||  $user->login === "Admin" ;
-        
+        return  $user->login == "Admin" ;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Bien $bien)
+    public function restore(User $user, Region $region)
     {
-          return false  ;
+        //
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Bien $bien)
+    public function forceDelete(User $user, Region $region)
     {
-        return false ;
+        return  false ;
     }
 }

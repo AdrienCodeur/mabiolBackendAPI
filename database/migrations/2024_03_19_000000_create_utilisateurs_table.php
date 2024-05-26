@@ -24,7 +24,7 @@ return new class extends Migration
             // cle etrangerer 
             // $table->string('typeUserId') ;
             $table->foreignId('type_user')->constrained(table:'type_users')->nullable(false);
-            $table->enum('statut' ,['actif' ,'inactif']);
+            $table->string('statut' ,10);
             $table->string('slug' ,100)->unique() ;
             // a modifier 
             $table->dateTime('deleted_at')->nullable();
