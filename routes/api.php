@@ -32,26 +32,26 @@ use App\Http\Controllers\Ville\VilleController;
 
 
 Route::any("/login", function () {
-    
+
     return response()->json([
         'statusCode' => 422,
         'message' => 'utilisateur  pas  connecter',
-    ],422);
+    ], 422);
 })->name('login');
 
-    Route::prefix('v1')->group(
-        function () {
-            Route::prefix('/proprieter')->group(function () {
-                // route  get pour le model Proprieter
-                Route::get('/', [ProprieterController::class, 'getAllProprieter']);
-                Route::get('/show/{id}', [ProprieterController::class, 'showProprieter']);
-                Route::get('/showWithSlug/{slug}', [ProprieterController::class, 'showProprieterForSlug']);
-                Route::get('/showForProprietaire/{proprietaire_id}', [ProprieterController::class, 'getAllProprieterForProprietaire']);
-                // route post put pour Propertier
-                Route::put('/edit/{id}', [ProprieterController::class, 'updateProprieter'])->middleware('auth:sanctum') ;
-                Route::post('/create', [ProprieterController::class, 'registerProprieter']);
-                Route::delete('/delete/{id}', [ProprieterController::class, 'deleteProprieter'])->middleware('auth:sanctum');
-            });
+Route::prefix('v1')->group(
+    function () {
+        Route::prefix('/proprieter')->group(function () {
+            // route  get pour le model Proprieter
+            Route::get('/', [ProprieterController::class, 'getAllProprieter']);
+            Route::get('/show/{id}', [ProprieterController::class, 'showProprieter']);
+            Route::get('/showWithSlug/{slug}', [ProprieterController::class, 'showProprieterForSlug']);
+            Route::get('/showForProprietaire/{proprietaire_id}', [ProprieterController::class, 'getAllProprieterForProprietaire']);
+            // route post put pour Propertier
+            Route::put('/edit/{id}', [ProprieterController::class, 'updateProprieter'])->middleware('auth:sanctum');
+            Route::post('/create', [ProprieterController::class, 'registerProprieter']);
+            Route::delete('/delete/{id}', [ProprieterController::class, 'deleteProprieter'])->middleware('auth:sanctum');
+        });
         Route::prefix('/pays')->group(function () {
             // route  get pour le model Pays
             Route::get('/', [PaysController::class, 'getAllPays']);
@@ -171,12 +171,8 @@ Route::prefix('v1/locataire')->group(function () {
     Route::delete('/delete/{id}', [LocataireController::class, 'deleteLocataire'])->middleware('auth:sanctum');
 });
 Route::prefix('v1/user')->group(function () {
-<<<<<<< HEAD
-    Route::post('/login', [UserController::class, 'dologin']);
-=======
     // route  get pour le authentifications
     Route::post('/login', [UserController::class, 'dologinUser']);
->>>>>>> 4fc7aea09fedf6f1fd46c33839c7161d9dde99ef
     Route::post("/register", [UserController::class, 'store']);
 });
 
@@ -188,7 +184,7 @@ Route::post("v1/utilisateurs/login", [UserController::class, 'loginUtilisateur']
 
 Route::prefix('v1/utilisateur')->group(function () {
     // route  get pour le authentifications
-    Route::get("/CheckAuth",  [UserController::class, 'checkAuth']);  
-    Route::post('/login', [UserController::class, 'dologin']);   
-    Route::post("/register", [UserController::class, 'store']);      
+    Route::get("/CheckAuth",  [UserController::class, 'checkAuth']);
+    Route::post('/login', [UserController::class, 'dologin']);
+    Route::post("/register", [UserController::class, 'store']);
 });
